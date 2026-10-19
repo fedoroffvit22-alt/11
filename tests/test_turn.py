@@ -58,7 +58,11 @@ def test_turn_without_phrases_does_not_call_tts(tmp_path: Path, monkeypatch: pyt
     assert "mlx_lm" not in sys.modules
 
 
-def test_turn_joins_phrases_and_replies_without_pretrained(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_turn_joins_phrases_and_replies_without_pretrained(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
     wav = tmp_path / "in.wav"
     _write_wav(wav, rate=8000, samples=(1, 2))
     ref = tmp_path / "ref.wav"
@@ -98,6 +102,11 @@ def test_turn_joins_phrases_and_replies_without_pretrained(tmp_path: Path, monke
     monkeypatch.setattr("app.reply.llm_python_path", lambda: fake_python)
     out = tmp_path / "ответ.wav"
     assert main(["turn", "--wav", str(wav), "--out", str(out)]) == 0
+    output = capsys.readouterr().out
+    heard_at = output.index("Распознано: алло вы меня слышите")
+    model_at = output.index("Модель: Да, я здесь!")
+    saved_at = output.index("Записано ")
+    assert heard_at < model_at < saved_at
     assert seen["asr"] is True
     assert seen["tts"] is True
     assert seen["spoken"] == "Да, я здесь!"

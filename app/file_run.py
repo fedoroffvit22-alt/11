@@ -198,6 +198,7 @@ def _reply_from_text(text: str, out: Path, settings: Settings) -> int:
     except ReplyFailed as exc:
         print(str(exc), file=sys.stderr)
         return exc.code
+    print(f"Модель: {spoken}")
     return _synthesize_to_wav(spoken, out, settings)
 
 
