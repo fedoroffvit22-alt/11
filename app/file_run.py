@@ -44,6 +44,8 @@ def main(argv: list[str] | None = None) -> int:
         return _run_tts(args, settings)
     if command == "reply":
         return _run_reply(args, settings)
+    if command == "turn":
+        return _run_turn(args, settings)
     print(f"Неизвестная команда: {command}.", file=sys.stderr)
     return 2
 
@@ -52,7 +54,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="python -m app.file_run",
         description=(
-            "Распознать файл, синтезировать фразу или ответить текстом из .venv-llm. python -m app веса не скачивает."
+            "Распознать файл, ответить на него или синтезировать фразу. "
+            "python -m app веса не скачивает и микрофон не открывает."
         ),
     )
     commands = parser.add_subparsers(dest="command", required=True)
@@ -69,6 +72,9 @@ def build_parser() -> argparse.ArgumentParser:
     reply = commands.add_parser("reply", help="Ответ .venv-llm и WAV клоном Base.")
     reply.add_argument("--text", required=True, help="Реплика пользователя.")
     reply.add_argument("--out", required=True, help="Куда записать WAV ответа.")
+    turn = commands.add_parser("turn", help="Готовый WAV 8 кГц → ответ. Микрофон не открывается.")
+    turn.add_argument("--wav", required=True, help="Моно PCM16 WAV, 8000 Гц, уже на диске.")
+    turn.add_argument("--out", required=True, help="Куда записать WAV ответа.")
     return parser
 
 
@@ -149,8 +155,35 @@ def _run_tts(args: argparse.Namespace, settings: Settings) -> int:
 
 
 def _run_reply(args: argparse.Namespace, settings: Settings) -> int:
-    text = args.text.strip()
-    if not text:
+    return _reply_from_text(args.text, Path(args.out), settings)
+
+
+def _run_turn(args: argparse.Namespace, settings: Settings) -> int:
+    try:
+        samples = read_pcm16_wav(Path(args.wav))
+    except (FileNotFoundError, ValueError, OSError) as exc:
+        print(str(exc), file=sys.stderr)
+        return 2
+    print("turn читает файл. Микрофон не открывается.")
+    print(_asr_download_line(settings.asr_decoder))
+    asr = ToneAsr()
+    try:
+        asr.load(settings)
+        phrases = asr.transcribe_offline(samples)
+    except (TonePackageError, RuntimeError, ValueError) as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    heard = _join_phrases(phrases)
+    if not heard:
+        print("Фраз нет. TTS не вызывался.", file=sys.stderr)
+        return 1
+    print(f"Распознано: {heard}")
+    return _reply_from_text(heard, Path(args.out), settings)
+
+
+def _reply_from_text(text: str, out: Path, settings: Settings) -> int:
+    cleaned = text.strip()
+    if not cleaned:
         print("Текст пустой.", file=sys.stderr)
         return 2
     if not Path(settings.tts_ref_audio).is_file():
@@ -161,11 +194,20 @@ def _run_reply(args: argparse.Namespace, settings: Settings) -> int:
         )
         return 2
     try:
-        spoken = generate_reply(text, settings)
+        spoken = generate_reply(cleaned, settings)
     except ReplyFailed as exc:
         print(str(exc), file=sys.stderr)
         return exc.code
-    return _synthesize_to_wav(spoken, Path(args.out), settings)
+    return _synthesize_to_wav(spoken, out, settings)
+
+
+def _join_phrases(phrases: tuple[object, ...]) -> str:
+    parts: list[str] = []
+    for phrase in phrases:
+        text = getattr(phrase, "text", "")
+        if isinstance(text, str) and text.strip():
+            parts.append(text.strip())
+    return " ".join(parts)
 
 
 def _synthesize_to_wav(text: str, out: Path, settings: Settings) -> int:
