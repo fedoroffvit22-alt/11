@@ -64,7 +64,17 @@ def script_path(root: Path | None = None) -> Path:
 _SALE = re.compile(r"прода")
 _BUY = re.compile(r"покуп|купи|куплю")
 _SENTENCE = re.compile(r"[^.!?]+(?:[.!?]+|$)")
-_BROKEN_HEARING = re.compile(r"я\s+слышно")
+_HEARING_TURNS = frozenset(
+    {
+        "как меня слышно",
+        "меня слышно",
+        "как слышно",
+        "слышно меня",
+        "вы меня слышно",
+        "как вы меня слышно",
+        "слышно",
+    }
+)
 _SALE_REPLY = "Понял, вы хотите продать. Уточните, что именно продаёте."
 _BUY_REPLY = "Понял, вы хотите купить. Уточните, что именно покупаете."
 _HEARING_REPLY = "Да, я вас слышу."
@@ -94,9 +104,18 @@ def shape_spoken_reply(user_text: str, model_text: str) -> str:
         if _mentions(_BUY, model) and not _mentions(_SALE, model):
             return _two_sentences(model)
         return _BUY_REPLY
-    if "слышно" in user or _BROKEN_HEARING.search(model.casefold()):
+    if _is_hearing_turn(user):
         return _HEARING_REPLY
     return _two_sentences(model)
+
+
+def _is_hearing_turn(user: str) -> bool:
+    """Ход про слышимость целиком, а не обрывок «слышно» внутри другой реплики."""
+
+    text = re.sub(r"[^0-9a-zа-яё\s]+", " ", user.casefold())
+    text = re.sub(r"\s+", " ", text).strip()
+    text = re.sub(r"^(?:алло|здравствуйте)\s+", "", text)
+    return text in _HEARING_TURNS
 
 
 def _mentions(pattern: re.Pattern[str], text: str) -> bool:

@@ -31,6 +31,11 @@ def test_live_lines_are_shaped_before_tts_without_weights(tmp_path: Path) -> Non
     assert sale != sale_model
     assert _sentence_count(sale) <= 2
 
+    remembered = "Понял, вы хотите, чтобы я уведомил, что пришла — тогда не забудете."
+    kept = shape_spoken_reply("пришла потому что потом я забуду", remembered)
+    assert kept == remembered
+    assert kept != "Да, я вас слышу."
+
     buy = shape_spoken_reply("я хочу купить", "Что вы хотите продать?")
     assert "куп" in buy.casefold()
     assert "прода" not in buy.casefold()
@@ -44,6 +49,7 @@ def test_live_lines_are_shaped_before_tts_without_weights(tmp_path: Path) -> Non
     settings = Settings()
     assert generate_reply("как меня слышно", settings, python_path=fake_python) == hearing
     assert generate_reply("нет ы меня не поняли я продать хочу", settings, python_path=fake_python) == sale
+    assert generate_reply("пришла потому что потом я забуду", settings, python_path=fake_python) == remembered
     assert "mlx_lm" not in sys.modules
 
 
@@ -183,6 +189,8 @@ def _write_intent_python(path: Path) -> None:
                 "    sys.stdout.write('Подскажите, что вы хотите купить?')",
                 "elif 'слышно' in user:",
                 "    sys.stdout.write('Я слышно, как вы. Что у вас по вопросу?')",
+                "elif 'забуду' in user:",
+                "    sys.stdout.write('Понял, вы хотите, чтобы я уведомил, что пришла — тогда не забудете.')",
                 "else:",
                 "    raise SystemExit(1)",
                 "",
