@@ -10,6 +10,8 @@ def test_defaults_do_not_load_weights() -> None:
     assert settings.tts_model_id == TTS_MODEL_0_6B_CUSTOM
     assert settings.tts_language == "Russian"
     assert settings.tts_device == "cpu"
+    assert settings.llm_backend == "off"
+    assert settings.audio_out_sample_rate == 24000
 
 
 def test_flags_and_decoder(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -26,3 +28,10 @@ def test_flags_and_decoder(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_rejects_unknown_decoder() -> None:
     with pytest.raises(ValueError, match="CALL_CENTER_ASR_DECODER"):
         Settings.from_env({"CALL_CENTER_ASR_DECODER": "whisper"})
+
+
+def test_llm_backend_rejects_ollama_and_dashscope() -> None:
+    with pytest.raises(ValueError, match="CALL_CENTER_LLM_BACKEND"):
+        Settings.from_env({"CALL_CENTER_LLM_BACKEND": "ollama"})
+    with pytest.raises(ValueError, match="CALL_CENTER_LLM_BACKEND"):
+        Settings.from_env({"CALL_CENTER_LLM_BACKEND": "qwen"})

@@ -17,6 +17,8 @@ DEFAULT_TTS_SPEAKER = "Ryan"
 
 ASR_DECODERS = ("greedy", "beam_search")
 TTS_DEVICES = ("cpu", "cuda", "mps")
+LLM_BACKENDS = ("off", "stub")
+PIPELINE_AUDIO_OUT_SAMPLE_RATE = 24000
 
 _TRUE = {"1", "true", "yes", "on"}
 _FALSE = {"0", "false", "no", "off", ""}
@@ -33,6 +35,8 @@ class Settings:
     tts_language: str = TTS_LANGUAGE_RUSSIAN
     tts_device: str = "cpu"
     tts_flash_attention: bool = False
+    llm_backend: str = "off"
+    audio_out_sample_rate: int = PIPELINE_AUDIO_OUT_SAMPLE_RATE
 
     @classmethod
     def from_env(cls, env: Mapping[str, str] | None = None) -> Settings:
@@ -55,6 +59,11 @@ class Settings:
             tts_flash_attention=_flag(
                 source.get("CALL_CENTER_TTS_FLASH_ATTN", "0"),
                 "CALL_CENTER_TTS_FLASH_ATTN",
+            ),
+            llm_backend=_choice(
+                source.get("CALL_CENTER_LLM_BACKEND", "off"),
+                LLM_BACKENDS,
+                "CALL_CENTER_LLM_BACKEND",
             ),
         )
 

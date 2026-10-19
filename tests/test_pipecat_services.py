@@ -6,6 +6,7 @@ from collections.abc import AsyncIterator
 
 import pytest
 from app.asr import ModelNotLoaded, TranscriptPhrase
+from app.llm import RUSSIAN_SYSTEM_PROMPT, ChatTurn, LlmBackendDisabled
 from app.pipeline import PipelineSkeleton, SymbolProbe, build_skeleton
 from app.settings import TTS_MODEL_0_6B_CUSTOM, Settings
 from app.smoke import main
@@ -13,19 +14,31 @@ from app.tts import SynthesisRequest, SynthesisResult
 
 pytest.importorskip("pipecat")
 
-from app.pipecat_services import Qwen3TtsService, ToneSttService  # noqa: E402
+from app.pipecat_services import LocalLlmService, Qwen3TtsService, ToneSttService  # noqa: E402
+from pipecat.clocks.system_clock import SystemClock  # noqa: E402
 from pipecat.frames.frames import (  # noqa: E402
     EndFrame,
     ErrorFrame,
     InputAudioRawFrame,
+    InterruptionFrame,
+    LLMContextFrame,
+    LLMFullResponseEndFrame,
+    LLMFullResponseStartFrame,
+    LLMTextFrame,
     TranscriptionFrame,
     TTSAudioRawFrame,
+    VADUserStartedSpeakingFrame,
     VADUserStoppedSpeakingFrame,
 )
-from pipecat.processors.frame_processor import FrameDirection, FrameProcessor  # noqa: E402
+from pipecat.processors.aggregators.llm_context import LLMContext  # noqa: E402
+from pipecat.processors.frame_processor import FrameDirection, FrameProcessor, FrameProcessorSetup  # noqa: E402
+from pipecat.services.llm_service import LLMService  # noqa: E402
 from pipecat.services.stt_service import STTService  # noqa: E402
 from pipecat.services.tts_service import TTSService  # noqa: E402
 from pipecat.transcriptions.language import Language  # noqa: E402
+from pipecat.turns.types import ProcessFrameResult  # noqa: E402
+from pipecat.turns.user_start.vad_user_turn_start_strategy import VADUserTurnStartStrategy  # noqa: E402
+from pipecat.utils.asyncio.task_manager import TaskManager  # noqa: E402
 
 
 class _Engine:
@@ -183,7 +196,7 @@ def test_tts_without_weights_yields_error_and_does_not_load() -> None:
 
 def test_tts_uses_generate_custom_voice_contract() -> None:
     speech = _Speech(loaded=True)
-    service = Qwen3TtsService(settings=Settings(), speech=speech)
+    service = Qwen3TtsService(settings=Settings(), speech=speech, output_sample_rate=12345)
     frames = _frames(service.run_tts("Алло, это колл-центр.", "ctx-7"))
     assert speech.load_calls == 0
     request = speech.requests[0]
@@ -223,7 +236,117 @@ def test_skeleton_wires_processors_without_weights() -> None:
     assert skeleton.has_qwen_tts is True
     assert skeleton.weights_loaded is False
     assert skeleton.audio_in_sample_rate == 8000
-    assert skeleton.processor_count == 6
+    assert skeleton.processor_count == 7
+    assert skeleton.has_local_llm is True
+    assert skeleton.llm_backend == "off"
+    assert skeleton.interrupt_on_user_speech is True
+
+
+def test_tts_resamples_when_model_rate_differs() -> None:
+    class _EightK:
+        loaded = True
+
+        def synthesize(self, _request: SynthesisRequest) -> SynthesisResult:
+            return SynthesisResult(sample_rate=8000, samples=(0.5, -0.5, 0.25, -0.25))
+
+    service = Qwen3TtsService(settings=Settings(), speech=_EightK(), output_sample_rate=16000)  # type: ignore[arg-type]
+    frames = _frames(service.run_tts("Алло", "ctx"))
+    audio = frames[0]
+    assert isinstance(audio, TTSAudioRawFrame)
+    assert audio.sample_rate == 16000
+    assert len(audio.audio) > 8
+    assert len(audio.audio) % 2 == 0
+
+
+class _RecordingModel:
+    def __init__(self) -> None:
+        self.turns: tuple[ChatTurn, ...] = ()
+
+    def stream(self, turns: tuple[ChatTurn, ...]):
+        self.turns = tuple(turns)
+        yield "Алло"
+        yield " мир"
+
+
+def test_local_llm_streams_text_and_is_not_dashscope() -> None:
+    qwen_llm = pytest.importorskip("pipecat.services.qwen.llm")
+    model = _RecordingModel()
+    service = LocalLlmService(settings=Settings(llm_backend="off"), model=model)
+    assert isinstance(service, LLMService)
+    assert not isinstance(service, qwen_llm.QwenLLMService)
+    assert service.weights_loaded is False
+    pushed: list[object] = []
+
+    async def capture(frame: object, direction: FrameDirection = FrameDirection.DOWNSTREAM) -> None:
+        pushed.append(frame)
+
+    service.push_frame = capture  # type: ignore[method-assign]
+    context = LLMContext([{"role": "user", "content": "нужен оператор"}])
+    asyncio.run(service.process_frame(LLMContextFrame(context), FrameDirection.DOWNSTREAM))
+    texts = [frame.text for frame in pushed if isinstance(frame, LLMTextFrame)]
+    assert texts == ["Алло", " мир"]
+    assert isinstance(pushed[0], LLMFullResponseStartFrame)
+    assert isinstance(pushed[-1], LLMFullResponseEndFrame)
+    assert model.turns[0].role == "developer"
+    assert model.turns[0].text == RUSSIAN_SYSTEM_PROMPT
+    assert model.turns[1] == ChatTurn("user", "нужен оператор")
+
+
+def test_local_llm_without_backend_is_an_error() -> None:
+    service = LocalLlmService(settings=Settings(llm_backend="off"))
+    errors: list[str] = []
+    pushed: list[object] = []
+
+    async def capture(frame: object, direction: FrameDirection = FrameDirection.DOWNSTREAM) -> None:
+        pushed.append(frame)
+
+    async def capture_error(error_msg: str, exception: Exception | None = None, **_kwargs: object) -> None:
+        errors.append(error_msg)
+        assert isinstance(exception, LlmBackendDisabled)
+
+    service.push_frame = capture  # type: ignore[method-assign]
+    service.push_error = capture_error  # type: ignore[method-assign]
+    context = LLMContext([{"role": "user", "content": "Алло"}])
+    asyncio.run(service.process_frame(LLMContextFrame(context), FrameDirection.DOWNSTREAM))
+    assert errors
+    assert "выключена" in errors[0]
+    assert not any(isinstance(frame, LLMTextFrame) for frame in pushed)
+
+
+def test_vad_turn_start_stops_tts() -> None:
+    async def scenario() -> None:
+        speech = Qwen3TtsService(settings=Settings(), speech=_Speech(loaded=False))
+        await speech.setup(
+            FrameProcessorSetup(
+                clock=SystemClock(),
+                task_manager=TaskManager(),
+                pipeline_worker=None,  # type: ignore[arg-type]
+            )
+        )
+        try:
+            await speech.create_audio_context("reply")
+            assert speech.audio_context_available("reply")
+            strategy = VADUserTurnStartStrategy(enable_interruptions=True)
+            seen: dict[str, object] = {}
+
+            @strategy.event_handler("on_user_turn_started")
+            async def _on_started(_strategy: object, params: object) -> None:
+                try:
+                    seen["interrupt"] = getattr(params, "enable_interruptions")
+                    if seen["interrupt"]:
+                        await speech.process_frame(InterruptionFrame(), FrameDirection.DOWNSTREAM)
+                except Exception as exc:  # noqa: BLE001
+                    seen["error"] = exc
+
+            result = await strategy.process_frame(VADUserStartedSpeakingFrame())
+            assert result is ProcessFrameResult.STOP
+            assert seen.get("error") is None
+            assert seen.get("interrupt") is True
+            assert speech.audio_context_available("reply") is False
+        finally:
+            await speech.cleanup()
+
+    asyncio.run(scenario())
 
 
 def test_skeleton_skips_when_pipecat_import_is_blocked() -> None:

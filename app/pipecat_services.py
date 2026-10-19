@@ -7,19 +7,24 @@
 
 from __future__ import annotations
 
-from collections.abc import AsyncGenerator
+from collections.abc import AsyncGenerator, Iterable, Iterator, Sequence
 
+from pipecat.audio.utils import create_file_resampler
 from pipecat.frames.frames import (
     EndFrame,
     ErrorFrame,
     Frame,
     InputAudioRawFrame,
+    LLMContextFrame,
+    LLMFullResponseEndFrame,
+    LLMFullResponseStartFrame,
     TranscriptionFrame,
     TTSAudioRawFrame,
     VADUserStoppedSpeakingFrame,
 )
 from pipecat.processors.frame_processor import FrameDirection
-from pipecat.services.settings import STTSettings, TTSSettings
+from pipecat.services.llm_service import LLMService
+from pipecat.services.settings import LLMSettings, STTSettings, TTSSettings
 from pipecat.services.stt_service import STTService
 from pipecat.services.tts_service import TTSService
 from pipecat.transcriptions.language import Language
@@ -28,6 +33,14 @@ from pipecat.utils.time import time_now_iso8601
 from app.asr import ModelNotLoaded as AsrNotLoaded
 from app.asr import ToneAsr, TonePackageError, ToneStreamEngine
 from app.audio import float_samples_to_pcm16
+from app.llm import (
+    RUSSIAN_SYSTEM_PROMPT,
+    ChatTurn,
+    LlmBackendDisabled,
+    build_local_model,
+    turns_from_messages,
+    with_russian_prompt,
+)
 from app.settings import TONE_SAMPLE_RATE, TTS_MODEL_0_6B_CUSTOM, Settings
 from app.tts import ModelNotLoaded as TtsNotLoaded
 from app.tts import Qwen3Speech, SynthesisRequest, TtsRequestError, validate_request
@@ -127,8 +140,8 @@ class ToneSttService(STTService):
 class Qwen3TtsService(TTSService):
     """Синтез через `Qwen3TTSModel.generate_custom_voice`. Без весов — ErrorFrame.
 
-    Частота кадра — та, что вернула модель. К 24 кГц выхода пайплайна волна не приводится:
-    ресемплер здесь не подключён.
+    Если частота волны не совпадает с `audio_out_sample_rate` пайплайна, PCM16
+    пересчитывается ресемплером Pipecat (`SOXRAudioResampler`). Устройство не открывается.
     """
 
     def __init__(
@@ -136,11 +149,14 @@ class Qwen3TtsService(TTSService):
         *,
         settings: Settings | None = None,
         speech: Qwen3Speech | None = None,
+        output_sample_rate: int | None = None,
         **kwargs: object,
     ) -> None:
         app_settings = settings or Settings()
+        rate = output_sample_rate if output_sample_rate is not None else app_settings.audio_out_sample_rate
+        self._output_sample_rate = rate
         super().__init__(
-            sample_rate=None,
+            sample_rate=rate,
             push_start_frame=True,
             push_stop_frames=True,
             settings=TTSSettings(
@@ -173,12 +189,84 @@ class Qwen3TtsService(TTSService):
                 self._speech.load(self._app_settings)
             result = self._speech.synthesize(request)
             audio = float_samples_to_pcm16(result.samples)
+            audio = await _match_pipeline_rate(audio, result.sample_rate, self._output_sample_rate)
         except (TtsNotLoaded, TtsRequestError, ValueError) as exc:
             yield ErrorFrame(error=str(exc))
             return
         yield TTSAudioRawFrame(
             audio=audio,
-            sample_rate=result.sample_rate,
+            sample_rate=self._output_sample_rate,
             num_channels=1,
             context_id=context_id,
         )
+
+
+class LocalLlmService(LLMService):
+    """Потоковый текст локальной модели. Не `QwenLLMService` и не Ollama.
+
+    Конструктор не грузит веса. Пока бэкенд `off`, кадр контекста даёт ошибку, а не ответ.
+    """
+
+    def __init__(
+        self,
+        *,
+        settings: Settings | None = None,
+        model: object | None = None,
+        **kwargs: object,
+    ) -> None:
+        app_settings = settings or Settings()
+        super().__init__(
+            settings=LLMSettings(
+                model=f"local-{app_settings.llm_backend}",
+                system_instruction=RUSSIAN_SYSTEM_PROMPT,
+            ),
+            **kwargs,
+        )
+        self._app_settings = app_settings
+        self._model = model if model is not None else build_local_model(app_settings.llm_backend)
+
+    @property
+    def weights_loaded(self) -> bool:
+        return False
+
+    async def process_frame(self, frame: Frame, direction: FrameDirection) -> None:
+        await super().process_frame(frame, direction)
+        if isinstance(frame, LLMContextFrame):
+            await self._reply(frame.context.get_messages())
+            return
+        await self.push_frame(frame, direction)
+
+    async def _reply(self, messages: object) -> None:
+        turns = with_russian_prompt(turns_from_messages(messages if isinstance(messages, Sequence) else ()))
+        await self.push_frame(LLMFullResponseStartFrame())
+        try:
+            for piece in _stream_turns(self._model, turns):
+                if piece:
+                    await self._push_llm_text(piece)
+        except LlmBackendDisabled as exc:
+            await self.push_error(str(exc), exception=exc)
+        finally:
+            await self.push_frame(LLMFullResponseEndFrame())
+
+
+def _stream_turns(model: object, turns: Sequence[ChatTurn]) -> Iterator[str]:
+    stream = getattr(model, "stream", None)
+    if not callable(stream):
+        raise LlmBackendDisabled("У локальной модели нет stream().")
+    produced = stream(turns)
+    if isinstance(produced, str) or not isinstance(produced, Iterable):
+        raise LlmBackendDisabled("stream() должен отдавать куски текста, а не одну строку целиком.")
+    return iter(produced)
+
+
+async def _match_pipeline_rate(audio: bytes, source_rate: int, target_rate: int) -> bytes:
+    """Привести PCM16 к частоте выхода пайплайна. Совпадающие частоты не трогаем."""
+
+    if source_rate == target_rate:
+        return audio
+    if source_rate <= 0 or target_rate <= 0:
+        raise ValueError(f"Частота TTS {source_rate} Гц или пайплайна {target_rate} Гц не положительная.")
+    resampled = await create_file_resampler().resample(audio, source_rate, target_rate)
+    if not resampled:
+        raise ValueError("Ресемплер Pipecat вернул пустую волну.")
+    return resampled

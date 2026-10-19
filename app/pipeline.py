@@ -12,7 +12,8 @@ from __future__ import annotations
 import importlib
 from dataclasses import dataclass
 
-from app.settings import TONE_SAMPLE_RATE
+from app.llm import RUSSIAN_SYSTEM_PROMPT
+from app.settings import PIPELINE_AUDIO_OUT_SAMPLE_RATE, TONE_SAMPLE_RATE
 
 # Пути сверены по исходникам тега v1.13.0, не по DSL из спецификации.
 CORE_SYMBOLS: tuple[tuple[str, str], ...] = (
@@ -34,7 +35,8 @@ LOCAL_AUDIO_SYMBOLS: tuple[tuple[str, str], ...] = (
 
 # Порядок будущего полного дуплекса. Свои процессоры T-One и Qwen3-TTS живут в
 # `app.pipecat_services` и подключаются, только если pipecat-ai импортируется.
-# В пакете Pipecat готовых классов для этих моделей нет. Транспорта и LLM здесь нет.
+# В пакете Pipecat готовых классов для T-One и Qwen3-TTS нет.
+# Локальная LLM — свой `LocalLlmService`, не DashScope и не Ollama.
 FULL_DUPLEX_SLOTS: tuple[str, ...] = (
     "transport.input",
     "tone_asr",
@@ -64,6 +66,9 @@ class PipelineSkeleton:
     context_messages: int
     has_tone_stt: bool
     has_qwen_tts: bool
+    has_local_llm: bool
+    llm_backend: str
+    interrupt_on_user_speech: bool
     weights_loaded: bool
 
 
@@ -118,20 +123,29 @@ def build_skeleton(settings: object | None = None) -> PipelineSkeleton | SymbolP
 
     params = worker_mod.PipelineParams(
         audio_in_sample_rate=TONE_SAMPLE_RATE,
-        audio_out_sample_rate=24000,
+        audio_out_sample_rate=app_settings.audio_out_sample_rate or PIPELINE_AUDIO_OUT_SAMPLE_RATE,
     )
     vad_params = vad_mod.VADParams(stop_secs=0.2)
-    context = context_mod.LLMContext(
-        messages=[{"role": "developer", "content": "Отвечай по-русски, коротко, как оператор."}]
+    # Явные стратегии: старт хода по VAD с перебиванием. Стоп — таймаут речи,
+    # без LocalSmartTurnAnalyzerV3, который читает bundled ONNX.
+    # SileroVADAnalyzer не создаём: его конструктор тоже грузит ONNX.
+    turn_mod = importlib.import_module("pipecat.turns.user_turn_strategies")
+    vad_start = importlib.import_module("pipecat.turns.user_start.vad_user_turn_start_strategy")
+    speech_stop = importlib.import_module("pipecat.turns.user_stop.speech_timeout_user_turn_stop_strategy")
+    strategies = turn_mod.UserTurnStrategies(
+        start=[vad_start.VADUserTurnStartStrategy(enable_interruptions=True)],
+        stop=[speech_stop.SpeechTimeoutUserTurnStopStrategy(user_speech_timeout=vad_params.stop_secs)],
     )
+    context = context_mod.LLMContext(messages=[{"role": "developer", "content": RUSSIAN_SYSTEM_PROMPT}])
     user, assistant = pair_mod.LLMContextAggregatorPair(
         context,
-        user_params=pair_mod.LLMUserAggregatorParams(),
+        user_params=pair_mod.LLMUserAggregatorParams(user_turn_strategies=strategies),
     )
     tone = services.ToneSttService(settings=app_settings)
-    qwen = services.Qwen3TtsService(settings=app_settings)
-    # Транспорта и LLM нет: микрофон не открываем, DashScope не подключаем.
-    pipeline = pipeline_mod.Pipeline([tone, user, qwen, assistant])
+    local_llm = services.LocalLlmService(settings=app_settings)
+    qwen = services.Qwen3TtsService(settings=app_settings, output_sample_rate=params.audio_out_sample_rate)
+    # Микрофон не открываем, DashScope и Ollama не подключаем, раннер не запускаем.
+    pipeline = pipeline_mod.Pipeline([tone, user, local_llm, qwen, assistant])
     _worker = worker_mod.PipelineWorker(pipeline, params=params)
     return PipelineSkeleton(
         audio_in_sample_rate=params.audio_in_sample_rate,
@@ -141,5 +155,8 @@ def build_skeleton(settings: object | None = None) -> PipelineSkeleton | SymbolP
         context_messages=len(context.messages) if hasattr(context, "messages") else 1,
         has_tone_stt=True,
         has_qwen_tts=True,
-        weights_loaded=tone.weights_loaded or qwen.weights_loaded,
+        has_local_llm=True,
+        llm_backend=app_settings.llm_backend,
+        interrupt_on_user_speech=True,
+        weights_loaded=tone.weights_loaded or qwen.weights_loaded or local_llm.weights_loaded,
     )
