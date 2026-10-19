@@ -1,4 +1,4 @@
-"""Незакоммиченный живой сеанс. Смоук и pytest его не запускают.
+"""Живой сеанс. Смоук и pytest его не запускают.
 
 Микрофон открывает только `WorkerRunner.run()`: конструктор транспорта поток не стартует.
 Сигнал человеку — сразу перед `run()`.
@@ -12,11 +12,14 @@
 from __future__ import annotations
 
 import asyncio
+import os
 import subprocess
 import sys
+import threading
 import time
 from dataclasses import dataclass, field, replace
 
+from app.device_stop import limit_device_stop
 from app.llm import RUSSIAN_SYSTEM_PROMPT
 from app.pipecat_services import LocalLlmService, Qwen3TtsService, ToneSttService
 from app.settings import PIPELINE_AUDIO_OUT_SAMPLE_RATE, TONE_SAMPLE_RATE, Settings
@@ -58,6 +61,8 @@ ECHO_TAIL_SECS = 0.8
 SECOND_TURN_WINDOW_SECS = 32.0
 TRANSCRIPT_GRACE_SECS = 2.0
 HARD_CAP_SECS = 150.0
+AUDIO_STOP_TIMEOUT_SECS = 1.0
+AUDIO_CLOSE_DEADLINE_SECS = 3.0
 
 
 def normalize_words(text: str) -> list[str]:
@@ -109,6 +114,7 @@ class SessionLog:
     replies_finished: int = 0
     raw_model_texts: list[str] = field(default_factory=list)
     first_error: str = ""
+    summary_done: bool = False
 
     def muted(self, now: float) -> bool:
         if self.replies_finished >= 2:
@@ -283,6 +289,47 @@ def log_spoken_reply(session: SessionLog) -> None:
     reply_module.shape_spoken_reply = logged
 
 
+def arm_forced_exit(session: SessionLog, delay: float) -> threading.Event:
+    """Если закрытие устройства так и не отпустило цикл, процесс всё равно выходит."""
+
+    hold = threading.Event()
+
+    def watch() -> None:
+        if hold.wait(delay):
+            return
+        print("СТОП: PyAudio не остановился за отведённое время, выхожу.", flush=True)
+        os._exit(1 if session.first_error else 0)
+
+    threading.Thread(target=watch, name="pyaudio-stop-limit", daemon=True).start()
+    return hold
+
+
+def report_session(session: SessionLog) -> None:
+    """Сводка и конечный сигнал. Повторный вызов ничего не печатает и не играет."""
+
+    if session.summary_done:
+        return
+    session.summary_done = True
+    elapsed = time.monotonic() - session.started if session.started else 0.0
+    print(f"ДЛИТЕЛЬНОСТЬ: {elapsed:.1f} с", flush=True)
+    print(f"РЕПЛИКИ: {session.user_turns}", flush=True)
+    print(f"ЭХО: {session.echo_turns}", flush=True)
+    print(f"ПОДАВЛЕНО: {session.suppressed}", flush=True)
+    print(f"МОДЕЛЬ_ДО_ПРАВКИ_ВСЕ: {session.raw_model_texts}", flush=True)
+    print(f"В_TTS_ВСЕ: {session.model_texts}", flush=True)
+    for index, phrase in enumerate(session.phrases, start=1):
+        print(
+            f"ФРАЗА {index}: доиграна={phrase.finished} оборвана={phrase.cut} текст={phrase.text}",
+            flush=True,
+        )
+    print(f"TTS_ОБОРВАН: {session.tts_cut_off}", flush=True)
+    print(f"ДИНАМИК_ИГРАЛ: {session.speaker_played}", flush=True)
+    if session.first_error:
+        print(f"ПЕРВАЯ_ОШИБКА: {session.first_error}", flush=True)
+    print("СИГНАЛ: сеанс закрыт", flush=True)
+    cue(start=False)
+
+
 def cue(start: bool) -> None:
     title = "Колл-центр"
     text = "Говорите сейчас" if start else "Сеанс закрыт"
@@ -377,9 +424,11 @@ async def main() -> int:
                 output_device_index=OUTPUT_DEVICE_INDEX,
             )
         )
+        audio_in = transport.input()
+        audio_out = transport.output()
         pipeline = Pipeline(
             [
-                transport.input(),
+                audio_in,
                 gate,
                 tone,
                 heard,
@@ -387,7 +436,7 @@ async def main() -> int:
                 local_llm,
                 spoken,
                 qwen,
-                transport.output(),
+                audio_out,
                 assistant,
             ]
         )
@@ -410,6 +459,7 @@ async def main() -> int:
             f"динамик индекс {OUTPUT_DEVICE_INDEX}.",
             flush=True,
         )
+        exit_hold: dict[str, threading.Event | None] = {"event": None}
 
         async def stop_later() -> None:
             assert runner is not None
@@ -421,6 +471,10 @@ async def main() -> int:
                 if session.playback or session.awaiting_playback:
                     continue
                 print(f"СТОП: {reason}", flush=True)
+                report_session(session)
+                exit_hold["event"] = arm_forced_exit(session, AUDIO_CLOSE_DEADLINE_SECS)
+                limit_device_stop(audio_in, timeout=AUDIO_STOP_TIMEOUT_SECS)
+                limit_device_stop(audio_out, timeout=AUDIO_STOP_TIMEOUT_SECS)
                 await runner.cancel()
                 return
 
@@ -429,26 +483,12 @@ async def main() -> int:
             await runner.run()
         finally:
             stopper.cancel()
+            hold = exit_hold["event"]
+            if hold is not None:
+                hold.set()
         return 0 if not session.first_error else 1
     finally:
-        elapsed = time.monotonic() - session.started if session.started else 0.0
-        print(f"ДЛИТЕЛЬНОСТЬ: {elapsed:.1f} с", flush=True)
-        print(f"РЕПЛИКИ: {session.user_turns}", flush=True)
-        print(f"ЭХО: {session.echo_turns}", flush=True)
-        print(f"ПОДАВЛЕНО: {session.suppressed}", flush=True)
-        print(f"МОДЕЛЬ_ДО_ПРАВКИ_ВСЕ: {session.raw_model_texts}", flush=True)
-        print(f"В_TTS_ВСЕ: {session.model_texts}", flush=True)
-        for index, phrase in enumerate(session.phrases, start=1):
-            print(
-                f"ФРАЗА {index}: доиграна={phrase.finished} оборвана={phrase.cut} текст={phrase.text}",
-                flush=True,
-            )
-        print(f"TTS_ОБОРВАН: {session.tts_cut_off}", flush=True)
-        print(f"ДИНАМИК_ИГРАЛ: {session.speaker_played}", flush=True)
-        if session.first_error:
-            print(f"ПЕРВАЯ_ОШИБКА: {session.first_error}", flush=True)
-        print("СИГНАЛ: сеанс закрыт", flush=True)
-        cue(start=False)
+        report_session(session)
 
 
 if __name__ == "__main__":
