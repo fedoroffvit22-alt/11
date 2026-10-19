@@ -9,6 +9,8 @@ readme = "README.md"
 line-length = 120
 target-version = "py311"
 src = ["app", "tests"]
+extend-exclude = ["scripts/live_session.py"]
+force-exclude = true
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP"]
