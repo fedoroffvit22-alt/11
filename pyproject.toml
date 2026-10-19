@@ -1,0 +1,23 @@
+[project]
+name = "call-center-agent"
+version = "0.1.0"
+description = "Локальный каркас русского голосового агента. Телефония и CRM позже."
+requires-python = ">=3.11"
+readme = "README.md"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+src = ["app", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"
+markers = [
+    "weights: нуждается в скачанных весах модели",
+    "audio_device: нуждается в микрофоне или динамике",
+]

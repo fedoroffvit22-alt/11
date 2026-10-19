@@ -1,0 +1,15 @@
+# Каркас и смоук не требуют пакетов: stdlib достаточно.
+# Модели и Pipecat ставятся отдельно, когда есть куда качать веса.
+# Версии сверены 2026-10-19. Не ставить PyPI-пакет «tone» — это другой проект.
+#
+# ASR (voicekit-team/T-one @ 3c5b6c015038173840e62cea99e10cdb1c759116):
+#   pip install "tone @ git+https://github.com/voicekit-team/T-one.git@3c5b6c015038173840e62cea99e10cdb1c759116"
+#   Сборка kenlm может потребовать компилятор. Для файлов ещё нужен miniaudio.
+#
+# TTS:
+#   pip install "qwen-tts==0.1.1"
+#
+# Оркестрация:
+#   pip install "pipecat-ai==1.13.0"
+#   Локальный микрофон: pip install "pipecat-ai[local]==1.13.0"
+#   На macOS перед этим: brew install portaudio
