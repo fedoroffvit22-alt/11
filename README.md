@@ -1,6 +1,6 @@
 # Голосовой агент колл-центра
 
-Локальный каркас русской речи: T-One, Qwen3-TTS, локальная LLM-заглушка и перебивание по стратегии хода Pipecat 1.13. Телефонии, Asterisk и CRM здесь нет. Веса моделей смоук не скачивает. Живой микрофон по-прежнему только на Mac.
+Локальный каркас русской речи: T-One, клон Qwen3-TTS и локальная Qwen через отдельный `.venv-llm`. Телефонии, Asterisk и CRM здесь нет. Веса моделей смоук не скачивает. Живой ход уже был одной командой `turn` после записи. Непрерывный диалог и перебивание ещё не запускались.
 
 Пакеты сверены с исходниками, а не с черновыми примерами. В частности, `pip install tone` ставить нельзя: на PyPI это другой проект. T-One ставится из [voicekit-team/T-one](https://github.com/voicekit-team/T-one) (коммит `3c5b6c015038173840e62cea99e10cdb1c759116`).
 
@@ -16,7 +16,7 @@ python -m app
 pytest
 ```
 
-Ожидание на машине без моделей и без `pipecat-ai`: обе команды заканчиваются с кодом 0 и пишут, что T-One, Qwen3-TTS и Pipecat отсутствуют. Локальная LLM по умолчанию выключена (`off`) и ничего не генерирует. Если Pipecat установлен, смоук собирает пайплайн с T-One, заглушкой LLM и Qwen3-TTS, но `from_hugging_face` и `from_pretrained` не вызывает.
+Ожидание на машине без моделей и без `pipecat-ai`: обе команды заканчиваются с кодом 0 и пишут, что T-One, Qwen3-TTS и Pipecat отсутствуют. Смоук не запускает `.venv-llm` и не открывает референс. Если Pipecat установлен, смоук собирает пайплайн с T-One, `LocalLlmService` и клоном Qwen3-TTS, но не стартует его: `from_hugging_face` и `from_pretrained` не вызываются.
 
 ## Прогон файла на Mac
 
@@ -79,7 +79,9 @@ CALL_CENTER_TTS_REF_AUDIO="/путь/на/mac/ref-ru.wav" \
   python -m app.file_run turn --wav путь.wav --out ответ.wav
 ```
 
-Файл должен быть моно PCM16, 8000 Гц. Другая частота — ошибка и код 2, без тихого ресемпла. Если фраз нет, код 1 и TTS не вызывается. Иначе текст фраз склеивается и идёт тем же путём, что `reply`: `.venv-llm` и клон.
+Файл должен быть моно PCM16, 8000 Гц. Другая частота — ошибка и код 2, без тихого ресемпла. Если фраз нет, код 1 и TTS не вызывается. Иначе текст фраз склеивается и идёт тем же путём, что `reply`: `.venv-llm` и клон. Живой ход на Mac уже был этой командой после записи.
+
+`LocalLlmService` в каркасе Pipecat зовёт тот же `generate_reply`: отдельный `.venv-llm` и `scripts/mlx_generate.py`, без импорта `mlx_lm` в проектном процессе. `Qwen3TtsService` синтезирует клон Base, путь к записи только из настроек. Нет интерпретатора или файла референса — `ErrorFrame`, не тишина. Сборка каркаса и `python -m app` эти вызовы не делают, поэтому смоук без `.venv-llm` и без записи не падает. Непрерывный диалог и перебивание ещё не запускались: `WorkerRunner` и `LocalAudioTransport` не стартовали.
 
 ## Полезные переменные
 
@@ -95,7 +97,7 @@ CALL_CENTER_TTS_REF_AUDIO="/путь/на/mac/ref-ru.wav" \
 | `CALL_CENTER_TTS_LANGUAGE` | `Russian` | имя языка как в Qwen3-TTS |
 | `CALL_CENTER_TTS_DEVICE` | `cpu` | `cpu`, `cuda` или `mps` |
 | `CALL_CENTER_TTS_FLASH_ATTN` | `0` | `1` добавляет `flash_attention_2`, только для CUDA |
-| `CALL_CENTER_LLM_BACKEND` | `off` | `off` — модель молчит с ошибкой; `stub` — тестовые русские фразы без весов |
+| `CALL_CENTER_LLM_BACKEND` | `off` | `off` и `stub` в `app/llm.py` не качают веса. Сервис Pipecat зовёт `generate_reply`, не эту заглушку |
 | `CALL_CENTER_LLM_MODEL` | `mlx-community/Qwen3-4B-Instruct-2507-4bit` | выбранный id; само чтение модель не грузит |
 
 Частота выхода пайплайна — 24 кГц. Если синтез вернёт другую частоту, `Qwen3TtsService` пересчитывает PCM16 ресемплером Pipecat (`SOXRAudioResampler`) до этой частоты. Динамик при этом не открывается.
@@ -108,8 +110,8 @@ CALL_CENTER_TTS_REF_AUDIO="/путь/на/mac/ref-ru.wav" \
 - `app/asr.py` — `forward` / `forward_offline` / `finalize` и стриминговый движок. `from_hugging_face` только внутри `load()`.
 - `app/tts.py` — клон Base (`create_voice_clone_prompt`, `generate_voice_clone`) и режим CustomVoice. Без модели метод бросает ошибку, тишину не подставляет. `from_pretrained` только внутри `load()`.
 - `app/llm.py` — русский системный промпт. `off` и `stub` не качают Qwen. Смоук `mlx_lm` не импортирует.
-- `app/reply.py` — команда `reply`: subprocess в `.venv-llm`, затем очистка текста.
+- `app/reply.py` — команда `reply` и путь, которым пользуется `LocalLlmService`: subprocess в `.venv-llm`, затем очистка текста.
 - `scripts/mlx_generate.py` — генерация в отдельном окружении, `mlx-lm==0.32.2`.
-- `app/pipecat_services.py` — `ToneSttService`, `Qwen3TtsService` (с согласованием частоты) и `LocalLlmService`. Импорт модуля требует `pipecat-ai`.
-- `app/pipeline.py` — если пакет установлен, пайплайн из T-One, агрегатора пользователя со стратегией перебивания, локальной LLM, Qwen3-TTS и агрегатора ассистента. Микрофон и раннер не запускаются. Без пакета смоук остаётся зелёным.
+- `app/pipecat_services.py` — `ToneSttService`, `Qwen3TtsService` (клон Base, референс из настроек) и `LocalLlmService` (тот же `generate_reply`). Импорт модуля требует `pipecat-ai`. Нет референса или `.venv-llm` — ошибка, не тишина.
+- `app/pipeline.py` — если пакет установлен, пайплайн из T-One, агрегатора пользователя со стратегией перебивания, локальной LLM и клона Qwen3-TTS. Объекты собираются, микрофон и раннер не запускаются. Без пакета смоук остаётся зелёным.
 - `app/file_run.py` — `asr`, `tts`, `reply` и `turn`. `turn` читает файл, не микрофон. Смоук этот модуль не импортирует.

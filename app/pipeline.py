@@ -36,7 +36,8 @@ LOCAL_AUDIO_SYMBOLS: tuple[tuple[str, str], ...] = (
 # Порядок будущего полного дуплекса. Свои процессоры T-One и Qwen3-TTS живут в
 # `app.pipecat_services` и подключаются, только если pipecat-ai импортируется.
 # В пакете Pipecat готовых классов для T-One и Qwen3-TTS нет.
-# Локальная LLM — свой `LocalLlmService`, не DashScope и не Ollama.
+# Локальная LLM — `LocalLlmService`: тот же subprocess, что `file_run reply`.
+# Не DashScope и не Ollama. Сборка каркаса скрипт не запускает.
 FULL_DUPLEX_SLOTS: tuple[str, ...] = (
     "transport.input",
     "tone_asr",

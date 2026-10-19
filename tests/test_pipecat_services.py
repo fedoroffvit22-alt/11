@@ -3,12 +3,13 @@
 import asyncio
 import sys
 from collections.abc import AsyncIterator
+from pathlib import Path
 
 import pytest
 from app.asr import ModelNotLoaded, TranscriptPhrase
-from app.llm import RUSSIAN_SYSTEM_PROMPT, ChatTurn, LlmBackendDisabled
 from app.pipeline import PipelineSkeleton, SymbolProbe, build_skeleton
-from app.settings import DEFAULT_TTS_REF_TEXT, TTS_MODEL_0_6B_BASE, Settings
+from app.reply import ReplyFailed
+from app.settings import DEFAULT_TTS_REF_TEXT, LOCAL_LLM_ID, TTS_MODEL_0_6B_BASE, Settings
 from app.smoke import main
 from app.tts import SynthesisRequest, SynthesisResult
 
@@ -182,10 +183,12 @@ def test_wrong_frame_rate_is_rejected() -> None:
     assert engine.audio == []
 
 
-def test_tts_without_weights_yields_error_and_does_not_load() -> None:
+def test_tts_without_weights_yields_error_and_does_not_load(tmp_path: Path) -> None:
+    ref = tmp_path / "ref-ru.wav"
+    ref.write_bytes(b"")
     speech = _Speech(loaded=False)
     service = Qwen3TtsService(
-        settings=Settings(load_weights=False, tts_ref_audio="/mac/ref-ru.wav"),
+        settings=Settings(load_weights=False, tts_ref_audio=str(ref)),
         speech=speech,
     )
     frames = _frames(service.run_tts("Алло", "ctx-1"))
@@ -197,10 +200,28 @@ def test_tts_without_weights_yields_error_and_does_not_load() -> None:
     assert not any(isinstance(frame, TTSAudioRawFrame) for frame in frames)
 
 
-def test_tts_uses_voice_clone_contract() -> None:
+def test_tts_missing_ref_is_an_error_and_does_not_load(tmp_path: Path) -> None:
+    missing = tmp_path / "нет-такого.wav"
+    speech = _Speech(loaded=False)
+    service = Qwen3TtsService(
+        settings=Settings(load_weights=True, tts_ref_audio=str(missing)),
+        speech=speech,
+    )
+    frames = _frames(service.run_tts("Алло", "ctx-1"))
+    assert speech.load_calls == 0
+    assert speech.requests == []
+    assert len(frames) == 1
+    assert isinstance(frames[0], ErrorFrame)
+    assert "не найдена" in frames[0].error
+    assert not any(isinstance(frame, TTSAudioRawFrame) for frame in frames)
+
+
+def test_tts_uses_voice_clone_contract(tmp_path: Path) -> None:
+    ref = tmp_path / "ref-ru.wav"
+    ref.write_bytes(b"")
     speech = _Speech(loaded=True)
     service = Qwen3TtsService(
-        settings=Settings(tts_ref_audio="/mac/ref-ru.wav"),
+        settings=Settings(tts_ref_audio=str(ref)),
         speech=speech,
         output_sample_rate=12345,
     )
@@ -211,7 +232,7 @@ def test_tts_uses_voice_clone_contract() -> None:
     assert request.language == "Russian"
     assert request.mode == "clone"
     assert request.model_id == TTS_MODEL_0_6B_BASE
-    assert request.ref_audio == "/mac/ref-ru.wav"
+    assert request.ref_audio == str(ref)
     assert request.ref_text == DEFAULT_TTS_REF_TEXT
     assert request.speaker != "Aiden"
     audio = frames[0]
@@ -234,11 +255,17 @@ def test_skeleton_wires_processors_without_weights() -> None:
     def refuse(*_args: object, **_kwargs: object) -> None:
         raise AssertionError("загрузчик весов вызван при сборке каркаса")
 
+    def refuse_reply(*_args: object, **_kwargs: object) -> None:
+        raise AssertionError("сборка каркаса запустила .venv-llm")
+
     asr_load = pytest.MonkeyPatch()
     asr_load.setattr("app.asr.ToneAsr.load", refuse)
     asr_load.setattr("app.tts.Qwen3Speech.load", refuse)
+    asr_load.setattr("app.pipecat_services.generate_reply", refuse_reply)
+    asr_load.setattr("app.llm.load_selected_model", refuse)
     try:
         skeleton = build_skeleton(Settings(load_weights=True))
+        assert main() == 0
     finally:
         asr_load.undo()
     assert isinstance(skeleton, PipelineSkeleton)
@@ -252,7 +279,10 @@ def test_skeleton_wires_processors_without_weights() -> None:
     assert skeleton.interrupt_on_user_speech is True
 
 
-def test_tts_resamples_when_model_rate_differs() -> None:
+def test_tts_resamples_when_model_rate_differs(tmp_path: Path) -> None:
+    ref = tmp_path / "ref-ru.wav"
+    ref.write_bytes(b"")
+
     class _EightK:
         loaded = True
 
@@ -260,7 +290,7 @@ def test_tts_resamples_when_model_rate_differs() -> None:
             return SynthesisResult(sample_rate=8000, samples=(0.5, -0.5, 0.25, -0.25))
 
     service = Qwen3TtsService(
-        settings=Settings(tts_ref_audio="/mac/ref-ru.wav"),
+        settings=Settings(tts_ref_audio=str(ref)),
         speech=_EightK(),  # type: ignore[arg-type]
         output_sample_rate=16000,
     )
@@ -272,20 +302,22 @@ def test_tts_resamples_when_model_rate_differs() -> None:
     assert len(audio.audio) % 2 == 0
 
 
-class _RecordingModel:
-    def __init__(self) -> None:
-        self.turns: tuple[ChatTurn, ...] = ()
-
-    def stream(self, turns: tuple[ChatTurn, ...]):
-        self.turns = tuple(turns)
-        yield "Алло"
-        yield " мир"
-
-
-def test_local_llm_streams_text_and_is_not_dashscope() -> None:
+def test_local_llm_uses_the_reply_path_and_is_not_dashscope(monkeypatch: pytest.MonkeyPatch) -> None:
     qwen_llm = pytest.importorskip("pipecat.services.qwen.llm")
-    model = _RecordingModel()
-    service = LocalLlmService(settings=Settings(llm_backend="off"), model=model)
+    seen: dict[str, object] = {}
+
+    def fake_reply(user_text: str, settings: Settings, *, python_path: object = None) -> str:
+        seen["user"] = user_text
+        seen["model"] = settings.llm_model_id
+        seen["python"] = python_path
+        return "Да, я здесь!"
+
+    def refuse(*_args: object, **_kwargs: object) -> None:
+        raise AssertionError("mlx_lm импортирован в проектном процессе")
+
+    monkeypatch.setattr("app.pipecat_services.generate_reply", fake_reply)
+    monkeypatch.setattr("app.llm.load_selected_model", refuse)
+    service = LocalLlmService(settings=Settings(llm_backend="off"))
     assert isinstance(service, LLMService)
     assert not isinstance(service, qwen_llm.QwenLLMService)
     assert service.weights_loaded is False
@@ -295,18 +327,24 @@ def test_local_llm_streams_text_and_is_not_dashscope() -> None:
         pushed.append(frame)
 
     service.push_frame = capture  # type: ignore[method-assign]
-    context = LLMContext([{"role": "user", "content": "нужен оператор"}])
+    context = LLMContext(
+        [
+            {"role": "developer", "content": "системный"},
+            {"role": "user", "content": "алло вы меня слышите"},
+        ]
+    )
     asyncio.run(service.process_frame(LLMContextFrame(context), FrameDirection.DOWNSTREAM))
     texts = [frame.text for frame in pushed if isinstance(frame, LLMTextFrame)]
-    assert texts == ["Алло", " мир"]
+    assert texts == ["Да, я здесь!"]
     assert isinstance(pushed[0], LLMFullResponseStartFrame)
     assert isinstance(pushed[-1], LLMFullResponseEndFrame)
-    assert model.turns[0].role == "developer"
-    assert model.turns[0].text == RUSSIAN_SYSTEM_PROMPT
-    assert model.turns[1] == ChatTurn("user", "нужен оператор")
+    assert seen["user"] == "алло вы меня слышите"
+    assert seen["model"] == LOCAL_LLM_ID
+    assert seen["python"] is None
+    assert "mlx_lm" not in sys.modules
 
 
-def test_local_llm_without_backend_is_an_error() -> None:
+def test_local_llm_missing_venv_is_an_error_not_silence() -> None:
     service = LocalLlmService(settings=Settings(llm_backend="off"))
     errors: list[str] = []
     pushed: list[object] = []
@@ -316,15 +354,16 @@ def test_local_llm_without_backend_is_an_error() -> None:
 
     async def capture_error(error_msg: str, exception: Exception | None = None, **_kwargs: object) -> None:
         errors.append(error_msg)
-        assert isinstance(exception, LlmBackendDisabled)
+        assert isinstance(exception, ReplyFailed)
 
     service.push_frame = capture  # type: ignore[method-assign]
     service.push_error = capture_error  # type: ignore[method-assign]
     context = LLMContext([{"role": "user", "content": "Алло"}])
     asyncio.run(service.process_frame(LLMContextFrame(context), FrameDirection.DOWNSTREAM))
     assert errors
-    assert "выключена" in errors[0]
+    assert ".venv-llm" in errors[0]
     assert not any(isinstance(frame, LLMTextFrame) for frame in pushed)
+    assert "mlx_lm" not in sys.modules
 
 
 def test_vad_turn_start_stops_tts() -> None:
