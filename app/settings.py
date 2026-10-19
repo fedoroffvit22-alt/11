@@ -11,12 +11,15 @@ TONE_SAMPLE_RATE = 8000
 TONE_CHUNK_SAMPLES = 2400
 TONE_PADDING_SAMPLES = 2400
 
+TTS_MODEL_0_6B_BASE = "Qwen/Qwen3-TTS-12Hz-0.6B-Base"
 TTS_MODEL_0_6B_CUSTOM = "Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice"
 TTS_LANGUAGE_RUSSIAN = "Russian"
 DEFAULT_TTS_SPEAKER = "Ryan"
+DEFAULT_TTS_REF_TEXT = "Алло, это колл центр, чем могу помочь."
 
 ASR_DECODERS = ("greedy", "beam_search")
 TTS_DEVICES = ("cpu", "cuda", "mps")
+TTS_MODES = ("clone", "custom")
 LLM_BACKENDS = ("off", "stub")
 PIPELINE_AUDIO_OUT_SAMPLE_RATE = 24000
 
@@ -30,17 +33,22 @@ class Settings:
 
     load_weights: bool = False
     asr_decoder: str = "beam_search"
-    tts_model_id: str = TTS_MODEL_0_6B_CUSTOM
+    tts_mode: str = "clone"
+    tts_model_id: str = TTS_MODEL_0_6B_BASE
     tts_speaker: str = DEFAULT_TTS_SPEAKER
     tts_language: str = TTS_LANGUAGE_RUSSIAN
     tts_device: str = "cpu"
     tts_flash_attention: bool = False
+    tts_ref_audio: str = ""
+    tts_ref_text: str = DEFAULT_TTS_REF_TEXT
     llm_backend: str = "off"
     audio_out_sample_rate: int = PIPELINE_AUDIO_OUT_SAMPLE_RATE
 
     @classmethod
     def from_env(cls, env: Mapping[str, str] | None = None) -> Settings:
         source = os.environ if env is None else env
+        tts_mode = _choice(source.get("CALL_CENTER_TTS_MODE", "clone"), TTS_MODES, "CALL_CENTER_TTS_MODE")
+        default_model = _default_tts_model(tts_mode)
         return cls(
             load_weights=_flag(source.get("CALL_CENTER_LOAD_WEIGHTS", "0"), "CALL_CENTER_LOAD_WEIGHTS"),
             asr_decoder=_choice(
@@ -48,9 +56,12 @@ class Settings:
                 ASR_DECODERS,
                 "CALL_CENTER_ASR_DECODER",
             ),
-            tts_model_id=source.get("CALL_CENTER_TTS_MODEL", TTS_MODEL_0_6B_CUSTOM).strip() or TTS_MODEL_0_6B_CUSTOM,
+            tts_mode=tts_mode,
+            tts_model_id=source.get("CALL_CENTER_TTS_MODEL", default_model).strip() or default_model,
             tts_speaker=source.get("CALL_CENTER_TTS_SPEAKER", DEFAULT_TTS_SPEAKER).strip() or DEFAULT_TTS_SPEAKER,
             tts_language=source.get("CALL_CENTER_TTS_LANGUAGE", TTS_LANGUAGE_RUSSIAN).strip() or TTS_LANGUAGE_RUSSIAN,
+            tts_ref_audio=source.get("CALL_CENTER_TTS_REF_AUDIO", "").strip(),
+            tts_ref_text=source.get("CALL_CENTER_TTS_REF_TEXT", DEFAULT_TTS_REF_TEXT).strip() or DEFAULT_TTS_REF_TEXT,
             tts_device=_choice(
                 source.get("CALL_CENTER_TTS_DEVICE", "cpu"),
                 TTS_DEVICES,
@@ -75,6 +86,14 @@ def _flag(raw: str, name: str) -> bool:
     if value in _FALSE:
         return False
     raise ValueError(f"{name} должно быть 0 или 1, получено {raw!r}.")
+
+
+def _default_tts_model(mode: str) -> str:
+    if mode == "clone":
+        return TTS_MODEL_0_6B_BASE
+    if mode == "custom":
+        return TTS_MODEL_0_6B_CUSTOM
+    raise RuntimeError(f"Неизвестный режим TTS: {mode}.")
 
 
 def _choice(raw: str, allowed: tuple[str, ...], name: str) -> str:

@@ -4,7 +4,7 @@ import pytest
 from app.asr import ModelNotLoaded as AsrNotLoaded
 from app.asr import ToneAsr, classify_tone_module, phrases_from_objects, probe_tone
 from app.pipeline import CORE_SYMBOLS, LOCAL_AUDIO_SYMBOLS, SymbolProbe, build_skeleton
-from app.settings import Settings
+from app.settings import TTS_MODEL_0_6B_BASE, TTS_MODEL_0_6B_CUSTOM, Settings
 from app.smoke import main
 from app.tts import ModelNotLoaded as TtsNotLoaded
 from app.tts import Qwen3Speech, SynthesisRequest, TtsRequestError, probe_tts, validate_request
@@ -54,14 +54,77 @@ def test_transcribe_without_load_is_an_error() -> None:
 def test_tts_validation_and_no_fake_audio() -> None:
     with pytest.raises(TtsRequestError):
         validate_request(SynthesisRequest(text="   "))
-    with pytest.raises(TtsRequestError):
-        validate_request(SynthesisRequest(text="Алло", speaker="Robot"))
+    with pytest.raises(TtsRequestError, match="CustomVoice"):
+        validate_request(SynthesisRequest(text="Алло", speaker="Robot", mode="custom", model_id=TTS_MODEL_0_6B_CUSTOM))
     with pytest.raises(TtsRequestError, match="instruction"):
         validate_request(SynthesisRequest(text="Алло", instruct="говори спокойно"))
-    request = SynthesisRequest(text="Алло, это колл-центр.")
+    request = SynthesisRequest(text="Алло, это колл-центр.", ref_audio="/mac/ref-ru.wav")
     validate_request(request)
+    with pytest.raises(TtsRequestError, match="CALL_CENTER_TTS_REF_AUDIO"):
+        validate_request(SynthesisRequest(text="Алло"))
     with pytest.raises(TtsNotLoaded):
         Qwen3Speech().synthesize(request)
+
+
+def test_clone_synthesize_does_not_call_from_pretrained(tmp_path) -> None:
+    ref = tmp_path / "local-ref.wav"
+    ref.write_bytes(b"")
+    speech = Qwen3Speech()
+    seen: dict[str, object] = {}
+
+    class _FakeModel:
+        def from_pretrained(self, *_args: object, **_kwargs: object) -> None:
+            raise AssertionError("from_pretrained не должен вызываться при синтезе")
+
+        def create_voice_clone_prompt(self, *, ref_audio: str, ref_text: str) -> tuple[str, str]:
+            seen["prompts"] = int(seen.get("prompts", 0)) + 1
+            seen["ref_audio"] = ref_audio
+            seen["ref_text"] = ref_text
+            return (ref_audio, ref_text)
+
+        def generate_voice_clone(
+            self,
+            *,
+            text: str,
+            language: str,
+            voice_clone_prompt: object,
+        ) -> tuple[list[tuple[float, ...]], int]:
+            seen["text"] = text
+            seen["language"] = language
+            seen["prompt"] = voice_clone_prompt
+            return ([(0.0, 0.25)], 24000)
+
+        def generate_custom_voice(self, **_kwargs: object) -> None:
+            raise AssertionError("CustomVoice не голос по умолчанию")
+
+    speech._model = _FakeModel()
+    speech._model_id = TTS_MODEL_0_6B_BASE
+    result = speech.synthesize(
+        SynthesisRequest(
+            text="Да, я вас слышу.",
+            model_id=TTS_MODEL_0_6B_BASE,
+            mode="clone",
+            ref_audio=str(ref),
+            ref_text="Алло, это колл центр, чем могу помочь.",
+        )
+    )
+    assert seen["language"] == "Russian"
+    assert seen["text"] == "Да, я вас слышу."
+    assert seen["ref_text"] == "Алло, это колл центр, чем могу помочь."
+    assert result.sample_rate == 24000
+    assert result.samples == (0.0, 0.25)
+    again = speech.synthesize(
+        SynthesisRequest(
+            text="Ещё фраза.",
+            model_id=TTS_MODEL_0_6B_BASE,
+            mode="clone",
+            ref_audio=str(ref),
+            ref_text="Алло, это колл центр, чем могу помочь.",
+        )
+    )
+    assert again.samples == (0.0, 0.25)
+    assert seen["text"] == "Ещё фраза."
+    assert seen["prompts"] == 1
 
 
 def test_probes_skip_when_packages_absent() -> None:

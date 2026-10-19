@@ -20,7 +20,7 @@ pytest
 
 ## Прогон файла на Mac
 
-Живой прогон на этой Linux VM не делался: пакеты ниже не ставились и веса не скачивались. Команды сверены с voicekit-team/T-one `3c5b6c015038173840e62cea99e10cdb1c759116` и с `qwen-tts` 0.1.1. Копия инструкции: её нет в git, текст для Виталия продублирован рядом с планом.
+Живой прогон на этой Linux VM не делался: пакеты ниже не ставились и веса не скачивались. Команды сверены с voicekit-team/T-one `3c5b6c015038173840e62cea99e10cdb1c759116` и с `qwen-tts` 0.1.1.
 
 `pip install tone` запрещён. На PyPI это другой пакет. T-One ставится только из git.
 
@@ -36,8 +36,11 @@ pip install "tone @ git+https://github.com/voicekit-team/T-one.git@3c5b6c0150381
 pip install miniaudio
 pip install "qwen-tts==0.1.1"
 python -m app.file_run asr --example
-CALL_CENTER_TTS_DEVICE=cpu python -m app.file_run tts --text "Алло, это колл-центр." --out фраза.wav
+CALL_CENTER_TTS_DEVICE=cpu CALL_CENTER_TTS_REF_AUDIO="/путь/на/mac/ref-ru.wav" \
+  python -m app.file_run tts --text "Да, я вас слышу." --out фраза.wav
 ```
+
+Принят клон `Qwen/Qwen3-TTS-12Hz-0.6B-Base`: `create_voice_clone_prompt` и `generate_voice_clone`, язык `Russian`. Запись голоса локальная, путь только в `CALL_CENTER_TTS_REF_AUDIO`, `ref-ru.wav` в git нет. Текст референса по умолчанию: «Алло, это колл центр, чем могу помочь.» Ответ сейчас синтезируется целиком на CPU после фразы. CustomVoice Aiden голосом по умолчанию не стал: скорость была лучше, акцент не принят.
 
 `miniaudio` нужен только для `--example`: `tone.read_example_audio()` читает `tone/demo/audio_examples/audio_short.flac` и приводит его к моно 8 кГц int32. Свой файл без miniaudio: `python -m app.file_run asr путь.wav` — только моно PCM16 8000 Гц, другая частота будет ошибкой, тихого ресемпла нет.
 
@@ -47,7 +50,7 @@ CALL_CENTER_TTS_DEVICE=cpu python -m app.file_run tts --text "Алло, это �
 
 - ASR, декодер по умолчанию `beam_search`: `StreamingCTCPipeline.from_hugging_face` тянет `t-tech/T-one` `model.onnx` и `kenlm.bin`.
 - `CALL_CENTER_ASR_DECODER=greedy` качает только `model.onnx`. Зависимость пакета от KenLM при сборке остаётся.
-- TTS: `Qwen3TTSModel.from_pretrained` качает `Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice`. Официальный quickstart — `Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice` на CUDA с flash-attn. Здесь пин 0.6B и устройство `cpu`. Прогона на MPS не было. Размер чекпоинта смотрите на карточке Hugging Face.
+- TTS по умолчанию: `from_pretrained` качает `Qwen/Qwen3-TTS-12Hz-0.6B-Base` и клонирует локальную запись. Официальный quickstart Qwen — `Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice` на CUDA с flash-attn. CustomVoice 0.6B включается отдельно: `CALL_CENTER_TTS_MODE=custom`. Прогона на MPS не было. Размер чекпоинта смотрите на карточке Hugging Face.
 
 Шаг 2, после того как файл уже распознался и фраза записалась. На этой VM не запускалось: микрофон, `SileroVADAnalyzer`, `WorkerRunner`, `LocalAudioTransport`.
 
@@ -66,14 +69,17 @@ Extra ставит PyAudio. Без portaudio импорт `LocalAudioTransport` 
 | --- | --- | --- |
 | `CALL_CENTER_LOAD_WEIGHTS` | `0` | `1` разрешает `load()`, который ходит в Hugging Face |
 | `CALL_CENTER_ASR_DECODER` | `beam_search` | `greedy` или `beam_search` |
-| `CALL_CENTER_TTS_MODEL` | `Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice` | идентификатор HF |
-| `CALL_CENTER_TTS_SPEAKER` | `Ryan` | один из 9 голосов CustomVoice |
+| `CALL_CENTER_TTS_MODE` | `clone` | `clone` — принятый клон Base; `custom` — CustomVoice |
+| `CALL_CENTER_TTS_MODEL` | `Qwen/Qwen3-TTS-12Hz-0.6B-Base` | для `custom` по умолчанию чекпоинт CustomVoice |
+| `CALL_CENTER_TTS_REF_AUDIO` | пусто | путь к записи голоса на машине, не файл репозитория |
+| `CALL_CENTER_TTS_REF_TEXT` | `Алло, это колл центр, чем могу помочь.` | расшифровка этой записи |
+| `CALL_CENTER_TTS_SPEAKER` | `Ryan` | только режим `custom`; Aiden не по умолчанию |
 | `CALL_CENTER_TTS_LANGUAGE` | `Russian` | имя языка как в Qwen3-TTS |
 | `CALL_CENTER_TTS_DEVICE` | `cpu` | `cpu`, `cuda` или `mps` |
 | `CALL_CENTER_TTS_FLASH_ATTN` | `0` | `1` добавляет `flash_attention_2`, только для CUDA |
 | `CALL_CENTER_LLM_BACKEND` | `off` | `off` — модель молчит с ошибкой; `stub` — тестовые русские фразы без весов |
 
-Частота выхода пайплайна — 24 кГц. Если `generate_custom_voice` вернёт другую частоту, `Qwen3TtsService` пересчитывает PCM16 ресемплером Pipecat (`SOXRAudioResampler`) до этой частоты. Динамик при этом не открывается.
+Частота выхода пайплайна — 24 кГц. Если синтез вернёт другую частоту, `Qwen3TtsService` пересчитывает PCM16 ресемплером Pipecat (`SOXRAudioResampler`) до этой частоты. Динамик при этом не открывается.
 
 Секретов нет. Облачный ключ DashScope не нужен и не читается.
 
@@ -81,7 +87,7 @@ Extra ставит PyAudio. Без portaudio импорт `LocalAudioTransport` 
 
 - `app/audio.py` — чанки 2400 сэмплов, 8 кГц, паддинг как у стримингового примера T-One, перевод волны TTS в PCM16.
 - `app/asr.py` — `forward` / `forward_offline` / `finalize` и стриминговый движок. `from_hugging_face` только внутри `load()`.
-- `app/tts.py` — `generate_custom_voice`. Без модели метод бросает ошибку, тишину не подставляет.
+- `app/tts.py` — клон Base (`create_voice_clone_prompt`, `generate_voice_clone`) и режим CustomVoice. Без модели метод бросает ошибку, тишину не подставляет. `from_pretrained` только внутри `load()`.
 - `app/llm.py` — русский системный промпт и потоковый интерфейс. `off` и `stub` не качают Qwen.
 - `app/pipecat_services.py` — `ToneSttService`, `Qwen3TtsService` (с согласованием частоты) и `LocalLlmService`. Импорт модуля требует `pipecat-ai`.
 - `app/pipeline.py` — если пакет установлен, пайплайн из T-One, агрегатора пользователя со стратегией перебивания, локальной LLM, Qwen3-TTS и агрегатора ассистента. Микрофон и раннер не запускаются. Без пакета смоук остаётся зелёным.

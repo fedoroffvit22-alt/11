@@ -128,6 +128,8 @@ def test_asr_needs_exactly_one_source(tmp_path: Path, monkeypatch: pytest.Monkey
 
 def test_tts_writes_wav(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
     seen: dict[str, object] = {}
+    ref = tmp_path / "local-ref.wav"
+    ref.write_bytes(b"")
 
     class FakeSpeech:
         def load(self, settings: object) -> None:
@@ -136,20 +138,36 @@ def test_tts_writes_wav(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys:
 
         def synthesize(self, request: object) -> SynthesisResult:
             seen["text"] = request.text  # type: ignore[attr-defined]
+            seen["mode"] = request.mode  # type: ignore[attr-defined]
+            seen["ref_audio"] = request.ref_audio  # type: ignore[attr-defined]
             return SynthesisResult(sample_rate=24000, samples=(0.0, 0.5, -0.5))
 
+    monkeypatch.setenv("CALL_CENTER_TTS_REF_AUDIO", str(ref))
     monkeypatch.setattr("app.file_run.Qwen3Speech", FakeSpeech)
     out = tmp_path / "фраза.wav"
-    assert main(["tts", "--text", "Алло, это колл-центр.", "--out", str(out)]) == 0
+    assert main(["tts", "--text", "Да, я вас слышу.", "--out", str(out)]) == 0
     assert seen["load_weights"] is True
-    assert seen["model"] == "Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice"
-    assert seen["text"] == "Алло, это колл-центр."
-    assert "Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice" in capsys.readouterr().out
+    assert seen["model"] == "Qwen/Qwen3-TTS-12Hz-0.6B-Base"
+    assert seen["mode"] == "clone"
+    assert seen["ref_audio"] == str(ref)
+    assert seen["text"] == "Да, я вас слышу."
+    output = capsys.readouterr().out
+    assert "Qwen/Qwen3-TTS-12Hz-0.6B-Base" in output
+    assert "Aiden" not in output
     with wave.open(str(out), "rb") as handle:
         assert handle.getnchannels() == 1
         assert handle.getsampwidth() == 2
         assert handle.getframerate() == 24000
         assert handle.getnframes() == 3
+
+
+def test_clone_without_ref_file_does_not_load(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    def refuse(*_args: object, **_kwargs: object) -> None:
+        raise AssertionError("load не должен вызываться без записи голоса")
+
+    monkeypatch.delenv("CALL_CENTER_TTS_REF_AUDIO", raising=False)
+    monkeypatch.setattr("app.file_run.Qwen3Speech.load", refuse)
+    assert main(["tts", "--text", "Да, я вас слышу.", "--out", str(tmp_path / "фраза.wav")]) == 2
 
 
 def test_tts_empty_text_does_not_load(monkeypatch: pytest.MonkeyPatch) -> None:

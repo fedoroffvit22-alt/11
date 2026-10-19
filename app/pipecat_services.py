@@ -41,9 +41,9 @@ from app.llm import (
     turns_from_messages,
     with_russian_prompt,
 )
-from app.settings import TONE_SAMPLE_RATE, TTS_MODEL_0_6B_CUSTOM, Settings
+from app.settings import TONE_SAMPLE_RATE, Settings
 from app.tts import ModelNotLoaded as TtsNotLoaded
-from app.tts import Qwen3Speech, SynthesisRequest, TtsRequestError, validate_request
+from app.tts import Qwen3Speech, TtsRequestError, request_from_settings, validate_request
 
 TONE_MODEL_ID = "t-tech/T-one"
 
@@ -138,10 +138,11 @@ class ToneSttService(STTService):
 
 
 class Qwen3TtsService(TTSService):
-    """Синтез через `Qwen3TTSModel.generate_custom_voice`. Без весов — ErrorFrame.
+    """Синтез принятым клоном Base. CustomVoice остаётся режимом `custom`.
 
-    Если частота волны не совпадает с `audio_out_sample_rate` пайплайна, PCM16
-    пересчитывается ресемплером Pipecat (`SOXRAudioResampler`). Устройство не открывается.
+    Без весов — ErrorFrame. Если частота волны не совпадает с `audio_out_sample_rate`
+    пайплайна, PCM16 пересчитывается ресемплером Pipecat (`SOXRAudioResampler`).
+    Устройство не открывается. `from_pretrained` конструктор не вызывает.
     """
 
     def __init__(
@@ -160,8 +161,8 @@ class Qwen3TtsService(TTSService):
             push_start_frame=True,
             push_stop_frames=True,
             settings=TTSSettings(
-                model=app_settings.tts_model_id or TTS_MODEL_0_6B_CUSTOM,
-                voice=app_settings.tts_speaker,
+                model=app_settings.tts_model_id,
+                voice="clone" if app_settings.tts_mode == "clone" else app_settings.tts_speaker,
                 language=Language.RU,
             ),
             **kwargs,
@@ -174,12 +175,7 @@ class Qwen3TtsService(TTSService):
         return self._speech.loaded
 
     async def run_tts(self, text: str, context_id: str) -> AsyncGenerator[Frame | None, None]:
-        request = SynthesisRequest(
-            text=text,
-            language=self._app_settings.tts_language,
-            speaker=self._app_settings.tts_speaker,
-            model_id=self._app_settings.tts_model_id,
-        )
+        request = request_from_settings(text, self._app_settings)
         try:
             validate_request(request)
             if not self._speech.loaded:

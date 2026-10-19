@@ -8,7 +8,7 @@ import pytest
 from app.asr import ModelNotLoaded, TranscriptPhrase
 from app.llm import RUSSIAN_SYSTEM_PROMPT, ChatTurn, LlmBackendDisabled
 from app.pipeline import PipelineSkeleton, SymbolProbe, build_skeleton
-from app.settings import TTS_MODEL_0_6B_CUSTOM, Settings
+from app.settings import DEFAULT_TTS_REF_TEXT, TTS_MODEL_0_6B_BASE, Settings
 from app.smoke import main
 from app.tts import SynthesisRequest, SynthesisResult
 
@@ -184,7 +184,10 @@ def test_wrong_frame_rate_is_rejected() -> None:
 
 def test_tts_without_weights_yields_error_and_does_not_load() -> None:
     speech = _Speech(loaded=False)
-    service = Qwen3TtsService(settings=Settings(load_weights=False), speech=speech)
+    service = Qwen3TtsService(
+        settings=Settings(load_weights=False, tts_ref_audio="/mac/ref-ru.wav"),
+        speech=speech,
+    )
     frames = _frames(service.run_tts("Алло", "ctx-1"))
     assert speech.load_calls == 0
     assert speech.requests == []
@@ -194,16 +197,23 @@ def test_tts_without_weights_yields_error_and_does_not_load() -> None:
     assert not any(isinstance(frame, TTSAudioRawFrame) for frame in frames)
 
 
-def test_tts_uses_generate_custom_voice_contract() -> None:
+def test_tts_uses_voice_clone_contract() -> None:
     speech = _Speech(loaded=True)
-    service = Qwen3TtsService(settings=Settings(), speech=speech, output_sample_rate=12345)
-    frames = _frames(service.run_tts("Алло, это колл-центр.", "ctx-7"))
+    service = Qwen3TtsService(
+        settings=Settings(tts_ref_audio="/mac/ref-ru.wav"),
+        speech=speech,
+        output_sample_rate=12345,
+    )
+    frames = _frames(service.run_tts("Да, я вас слышу.", "ctx-7"))
     assert speech.load_calls == 0
     request = speech.requests[0]
-    assert request.text == "Алло, это колл-центр."
+    assert request.text == "Да, я вас слышу."
     assert request.language == "Russian"
-    assert request.speaker == "Ryan"
-    assert request.model_id == TTS_MODEL_0_6B_CUSTOM
+    assert request.mode == "clone"
+    assert request.model_id == TTS_MODEL_0_6B_BASE
+    assert request.ref_audio == "/mac/ref-ru.wav"
+    assert request.ref_text == DEFAULT_TTS_REF_TEXT
+    assert request.speaker != "Aiden"
     audio = frames[0]
     assert isinstance(audio, TTSAudioRawFrame)
     assert audio.sample_rate == 12345
@@ -249,7 +259,11 @@ def test_tts_resamples_when_model_rate_differs() -> None:
         def synthesize(self, _request: SynthesisRequest) -> SynthesisResult:
             return SynthesisResult(sample_rate=8000, samples=(0.5, -0.5, 0.25, -0.25))
 
-    service = Qwen3TtsService(settings=Settings(), speech=_EightK(), output_sample_rate=16000)  # type: ignore[arg-type]
+    service = Qwen3TtsService(
+        settings=Settings(tts_ref_audio="/mac/ref-ru.wav"),
+        speech=_EightK(),  # type: ignore[arg-type]
+        output_sample_rate=16000,
+    )
     frames = _frames(service.run_tts("Алло", "ctx"))
     audio = frames[0]
     assert isinstance(audio, TTSAudioRawFrame)

@@ -27,6 +27,10 @@ def main() -> int:
     print(f"Локальная LLM: {settings.llm_backend}. Это не DashScope и не скачивание Qwen.")
     print(f"ASR T-One: {tone.status}. {tone.detail}")
     print(f"TTS Qwen3: {tts.status}. {tts.detail}")
+    print(
+        f"TTS режим: {settings.tts_mode}, модель {settings.tts_model_id}. "
+        "Референс смоук не открывает, from_pretrained не вызывается."
+    )
     print(f"Pipecat local audio: {local_audio.status}. {local_audio.detail}")
     if isinstance(skeleton, PipelineSkeleton):
         print(

@@ -16,7 +16,7 @@ from pathlib import Path
 from app.asr import ToneAsr, TonePackageError
 from app.audio import float_samples_to_pcm16, pcm16le_to_samples
 from app.settings import TONE_GIT_REVISION, TONE_SAMPLE_RATE, Settings
-from app.tts import Qwen3Speech, SynthesisRequest, TtsPackageError, TtsRequestError, validate_request
+from app.tts import Qwen3Speech, TtsPackageError, TtsRequestError, request_from_settings, validate_request
 
 _TONE_REPO = "t-tech/T-one"
 
@@ -139,19 +139,19 @@ def _run_asr(args: argparse.Namespace, settings: Settings) -> int:
 
 
 def _run_tts(args: argparse.Namespace, settings: Settings) -> int:
-    request = SynthesisRequest(
-        text=args.text,
-        language=settings.tts_language,
-        speaker=settings.tts_speaker,
-        model_id=settings.tts_model_id,
-    )
+    request = request_from_settings(args.text, settings)
     try:
         validate_request(request)
+        if settings.tts_mode == "clone" and not Path(settings.tts_ref_audio).is_file():
+            raise TtsRequestError(
+                f"Запись голоса не найдена: {settings.tts_ref_audio or '(путь пустой)'}. "
+                "Задайте CALL_CENTER_TTS_REF_AUDIO. ref-ru.wav в репозиторий не кладётся."
+            )
     except TtsRequestError as exc:
         print(str(exc), file=sys.stderr)
         return 2
     print("Эта команда скачивает веса. python -m app их не скачивает.")
-    print(f"from_pretrained скачает {settings.tts_model_id}. Устройство: {settings.tts_device}.")
+    print(_tts_download_line(settings))
     speech = Qwen3Speech()
     try:
         speech.load(settings)
@@ -168,6 +168,20 @@ def _run_tts(args: argparse.Namespace, settings: Settings) -> int:
         handle.writeframes(pcm)
     print(f"Записано {out}: {len(result.samples)} сэмплов, {result.sample_rate} Гц.")
     return 0
+
+
+def _tts_download_line(settings: Settings) -> str:
+    if settings.tts_mode == "clone":
+        return (
+            f"from_pretrained скачает {settings.tts_model_id}. Устройство: {settings.tts_device}. "
+            "Режим клона: запись голоса только с диска, синтез целиком после фразы."
+        )
+    if settings.tts_mode == "custom":
+        return (
+            f"from_pretrained скачает {settings.tts_model_id}. Устройство: {settings.tts_device}. "
+            f"Режим CustomVoice, диктор {settings.tts_speaker}."
+        )
+    raise RuntimeError(f"Неизвестный режим TTS: {settings.tts_mode}.")
 
 
 def _asr_download_line(decoder: str) -> str:
