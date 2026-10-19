@@ -6,9 +6,9 @@
 Бэкенд `off` ничего не генерирует. `stub` — тестовая заглушка, не Qwen ~4B.
 
 Выбранный чекпоинт — `mlx-community/Qwen3-4B-Instruct-2507-4bit`.
-`load_selected_model` — единственный вход, который может импортировать `mlx_lm`.
-Смоук и pytest его не вызывают. `mlx-lm` нет в зависимостях по умолчанию:
-на Mac он ломал `transformers`, нужные `qwen-tts`.
+Рабочий ответ на Mac считает соседний `.venv-llm` через `scripts/mlx_generate.py`.
+Этот процесс `mlx_lm` не импортирует. `load_selected_model` смоук не вызывает.
+`mlx-lm` нет в зависимостях по умолчанию: на Mac он ломал `transformers` для `qwen-tts`.
 """
 
 from __future__ import annotations

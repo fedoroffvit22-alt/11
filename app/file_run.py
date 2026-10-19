@@ -15,6 +15,7 @@ from pathlib import Path
 
 from app.asr import ToneAsr, TonePackageError
 from app.audio import float_samples_to_pcm16, pcm16le_to_samples
+from app.reply import ReplyFailed, generate_reply
 from app.settings import TONE_GIT_REVISION, TONE_SAMPLE_RATE, Settings
 from app.tts import Qwen3Speech, TtsPackageError, TtsRequestError, request_from_settings, validate_request
 
@@ -41,6 +42,8 @@ def main(argv: list[str] | None = None) -> int:
         return _run_asr(args, settings)
     if command == "tts":
         return _run_tts(args, settings)
+    if command == "reply":
+        return _run_reply(args, settings)
     print(f"Неизвестная команда: {command}.", file=sys.stderr)
     return 2
 
@@ -49,7 +52,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="python -m app.file_run",
         description=(
-            "Распознать файл T-One или синтезировать одну фразу. Команда скачивает веса. python -m app их не скачивает."
+            "Распознать файл, синтезировать фразу или ответить текстом из .venv-llm. python -m app веса не скачивает."
         ),
     )
     commands = parser.add_subparsers(dest="command", required=True)
@@ -63,6 +66,9 @@ def build_parser() -> argparse.ArgumentParser:
     tts = commands.add_parser("tts", help="Одна фраза Qwen3-TTS в WAV.")
     tts.add_argument("--text", required=True, help="Русская фраза.")
     tts.add_argument("--out", required=True, help="Куда записать WAV.")
+    reply = commands.add_parser("reply", help="Ответ .venv-llm и WAV клоном Base.")
+    reply.add_argument("--text", required=True, help="Реплика пользователя.")
+    reply.add_argument("--out", required=True, help="Куда записать WAV ответа.")
     return parser
 
 
@@ -139,7 +145,31 @@ def _run_asr(args: argparse.Namespace, settings: Settings) -> int:
 
 
 def _run_tts(args: argparse.Namespace, settings: Settings) -> int:
-    request = request_from_settings(args.text, settings)
+    return _synthesize_to_wav(args.text, Path(args.out), settings)
+
+
+def _run_reply(args: argparse.Namespace, settings: Settings) -> int:
+    text = args.text.strip()
+    if not text:
+        print("Текст пустой.", file=sys.stderr)
+        return 2
+    if not Path(settings.tts_ref_audio).is_file():
+        print(
+            f"Запись голоса не найдена: {settings.tts_ref_audio or '(путь пустой)'}. "
+            "Задайте CALL_CENTER_TTS_REF_AUDIO. Модель не вызывалась.",
+            file=sys.stderr,
+        )
+        return 2
+    try:
+        spoken = generate_reply(text, settings)
+    except ReplyFailed as exc:
+        print(str(exc), file=sys.stderr)
+        return exc.code
+    return _synthesize_to_wav(spoken, Path(args.out), settings)
+
+
+def _synthesize_to_wav(text: str, out: Path, settings: Settings) -> int:
+    request = request_from_settings(text, settings)
     try:
         validate_request(request)
         if settings.tts_mode == "clone" and not Path(settings.tts_ref_audio).is_file():
@@ -160,7 +190,6 @@ def _run_tts(args: argparse.Namespace, settings: Settings) -> int:
     except (TtsPackageError, TtsRequestError, RuntimeError, ValueError) as exc:
         print(str(exc), file=sys.stderr)
         return 1
-    out = Path(args.out)
     with wave.open(str(out), "wb") as handle:
         handle.setnchannels(1)
         handle.setsampwidth(2)

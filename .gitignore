@@ -5,6 +5,7 @@ __pycache__/
 dist/
 build/
 .venv/
+.venv-llm/
 venv/
 .pytest_cache/
 .ruff_cache/

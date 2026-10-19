@@ -61,7 +61,16 @@ pip install "pipecat-ai[local]==1.13.0"
 
 Extra ставит PyAudio. Без portaudio импорт `LocalAudioTransport` падает, а конструктор открывает устройство. `SileroVADAnalyzer()` сразу читает свой ONNX. `WorkerRunner` нужен, чтобы реально крутить пайплайн. Эти четыре вещи — следующий шаг, не часть команд файла.
 
-Локальная модель на Mac с 16 ГиБ уже выбрана: `mlx-community/Qwen3-4B-Instruct-2507-4bit`, 4-bit, 2.12 ГиБ. Идентификатора `Qwen/Qwen3-4B-Instruct` на Hugging Face нет. Пробный ответ: «Да, я здесь! Как я могу вам помочь?». `mlx-lm` в зависимости по умолчанию не входит: на Mac он ломал `transformers`, нужные `qwen-tts`. Чтение id веса не качает. Загрузка только явным вызовом `load_selected_model` при `CALL_CENTER_LOAD_WEIGHTS=1`. Смоук и pytest этот вызов не делают. `QwenLLMService` по-прежнему DashScope и запрещён. Пока бэкенд `stub` или `off`.
+Локальная модель на Mac с 16 ГиБ: `mlx-community/Qwen3-4B-Instruct-2507-4bit`, 4-bit, 2.12 ГиБ. Идентификатора `Qwen/Qwen3-4B-Instruct` на Hugging Face нет. Пробный ответ: «Да, я здесь! Как я могу вам помочь?».
+
+Два окружения, потому что `mlx-lm` в проектном venv ломал `transformers`, нужные `qwen-tts`. Проектный `.venv` пишет голос клоном Base. Отдельный `.venv-llm` (Python 3.11, `mlx-lm==0.32.2`, в git не входит) только считает текст скриптом `scripts/mlx_generate.py`. Проектный процесс `mlx_lm` не импортирует: скрипт запускается subprocess, stdin — JSON, у ребёнка `HF_HUB_OFFLINE=1`.
+
+```bash
+CALL_CENTER_TTS_REF_AUDIO="/путь/на/mac/ref-ru.wav" \
+  python -m app.file_run reply --text "алло вы меня слышите" --out ответ.wav
+```
+
+Перед синтезом из ответа убираются блок `<think>` и эмодзи. Нет файла референса — код 2, модель не вызывается. Нет `.venv-llm/bin/python` — код 1, TTS не грузится. Смоук и pytest веса не грузят. DashScope по-прежнему запрещён. Бэкенд смоука остаётся `off`.
 
 ## Полезные переменные
 
@@ -89,7 +98,9 @@ Extra ставит PyAudio. Без portaudio импорт `LocalAudioTransport` 
 - `app/audio.py` — чанки 2400 сэмплов, 8 кГц, паддинг как у стримингового примера T-One, перевод волны TTS в PCM16.
 - `app/asr.py` — `forward` / `forward_offline` / `finalize` и стриминговый движок. `from_hugging_face` только внутри `load()`.
 - `app/tts.py` — клон Base (`create_voice_clone_prompt`, `generate_voice_clone`) и режим CustomVoice. Без модели метод бросает ошибку, тишину не подставляет. `from_pretrained` только внутри `load()`.
-- `app/llm.py` — русский системный промпт и потоковый интерфейс. `off` и `stub` не качают Qwen. `load_selected_model` — единственная явная загрузка выбранного id.
+- `app/llm.py` — русский системный промпт. `off` и `stub` не качают Qwen. Смоук `mlx_lm` не импортирует.
+- `app/reply.py` — команда `reply`: subprocess в `.venv-llm`, затем очистка текста.
+- `scripts/mlx_generate.py` — генерация в отдельном окружении, `mlx-lm==0.32.2`.
 - `app/pipecat_services.py` — `ToneSttService`, `Qwen3TtsService` (с согласованием частоты) и `LocalLlmService`. Импорт модуля требует `pipecat-ai`.
 - `app/pipeline.py` — если пакет установлен, пайплайн из T-One, агрегатора пользователя со стратегией перебивания, локальной LLM, Qwen3-TTS и агрегатора ассистента. Микрофон и раннер не запускаются. Без пакета смоук остаётся зелёным.
-- `app/file_run.py` — единственная команда, которая вызывает `load()`: `python -m app.file_run`. Смоук её не импортирует.
+- `app/file_run.py` — `asr`, `tts` и `reply`. Смоук этот модуль не импортирует.

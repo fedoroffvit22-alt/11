@@ -12,6 +12,7 @@
 # Локальная LLM выбрана, но в этот файл не ставится:
 #   mlx-community/Qwen3-4B-Instruct-2507-4bit (4-bit, 2.12 ГиБ, Mac 16 ГиБ).
 #   Qwen/Qwen3-4B-Instruct на Hugging Face нет.
+#   Текст считает отдельный .venv-llm (Python 3.11, mlx-lm==0.32.2, scripts/mlx_generate.py).
 #   mlx-lm рядом с qwen-tts не ставить: на Mac он ломал transformers.
 #
 # Оркестрация:
