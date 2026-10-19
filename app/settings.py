@@ -21,6 +21,10 @@ ASR_DECODERS = ("greedy", "beam_search")
 TTS_DEVICES = ("cpu", "cuda", "mps")
 TTS_MODES = ("clone", "custom")
 LLM_BACKENDS = ("off", "stub")
+# Qwen/Qwen3-4B-Instruct на Hugging Face нет. На Mac с 16 ГиБ выбран 4-bit, 2.12 ГиБ.
+# Пробный ответ: «Да, я здесь! Как я могу вам помочь?» mlx-lm в зависимости не входит.
+LOCAL_LLM_ID = "mlx-community/Qwen3-4B-Instruct-2507-4bit"
+ABSENT_HF_LLM_ID = "Qwen/Qwen3-4B-Instruct"
 PIPELINE_AUDIO_OUT_SAMPLE_RATE = 24000
 
 _TRUE = {"1", "true", "yes", "on"}
@@ -42,6 +46,7 @@ class Settings:
     tts_ref_audio: str = ""
     tts_ref_text: str = DEFAULT_TTS_REF_TEXT
     llm_backend: str = "off"
+    llm_model_id: str = LOCAL_LLM_ID
     audio_out_sample_rate: int = PIPELINE_AUDIO_OUT_SAMPLE_RATE
 
     @classmethod
@@ -76,6 +81,7 @@ class Settings:
                 LLM_BACKENDS,
                 "CALL_CENTER_LLM_BACKEND",
             ),
+            llm_model_id=source.get("CALL_CENTER_LLM_MODEL", LOCAL_LLM_ID).strip() or LOCAL_LLM_ID,
         )
 
 

@@ -1,5 +1,13 @@
 import pytest
-from app.settings import ASR_DECODERS, DEFAULT_TTS_REF_TEXT, TTS_MODEL_0_6B_BASE, TTS_MODEL_0_6B_CUSTOM, Settings
+from app.settings import (
+    ABSENT_HF_LLM_ID,
+    ASR_DECODERS,
+    DEFAULT_TTS_REF_TEXT,
+    LOCAL_LLM_ID,
+    TTS_MODEL_0_6B_BASE,
+    TTS_MODEL_0_6B_CUSTOM,
+    Settings,
+)
 
 
 def test_defaults_do_not_load_weights() -> None:
@@ -16,6 +24,8 @@ def test_defaults_do_not_load_weights() -> None:
     assert settings.tts_language == "Russian"
     assert settings.tts_device == "cpu"
     assert settings.llm_backend == "off"
+    assert settings.llm_model_id == LOCAL_LLM_ID
+    assert settings.llm_model_id != ABSENT_HF_LLM_ID
     assert settings.audio_out_sample_rate == 24000
 
 

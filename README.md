@@ -61,7 +61,7 @@ pip install "pipecat-ai[local]==1.13.0"
 
 Extra ставит PyAudio. Без portaudio импорт `LocalAudioTransport` падает, а конструктор открывает устройство. `SileroVADAnalyzer()` сразу читает свой ONNX. `WorkerRunner` нужен, чтобы реально крутить пайплайн. Эти четыре вещи — следующий шаг, не часть команд файла.
 
-Локальный LLM ~4B в этом срезе не ставится. `QwenLLMService` — DashScope, `OLLamaLLMService` ждёт запущенный сервер. Пока бэкенд `stub` или `off`.
+Локальная модель на Mac с 16 ГиБ уже выбрана: `mlx-community/Qwen3-4B-Instruct-2507-4bit`, 4-bit, 2.12 ГиБ. Идентификатора `Qwen/Qwen3-4B-Instruct` на Hugging Face нет. Пробный ответ: «Да, я здесь! Как я могу вам помочь?». `mlx-lm` в зависимости по умолчанию не входит: на Mac он ломал `transformers`, нужные `qwen-tts`. Чтение id веса не качает. Загрузка только явным вызовом `load_selected_model` при `CALL_CENTER_LOAD_WEIGHTS=1`. Смоук и pytest этот вызов не делают. `QwenLLMService` по-прежнему DashScope и запрещён. Пока бэкенд `stub` или `off`.
 
 ## Полезные переменные
 
@@ -78,6 +78,7 @@ Extra ставит PyAudio. Без portaudio импорт `LocalAudioTransport` 
 | `CALL_CENTER_TTS_DEVICE` | `cpu` | `cpu`, `cuda` или `mps` |
 | `CALL_CENTER_TTS_FLASH_ATTN` | `0` | `1` добавляет `flash_attention_2`, только для CUDA |
 | `CALL_CENTER_LLM_BACKEND` | `off` | `off` — модель молчит с ошибкой; `stub` — тестовые русские фразы без весов |
+| `CALL_CENTER_LLM_MODEL` | `mlx-community/Qwen3-4B-Instruct-2507-4bit` | выбранный id; само чтение модель не грузит |
 
 Частота выхода пайплайна — 24 кГц. Если синтез вернёт другую частоту, `Qwen3TtsService` пересчитывает PCM16 ресемплером Pipecat (`SOXRAudioResampler`) до этой частоты. Динамик при этом не открывается.
 
@@ -88,7 +89,7 @@ Extra ставит PyAudio. Без portaudio импорт `LocalAudioTransport` 
 - `app/audio.py` — чанки 2400 сэмплов, 8 кГц, паддинг как у стримингового примера T-One, перевод волны TTS в PCM16.
 - `app/asr.py` — `forward` / `forward_offline` / `finalize` и стриминговый движок. `from_hugging_face` только внутри `load()`.
 - `app/tts.py` — клон Base (`create_voice_clone_prompt`, `generate_voice_clone`) и режим CustomVoice. Без модели метод бросает ошибку, тишину не подставляет. `from_pretrained` только внутри `load()`.
-- `app/llm.py` — русский системный промпт и потоковый интерфейс. `off` и `stub` не качают Qwen.
+- `app/llm.py` — русский системный промпт и потоковый интерфейс. `off` и `stub` не качают Qwen. `load_selected_model` — единственная явная загрузка выбранного id.
 - `app/pipecat_services.py` — `ToneSttService`, `Qwen3TtsService` (с согласованием частоты) и `LocalLlmService`. Импорт модуля требует `pipecat-ai`.
 - `app/pipeline.py` — если пакет установлен, пайплайн из T-One, агрегатора пользователя со стратегией перебивания, локальной LLM, Qwen3-TTS и агрегатора ассистента. Микрофон и раннер не запускаются. Без пакета смоук остаётся зелёным.
 - `app/file_run.py` — единственная команда, которая вызывает `load()`: `python -m app.file_run`. Смоук её не импортирует.

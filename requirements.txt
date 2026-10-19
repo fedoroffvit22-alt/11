@@ -9,6 +9,11 @@
 # TTS:
 #   pip install "qwen-tts==0.1.1"
 #
+# Локальная LLM выбрана, но в этот файл не ставится:
+#   mlx-community/Qwen3-4B-Instruct-2507-4bit (4-bit, 2.12 ГиБ, Mac 16 ГиБ).
+#   Qwen/Qwen3-4B-Instruct на Hugging Face нет.
+#   mlx-lm рядом с qwen-tts не ставить: на Mac он ломал transformers.
+#
 # Оркестрация:
 #   pip install "pipecat-ai==1.13.0"
 #   Локальный микрофон: pip install "pipecat-ai[local]==1.13.0"

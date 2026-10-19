@@ -24,7 +24,7 @@ def main() -> int:
     print("Голосовой агент: смоук каркаса.")
     print(f"Загрузка весов: {'включена настройкой' if settings.load_weights else 'выключена'}.")
     print("Смоук веса не скачивает и микрофон не открывает.")
-    print(f"Локальная LLM: {settings.llm_backend}. Это не DashScope и не скачивание Qwen.")
+    print(f"Локальная LLM: {settings.llm_backend}, id {settings.llm_model_id}. Смоук её не грузит. Это не DashScope.")
     print(f"ASR T-One: {tone.status}. {tone.detail}")
     print(f"TTS Qwen3: {tts.status}. {tts.detail}")
     print(
