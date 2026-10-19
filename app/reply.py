@@ -61,6 +61,15 @@ def script_path(root: Path | None = None) -> Path:
     return (root or repo_root()) / "scripts" / "mlx_generate.py"
 
 
+_SALE = re.compile(r"прода")
+_BUY = re.compile(r"покуп|купи|куплю")
+_SENTENCE = re.compile(r"[^.!?]+(?:[.!?]+|$)")
+_BROKEN_HEARING = re.compile(r"я\s+слышно")
+_SALE_REPLY = "Понял, вы хотите продать. Уточните, что именно продаёте."
+_BUY_REPLY = "Понял, вы хотите купить. Уточните, что именно покупаете."
+_HEARING_REPLY = "Да, я вас слышу."
+
+
 def clean_reply_text(raw: str) -> str:
     """Убрать блок `<think>` и эмодзи перед синтезом."""
 
@@ -68,6 +77,38 @@ def clean_reply_text(raw: str) -> str:
     text = _THINK_OPEN.sub(" ", text)
     text = _EMOJI.sub("", text)
     return re.sub(r"\s+", " ", text).strip()
+
+
+def shape_spoken_reply(user_text: str, model_text: str) -> str:
+    """Короткий ответ до TTS. Продажа и покупка не подменяются надеждой на промпт."""
+
+    user = clean_reply_text(user_text).casefold()
+    model = clean_reply_text(model_text)
+    sale = _mentions(_SALE, user)
+    buy = _mentions(_BUY, user)
+    if sale and not buy:
+        if _mentions(_SALE, model) and not _mentions(_BUY, model):
+            return _two_sentences(model)
+        return _SALE_REPLY
+    if buy and not sale:
+        if _mentions(_BUY, model) and not _mentions(_SALE, model):
+            return _two_sentences(model)
+        return _BUY_REPLY
+    if "слышно" in user or _BROKEN_HEARING.search(model.casefold()):
+        return _HEARING_REPLY
+    return _two_sentences(model)
+
+
+def _mentions(pattern: re.Pattern[str], text: str) -> bool:
+    return pattern.search(text.casefold()) is not None
+
+
+def _two_sentences(text: str) -> str:
+    parts = [part.strip() for part in _SENTENCE.findall(text) if part.strip()]
+    spoken = " ".join(parts[:2]).strip()
+    if spoken and spoken[-1] not in ".!?":
+        spoken += "."
+    return spoken
 
 
 def generate_reply(user_text: str, settings: Settings, *, python_path: Path | None = None) -> str:
@@ -105,7 +146,10 @@ def generate_reply(user_text: str, settings: Settings, *, python_path: Path | No
     if completed.returncode != 0:
         detail = completed.stderr.strip() or "scripts/mlx_generate.py завершился с ошибкой."
         raise ReplyFailed(detail, code=1)
-    spoken = clean_reply_text(completed.stdout)
+    cleaned = clean_reply_text(completed.stdout)
+    if not cleaned:
+        raise ReplyFailed("Модель вернула пустой ответ после очистки. TTS не запускался.", code=1)
+    spoken = shape_spoken_reply(user_text, cleaned)
     if not spoken:
         raise ReplyFailed("Модель вернула пустой ответ после очистки. TTS не запускался.", code=1)
     return spoken

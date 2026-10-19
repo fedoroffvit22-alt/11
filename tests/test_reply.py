@@ -12,10 +12,39 @@ from types import ModuleType
 
 import pytest
 from app.file_run import main
-from app.reply import clean_reply_text
-from app.settings import LOCAL_LLM_ID
+from app.reply import clean_reply_text, generate_reply, shape_spoken_reply
+from app.settings import LOCAL_LLM_ID, Settings
 from app.smoke import main as smoke_main
 from app.tts import SynthesisResult
+
+
+def test_live_lines_are_shaped_before_tts_without_weights(tmp_path: Path) -> None:
+    hearing = shape_spoken_reply("как меня слышно", "Я слышно, как вы. Что у вас по вопросу?")
+    assert hearing == "Да, я вас слышу."
+    assert "слышно" not in hearing.casefold()
+    assert _sentence_count(hearing) <= 2
+
+    sale_model = "Подскажите, что вы хотите купить?"
+    sale = shape_spoken_reply("нет ы меня не поняли я продать хочу", sale_model)
+    assert "прода" in sale.casefold()
+    assert "куп" not in sale.casefold()
+    assert sale != sale_model
+    assert _sentence_count(sale) <= 2
+
+    buy = shape_spoken_reply("я хочу купить", "Что вы хотите продать?")
+    assert "куп" in buy.casefold()
+    assert "прода" not in buy.casefold()
+    assert _sentence_count(buy) <= 2
+
+    assert shape_spoken_reply("алло вы меня слышите", "Да, я здесь!") == "Да, я здесь!"
+    assert shape_spoken_reply("алло", "Первое. Второе. Третье.") == "Первое. Второе."
+
+    fake_python = tmp_path / "python"
+    _write_intent_python(fake_python)
+    settings = Settings()
+    assert generate_reply("как меня слышно", settings, python_path=fake_python) == hearing
+    assert generate_reply("нет ы меня не поняли я продать хочу", settings, python_path=fake_python) == sale
+    assert "mlx_lm" not in sys.modules
 
 
 def test_clean_reply_drops_think_block_and_emoji() -> None:
@@ -135,6 +164,32 @@ def test_generate_script_calls_mlx_api(monkeypatch: pytest.MonkeyPatch, capsys: 
     messages = seen["messages"]
     assert isinstance(messages, list)
     assert messages[1]["content"] == "алло"
+
+
+def _sentence_count(text: str) -> int:
+    return len([part for part in text.replace("!", ".").replace("?", ".").split(".") if part.strip()])
+
+
+def _write_intent_python(path: Path) -> None:
+    path.write_text(
+        "\n".join(
+            [
+                "#!/usr/bin/env python3",
+                "import json, os, sys",
+                "if os.environ.get('HF_HUB_OFFLINE') != '1':",
+                "    raise SystemExit(1)",
+                "user = json.loads(sys.stdin.read())['user']",
+                "if 'продать' in user:",
+                "    sys.stdout.write('Подскажите, что вы хотите купить?')",
+                "elif 'слышно' in user:",
+                "    sys.stdout.write('Я слышно, как вы. Что у вас по вопросу?')",
+                "else:",
+                "    raise SystemExit(1)",
+                "",
+            ]
+        )
+    )
+    path.chmod(0o755)
 
 
 def _refuse_inprocess_mlx(*_args: object, **_kwargs: object) -> None:
