@@ -13,8 +13,8 @@ from dataclasses import dataclass
 from types import ModuleType
 from typing import Protocol
 
-from app.audio import require_tone_chunk, validate_pcm16
-from app.settings import Settings
+from app.audio import Pcm16ChunkBuffer, pcm16le_to_samples, require_tone_chunk, validate_pcm16
+from app.settings import TONE_PADDING_SAMPLES, Settings
 
 
 class ModelNotLoaded(RuntimeError):
@@ -85,6 +85,96 @@ def phrases_from_objects(items: Sequence[SupportsTonePhrase]) -> tuple[Transcrip
     return tuple(phrases)
 
 
+class ToneStreamEngine:
+    """Стриминг в `StreamingCTCPipeline.forward` чанками по 2400 сэмплов.
+
+    Левый паддинг 2400 нулей добавляется один раз, как в `read_stream_audio`.
+    Без пайплайна первый вызов бросает `ModelNotLoaded`, следующие ничего не делают.
+    `from_hugging_face` этот класс не вызывает.
+    """
+
+    def __init__(self, pipeline: object | None = None) -> None:
+        self._pipeline = pipeline
+        self._state: object | None = None
+        self._buffer = Pcm16ChunkBuffer()
+        self._primed = False
+        self._saw_audio = False
+        self._missing_reported = False
+
+    @property
+    def loaded(self) -> bool:
+        return self._pipeline is not None
+
+    def push_pcm16(self, audio: bytes) -> tuple[TranscriptPhrase, ...]:
+        if not self._require_pipeline():
+            return ()
+        if not audio:
+            return ()
+        samples = pcm16le_to_samples(audio)
+        self._saw_audio = True
+        primed: tuple[tuple[int, ...], ...] = ()
+        if not self._primed:
+            primed = self._buffer.extend((0,) * TONE_PADDING_SAMPLES)
+            self._primed = True
+        return self._consume(primed + self._buffer.extend(samples), is_last=False)
+
+    def finish(self) -> tuple[TranscriptPhrase, ...]:
+        """Добить хвост и вызвать `finalize`. Без звука — пусто, даже если весов нет."""
+
+        if not self._saw_audio:
+            return ()
+        if not self._require_pipeline():
+            return ()
+        remainder = self._buffer.take_padded_remainder()
+        phrases = list(self._consume((remainder,) if remainder else (), is_last=False))
+        pipeline = self._pipeline
+        final, _state = pipeline.finalize(self._state)  # type: ignore[attr-defined]
+        phrases.extend(phrases_from_objects(final))
+        self._state = None
+        self._saw_audio = False
+        self._primed = False
+        return tuple(phrases)
+
+    def _require_pipeline(self) -> bool:
+        if self._pipeline is not None:
+            return True
+        if self._missing_reported:
+            return False
+        self._missing_reported = True
+        raise ModelNotLoaded(
+            "T-One не загружен. Веса не скачивались: CALL_CENTER_LOAD_WEIGHTS выключен "
+            "или пакет voicekit-team/T-one не установлен."
+        )
+
+    def _consume(self, chunks: Sequence[Sequence[int]], *, is_last: bool) -> tuple[TranscriptPhrase, ...]:
+        pipeline = self._pipeline
+        if pipeline is None:
+            return ()
+        phrases: list[TranscriptPhrase] = []
+        for chunk in chunks:
+            new_phrases, self._state = pipeline.forward(  # type: ignore[attr-defined]
+                chunk,
+                self._state,
+                is_last=is_last,
+            )
+            phrases.extend(phrases_from_objects(new_phrases))
+        return tuple(phrases)
+
+
+class NumpyChunkPipeline:
+    """Переводит чанк-кортеж в int32 ndarray, которого ждёт настоящий T-One."""
+
+    def __init__(self, pipeline: object) -> None:
+        self._pipeline = pipeline
+
+    def forward(self, audio_chunk: Sequence[int], state: object | None = None, *, is_last: bool = False):
+        array = _as_int32_chunk(audio_chunk)
+        return self._pipeline.forward(array, state, is_last=is_last)  # type: ignore[attr-defined]
+
+    def finalize(self, state: object | None):
+        return self._pipeline.finalize(state)  # type: ignore[attr-defined]
+
+
 class ToneAsr:
     """Ленивый пайплайн. `load` ходит в Hugging Face только при флаге весов."""
 
@@ -94,6 +184,12 @@ class ToneAsr:
     @property
     def loaded(self) -> bool:
         return self._pipeline is not None
+
+    def open_stream(self) -> ToneStreamEngine:
+        """Движок стриминга. Без `load()` пайплайн внутри пустой, веса не качаются."""
+
+        pipeline = NumpyChunkPipeline(self._pipeline) if self._pipeline is not None else None
+        return ToneStreamEngine(pipeline)
 
     def load(self, settings: Settings) -> None:
         if not settings.load_weights:

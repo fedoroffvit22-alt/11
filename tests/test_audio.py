@@ -1,5 +1,7 @@
 from app.audio import (
+    Pcm16ChunkBuffer,
     chunk_duration_seconds,
+    float_samples_to_pcm16,
     iter_tone_chunks,
     pad_for_streaming,
     pcm16le_to_samples,
@@ -55,3 +57,26 @@ def test_require_chunk_rejects_short_buffer() -> None:
 
 def test_chunk_is_300_milliseconds() -> None:
     assert chunk_duration_seconds() == 0.3
+
+
+def test_buffer_keeps_a_short_tail_and_pads_it() -> None:
+    buffer = Pcm16ChunkBuffer(chunk_samples=4)
+    assert buffer.extend((1, 2)) == ()
+    assert buffer.pending_count == 2
+    ready = buffer.extend((3, 4, 5))
+    assert ready == ((1, 2, 3, 4),)
+    assert buffer.pending_count == 1
+    tail = buffer.take_padded_remainder()
+    assert tail == (5, 0, 0, 0)
+    assert buffer.take_padded_remainder() is None
+
+
+def test_float_wave_becomes_pcm16_and_empty_is_rejected() -> None:
+    raw = float_samples_to_pcm16((0.0, 1.0, -1.0))
+    assert pcm16le_to_samples(raw) == (0, 32767, -32767)
+    try:
+        float_samples_to_pcm16(())
+    except ValueError as exc:
+        assert "пустая" in str(exc)
+    else:
+        raise AssertionError("пустая волна не должна становиться тишиной")

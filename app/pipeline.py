@@ -32,8 +32,9 @@ LOCAL_AUDIO_SYMBOLS: tuple[tuple[str, str], ...] = (
     ("LocalAudioTransportParams", "pipecat.transports.local.audio"),
 )
 
-# Порядок процессоров будущего полного дуплекса. Это план, не исполняемый бот:
-# своих STT/TTS-сервисов Pipecat для T-One и Qwen3-TTS в пакете нет.
+# Порядок будущего полного дуплекса. Свои процессоры T-One и Qwen3-TTS живут в
+# `app.pipecat_services` и подключаются, только если pipecat-ai импортируется.
+# В пакете Pipecat готовых классов для этих моделей нет. Транспорта и LLM здесь нет.
 FULL_DUPLEX_SLOTS: tuple[str, ...] = (
     "transport.input",
     "tone_asr",
@@ -54,13 +55,16 @@ class SymbolProbe:
 
 @dataclass(frozen=True)
 class PipelineSkeleton:
-    """Собранные объекты конфигурации. Пайплайн не запускается."""
+    """Собранные объекты конфигурации. Пайплайн не запускается и веса не грузит."""
 
     audio_in_sample_rate: int
     audio_out_sample_rate: int
     vad_stop_secs: float
     processor_count: int
     context_messages: int
+    has_tone_stt: bool
+    has_qwen_tts: bool
+    weights_loaded: bool
 
 
 def probe_symbols(symbols: tuple[tuple[str, str], ...]) -> SymbolProbe:
@@ -89,16 +93,23 @@ def probe_symbols(symbols: tuple[tuple[str, str], ...]) -> SymbolProbe:
     return SymbolProbe("ok", "символы импортированы", tuple(found))
 
 
-def build_skeleton() -> PipelineSkeleton | SymbolProbe:
-    """Собрать реальные PipelineParams, VADParams, LLMContext и короткий Pipeline.
+def build_skeleton(settings: object | None = None) -> PipelineSkeleton | SymbolProbe:
+    """Собрать PipelineParams, контекст и процессоры T-One / Qwen3-TTS.
 
     Возвращает `SymbolProbe`, если pipecat-ai не установлен. Микрофон не открывается.
+    `settings` — `app.settings.Settings`. По умолчанию веса выключены, загрузчики не зовутся.
     """
 
     probe = probe_symbols(CORE_SYMBOLS)
     if probe.status != "ok":
         return probe
 
+    # Отложенный импорт: модуль процессоров тянет pipecat на уровне файла.
+    # Пока пакета нет, `import app.pipeline` и смоук должны оставаться рабочими.
+    services = importlib.import_module("app.pipecat_services")
+    settings_mod = importlib.import_module("app.settings")
+
+    app_settings = settings if isinstance(settings, settings_mod.Settings) else settings_mod.Settings()
     pipeline_mod = importlib.import_module("pipecat.pipeline.pipeline")
     worker_mod = importlib.import_module("pipecat.pipeline.worker")
     vad_mod = importlib.import_module("pipecat.audio.vad.vad_analyzer")
@@ -117,7 +128,10 @@ def build_skeleton() -> PipelineSkeleton | SymbolProbe:
         context,
         user_params=pair_mod.LLMUserAggregatorParams(),
     )
-    pipeline = pipeline_mod.Pipeline([user, assistant])
+    tone = services.ToneSttService(settings=app_settings)
+    qwen = services.Qwen3TtsService(settings=app_settings)
+    # Транспорта и LLM нет: микрофон не открываем, DashScope не подключаем.
+    pipeline = pipeline_mod.Pipeline([tone, user, qwen, assistant])
     _worker = worker_mod.PipelineWorker(pipeline, params=params)
     return PipelineSkeleton(
         audio_in_sample_rate=params.audio_in_sample_rate,
@@ -125,4 +139,7 @@ def build_skeleton() -> PipelineSkeleton | SymbolProbe:
         vad_stop_secs=vad_params.stop_secs,
         processor_count=len(pipeline.processors),
         context_messages=len(context.messages) if hasattr(context, "messages") else 1,
+        has_tone_stt=True,
+        has_qwen_tts=True,
+        weights_loaded=tone.weights_loaded or qwen.weights_loaded,
     )

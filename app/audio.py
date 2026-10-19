@@ -90,3 +90,56 @@ def chunk_duration_seconds(chunk_size: int = TONE_CHUNK_SAMPLES, sample_rate: in
     if sample_rate <= 0:
         raise ValueError("Частота дискретизации должна быть положительной.")
     return chunk_size / sample_rate
+
+
+class Pcm16ChunkBuffer:
+    """Копит PCM16 и отдаёт куски ровно `chunk_samples`. Хвост остаётся в буфере."""
+
+    def __init__(self, chunk_samples: int = TONE_CHUNK_SAMPLES) -> None:
+        if chunk_samples <= 0:
+            raise ValueError("Размер чанка должен быть положительным.")
+        self._chunk_samples = chunk_samples
+        self._pending: list[int] = []
+
+    @property
+    def pending_count(self) -> int:
+        return len(self._pending)
+
+    def extend(self, samples: Sequence[int]) -> tuple[tuple[int, ...], ...]:
+        validate_pcm16(samples)
+        self._pending.extend(samples)
+        ready: list[tuple[int, ...]] = []
+        size = self._chunk_samples
+        while len(self._pending) >= size:
+            ready.append(tuple(self._pending[:size]))
+            del self._pending[:size]
+        return tuple(ready)
+
+    def take_padded_remainder(self) -> tuple[int, ...] | None:
+        if not self._pending:
+            return None
+        missing = (-len(self._pending)) % self._chunk_samples
+        chunk = tuple(self._pending) + (0,) * missing
+        self._pending.clear()
+        return chunk
+
+
+def float_samples_to_pcm16(samples: Sequence[float]) -> bytes:
+    """Волна в диапазоне [-1, 1] → PCM16LE. Пустой вход — ошибка, не тишина."""
+
+    if not samples:
+        raise ValueError("Волна пустая.")
+    pieces: list[bytes] = []
+    for sample in samples:
+        value = float(sample)
+        if value > 1.0:
+            value = 1.0
+        elif value < -1.0:
+            value = -1.0
+        integer = int(round(value * 32767))
+        if integer > PCM16_MAX:
+            integer = PCM16_MAX
+        elif integer < PCM16_MIN:
+            integer = PCM16_MIN
+        pieces.append(integer.to_bytes(2, "little", signed=True))
+    return b"".join(pieces)

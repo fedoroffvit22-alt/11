@@ -86,6 +86,12 @@ def test_symbol_table_matches_verified_modules() -> None:
     assert LOCAL_AUDIO_SYMBOLS[0] == ("LocalAudioTransport", "pipecat.transports.local.audio")
 
 
+def _refuse_weight_load(*_args: object, **_kwargs: object) -> None:
+    raise AssertionError("загрузчик весов вызван из смоука или каркаса")
+
+
 def test_smoke_exits_zero(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("CALL_CENTER_LOAD_WEIGHTS", "1")
+    monkeypatch.setattr("app.asr.ToneAsr.load", _refuse_weight_load)
+    monkeypatch.setattr("app.tts.Qwen3Speech.load", _refuse_weight_load)
     assert main() == 0

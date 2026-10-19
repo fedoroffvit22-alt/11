@@ -19,7 +19,7 @@ def main() -> int:
     tone = probe_tone()
     tts = probe_tts()
     local_audio = probe_symbols(LOCAL_AUDIO_SYMBOLS)
-    skeleton = build_skeleton()
+    skeleton = build_skeleton(settings)
 
     print("Голосовой агент: смоук каркаса.")
     print(f"Загрузка весов: {'включена настройкой' if settings.load_weights else 'выключена'}.")
@@ -32,7 +32,10 @@ def main() -> int:
             "Каркас Pipecat собран: "
             f"вход {skeleton.audio_in_sample_rate} Гц, "
             f"выход {skeleton.audio_out_sample_rate} Гц, "
-            f"процессоров в коротком пайплайне {skeleton.processor_count}."
+            f"процессоров {skeleton.processor_count}, "
+            f"T-One={'да' if skeleton.has_tone_stt else 'нет'}, "
+            f"Qwen3-TTS={'да' if skeleton.has_qwen_tts else 'нет'}, "
+            f"веса={'загружены' if skeleton.weights_loaded else 'не загружены'}."
         )
     else:
         print(f"Каркас Pipecat: {skeleton.status}. {skeleton.detail}")
