@@ -15,7 +15,7 @@ from app.train.library import Library, outcome_label, practice_case
 from app.train.objections import kind_label
 from app.train.paths import sample_calls_path
 from app.train.rehearsal import LEVELS, Rehearsal, start_rehearsal
-from app.train.report import remember_closed
+from app.train.report import journal_rows, remember_closed
 
 _MAX_BODY = 2_000_000
 _STATIC = Path(__file__).resolve().parent / "static"
@@ -71,6 +71,9 @@ def make_handler(library: Library) -> type[BaseHTTPRequestHandler]:
                     with lock:
                         self._json(200, library_payload(library))
                     return
+                if method == "GET" and path == "/api/journal":
+                    self._journal()
+                    return
                 if method == "POST" and path == "/api/import":
                     self._import()
                     return
@@ -106,6 +109,13 @@ def make_handler(library: Library) -> type[BaseHTTPRequestHandler]:
                 self._json(400, {"error": str(exc)})
                 return
             self._json(404, {"error": "Такого адреса нет."})
+
+        def _journal(self) -> None:
+            try:
+                rows = journal_rows(library)
+            except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+                raise HttpError(f"Журнал не читается: {exc}", 500) from exc
+            self._json(200, {"rows": rows})
 
         def _import(self) -> None:
             body = self._body()

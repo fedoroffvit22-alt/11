@@ -49,6 +49,7 @@ def test_page_import_call_and_delete(tmp_path: Path) -> None:
         assert status == 200
         assert isinstance(page, str)
         assert "Репетиция" in page
+        assert "Занятие" in page
 
         status, imported = _request(port, "POST", "/api/import", {"text": SAMPLE.read_text(encoding="utf-8")})
         assert status == 200
@@ -96,6 +97,16 @@ def test_page_import_call_and_delete(tmp_path: Path) -> None:
         assert isinstance(again, dict)
         stored_lines = [line for line in log.read_text(encoding="utf-8").splitlines() if line.strip()]
         assert len(stored_lines) == 1
+
+        status, journal = _request(port, "GET", "/api/journal")
+        assert status == 200
+        assert isinstance(journal, dict)
+        rows = journal["rows"]
+        assert isinstance(rows, list)
+        assert len(rows) == 1
+        assert rows[0]["case_id"] == "salon-marina"
+        assert rows[0]["result"] == "hungup"
+        assert rows[0]["client_name"] == "Марина"
 
         status, library_body = _request(port, "DELETE", "/api/cases/salon-marina")
         assert status == 200

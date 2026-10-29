@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 from app.train.__main__ import main
 from app.train.library import Library
-from app.train.report import remember_closed, render_csv
+from app.train.report import journal_rows, remember_closed, render_csv
 
 
 def test_csv_row_names_the_case_and_the_objections() -> None:
@@ -47,3 +47,39 @@ def test_closed_session_is_appended_and_exported(tmp_path: Path, capsys: pytest.
     stored = json.loads((tmp_path / "sessions.jsonl").read_text(encoding="utf-8"))
     assert stored["case_id"] == "wav-1"
     assert capsys.readouterr().out == ""
+
+
+def test_journal_lists_the_newest_closed_call_first(tmp_path: Path) -> None:
+    library = Library(tmp_path / "library.json")
+    library.save()
+    log = tmp_path / "sessions.jsonl"
+    log.write_text(json.dumps({"phase": "pitch", "case_id": "skip"}) + "\n", encoding="utf-8")
+    remember_closed(
+        library,
+        {
+            "phase": "closed",
+            "case_id": "older",
+            "result": "hungup",
+            "debrief": {"handled": 0, "spoken": 0, "studies": []},
+        },
+    )
+    remember_closed(
+        library,
+        {
+            "phase": "closed",
+            "id": "s2",
+            "case_id": "salon-marina",
+            "level": "hard",
+            "result": "refused",
+            "result_label": "клиент завершил разговор",
+            "client": {"name": "Марина", "product": "Онлайн-запись"},
+            "debrief": {"handled": 0, "spoken": 1, "studies": [{"label": "цена"}]},
+        },
+    )
+    rows = journal_rows(library)
+    assert [row["case_id"] for row in rows] == ["salon-marina", "older"]
+    assert rows[0]["client_name"] == "Марина"
+    assert rows[0]["level"] == "hard"
+    assert rows[0]["objections"] == "цена"
+    assert rows[0]["result_label"] == "клиент завершил разговор"
+    assert journal_rows(Library(None)) == []

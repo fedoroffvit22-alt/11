@@ -120,6 +120,16 @@ textarea, select {
   border-top: 1px solid var(--line);
 }
 
+.journal-block {
+  margin-top: 1.4rem;
+  padding-top: 0.2rem;
+}
+
+.journal-block h2 {
+  margin: 0.2rem 0 0.3rem;
+  font-size: 1.35rem;
+}
+
 .case.active { outline: 1px solid var(--brass); border-radius: 12px; padding: 0.7rem; }
 
 .who { margin: 0; font-size: 1.15rem; }

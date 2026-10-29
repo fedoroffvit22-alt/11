@@ -6,7 +6,10 @@ const exportNode = document.querySelector("#export");
 const formNode = document.querySelector("#import-form");
 const fileNode = document.querySelector("#file");
 
+const LEVEL_LABEL = { basic: "базовый", medium: "средний", hard: "сложный" };
+
 let library = { cases: [], learned: [] };
+let journal = [];
 let session = null;
 let busy = false;
 let timer = 0;
@@ -74,6 +77,7 @@ async function sendLine() {
       body: JSON.stringify({ text }),
     });
     renderAll();
+    if (session.phase === "closed") await loadJournal();
   });
 }
 
@@ -82,7 +86,14 @@ async function hangup() {
   await run(async () => {
     session = await api(`/api/sessions/${session.id}/hangup`, { method: "POST", body: "{}" });
     renderAll();
+    await loadJournal();
   });
+}
+
+async function repeatCall(row) {
+  const select = document.querySelector("#level");
+  if (select && row.level) select.value = row.level;
+  await startCall(row.case_id);
 }
 
 async function removeCase(caseId) {
@@ -231,6 +242,41 @@ function paintTimer() {
   node.textContent = `${minutes}:${rest}`;
 }
 
+async function loadJournal() {
+  const node = document.querySelector("#journal");
+  try {
+    const data = await api("/api/journal");
+    journal = Array.isArray(data.rows) ? data.rows : [];
+    renderJournal();
+  } catch (error) {
+    clear(node);
+    const message = error instanceof Error ? error.message : "Журнал не открылся.";
+    node.append(el("p", "empty", message));
+  }
+}
+
+function renderJournal() {
+  const node = document.querySelector("#journal");
+  clear(node);
+  if (!journal.length) {
+    node.append(el("p", "empty", "Пока пусто. Закрытый звонок появится здесь."));
+    return;
+  }
+  for (const row of journal) {
+    const card = el("article", "case");
+    card.append(el("h3", "who", row.client_name || row.case_id));
+    const level = LEVEL_LABEL[row.level] || row.level || "уровень не записан";
+    const objections = row.objections ? ` · ${row.objections}` : "";
+    const outcome = row.result_label || row.result;
+    card.append(el("p", "meta", `${outcome}. ${level}. Закрыто ${row.handled} из ${row.spoken}${objections}.`));
+    const again = el("button", "quiet", "Ещё раз");
+    again.type = "button";
+    again.addEventListener("click", () => repeatCall(row));
+    card.append(again);
+    node.append(card);
+  }
+}
+
 function renderCoach() {
   clear(coachNode);
   if (session) {
@@ -284,7 +330,10 @@ function el(tag, className, text) {
 }
 
 api("/api/library")
-  .then((data) => applyLibrary(data))
+  .then((data) => {
+    applyLibrary(data);
+    return loadJournal();
+  })
   .catch((error) => {
     noteNode.textContent = error instanceof Error ? error.message : "Библиотека не открылась.";
     renderAll();
