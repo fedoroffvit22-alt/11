@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Репетиция звонка</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <header class="top">
+    <div>
+      <p class="eyebrow">Колл-центр · учебный звонок</p>
+      <h1>Репетиция</h1>
+    </div>
+    <p class="lede">Вы звоните как оператор. Клиент отвечает фразами из загруженных звонков CRM. Модель по ним не дообучается: в разбор попадают возражение и реплика вместе с итогом того звонка.</p>
+  </header>
+  <main>
+    <section class="rail" aria-label="Библиотека звонков">
+      <div class="rail-head">
+        <h2>Звонки</h2>
+        <p>Выгрузка из CRM или учебные карточки.</p>
+      </div>
+      <form id="import-form">
+        <label for="export">Текст выгрузки</label>
+        <textarea id="export" name="export" rows="5" placeholder="JSON с полем calls или текст:&#10;Оператор: …&#10;Клиент: …"></textarea>
+        <label for="level">Уровень</label>
+        <select id="level">
+          <option value="basic">Базовый — подсказка до ответа</option>
+          <option value="medium" selected>Средний — подсказка после ответа</option>
+          <option value="hard">Сложный — без подсказки, одна ошибка</option>
+        </select>
+        <label for="focus">Возражение</label>
+        <select id="focus">
+          <option value="" selected>Вся карточка</option>
+          <option value="price">цена</option>
+          <option value="time">нет времени</option>
+          <option value="think">надо подумать</option>
+          <option value="competitor">уже есть решение</option>
+          <option value="not_interested">не интересно</option>
+          <option value="authority">решает другой человек</option>
+          <option value="send_info">пришлите информацию</option>
+          <option value="trust">нет доверия</option>
+        </select>
+        <div class="row">
+          <button type="submit">Разобрать</button>
+          <button type="button" id="examples">Учебные</button>
+          <label class="file">
+            Файл
+            <input id="file" type="file" accept=".json,.txt,application/json,text/plain">
+          </label>
+        </div>
+        <p id="import-note" class="note" role="status"></p>
+      </form>
+      <div id="cases"></div>
+      <div class="journal-block">
+        <h2>Занятие</h2>
+        <p class="meta">Закрытые звонки этой библиотеки. Тот же разбор, что уходит в CSV.</p>
+        <div id="journal"></div>
+      </div>
+    </section>
+    <section class="stage" aria-label="Звонок">
+      <div id="desk"></div>
+    </section>
+    <aside class="coach" aria-label="Разбор" aria-live="polite">
+      <h2>Разбор</h2>
+      <div id="coach"></div>
+    </aside>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>

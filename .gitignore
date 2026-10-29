@@ -21,3 +21,5 @@ models/
 *.flac
 *.mp3
 .DS_Store
+data/
+.playwright-mcp/
