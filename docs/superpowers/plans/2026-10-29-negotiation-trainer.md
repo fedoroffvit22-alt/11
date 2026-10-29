@@ -71,7 +71,7 @@
   - `class VoicePort(Protocol): hear(self, pcm16_8k: bytes) -> Heard; speak(self, text: str) -> Spoken`
   - `def play_operator_audio(rehearsal: Rehearsal, port: VoicePort, pcm16_8k: bytes) -> dict[str, object]`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 ```python
 def test_operator_audio_becomes_a_client_line_without_loading_models() -> None:

@@ -5,11 +5,13 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from app.settings import Settings
 from app.train.crm_parse import CrmImportError
 from app.train.library import Library, LibraryError, outcome_label, practice_case
 from app.train.objections import kind_label
 from app.train.paths import default_library_path
 from app.train.server import serve
+from app.train.speak_turn import speak_case
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -24,6 +26,11 @@ def main(argv: list[str] | None = None) -> int:
     import_parser = sub.add_parser("import", help="Разобрать файл выгрузки и добавить его в библиотеку")
     import_parser.add_argument("path", type=Path)
 
+    speak_parser = sub.add_parser("speak", help="Один голосовой ход репетиции. Веса качает только эта команда")
+    speak_parser.add_argument("--case", required=True)
+    speak_parser.add_argument("--wav", type=Path, required=True)
+    speak_parser.add_argument("--out", type=Path, required=True)
+
     args = parser.parse_args(argv)
     path = args.data if args.data is not None else default_library_path()
     try:
@@ -33,6 +40,14 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     if args.command == "import":
         return _import(library, args.path)
+    if args.command == "speak":
+        return speak_case(
+            case_id=args.case,
+            wav=args.wav,
+            out=args.out,
+            settings=Settings.from_env(),
+            library=library,
+        )
     host = getattr(args, "host", "127.0.0.1")
     port = getattr(args, "port", 8765)
     serve(library, host, port)
