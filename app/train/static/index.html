@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Репетиция звонка</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <header class="top">
+    <div>
+      <p class="eyebrow">Колл-центр · учебный звонок</p>
+      <h1>Репетиция</h1>
+    </div>
+    <p class="lede">Вы звоните как оператор. Клиент отвечает фразами из загруженных звонков CRM. Модель по ним не дообучается: в разбор попадают возражение и реплика вместе с итогом того звонка.</p>
+  </header>
+  <main>
+    <section class="rail" aria-label="Библиотека звонков">
+      <div class="rail-head">
+        <h2>Звонки</h2>
+        <p>Выгрузка из CRM или учебные карточки.</p>
+      </div>
+      <form id="import-form">
+        <label for="export">Текст выгрузки</label>
+        <textarea id="export" name="export" rows="5" placeholder="JSON с полем calls или текст:&#10;Оператор: …&#10;Клиент: …"></textarea>
+        <div class="row">
+          <button type="submit">Разобрать</button>
+          <button type="button" id="examples">Учебные</button>
+          <label class="file">
+            Файл
+            <input id="file" type="file" accept=".json,.txt,application/json,text/plain">
+          </label>
+        </div>
+        <p id="import-note" class="note" role="status"></p>
+      </form>
+      <div id="cases"></div>
+    </section>
+    <section class="stage" aria-label="Звонок">
+      <div id="desk"></div>
+    </section>
+    <aside class="coach" aria-label="Разбор" aria-live="polite">
+      <h2>Разбор</h2>
+      <div id="coach"></div>
+    </aside>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>
