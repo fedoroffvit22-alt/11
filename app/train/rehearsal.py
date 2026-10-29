@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import time
 import uuid
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Literal, assert_never
 
 from app.train.coach import miss_hint, review_objection
 from app.train.library import learn, outcome_label
-from app.train.model import CrmCall, LearnedKind, PracticeCase, Turn
+from app.train.model import KINDS, CrmCall, Kind, LearnedKind, PracticeCase, Turn
 from app.train.objections import kind_label
 
 Phase = Literal["pitch", "objection", "closed"]
@@ -43,6 +43,7 @@ class Rehearsal:
     ended_ms: int | None = None
     transcript: list[Turn] = field(default_factory=list)
     level: Level = "medium"
+    focus: Kind | None = None
     coach: str = "Клиент снял трубку. Представьтесь и скажите, зачем звоните. Возражения заранее не показаны."
     objection_index: int = 0
     misses: int = 0
@@ -79,6 +80,8 @@ class Rehearsal:
             "id": self.id,
             "case_id": call.id,
             "level": self.level,
+            "focus": self.focus or "",
+            "focus_label": kind_label(self.focus) if self.focus is not None else "",
             "phase": self.phase,
             "result": self.result,
             "result_label": _result_label(self.result),
@@ -201,11 +204,31 @@ class Rehearsal:
         }
 
 
-def start_rehearsal(case: PracticeCase, calls: tuple[CrmCall, ...], *, level: Level = "medium") -> Rehearsal:
+def start_rehearsal(
+    case: PracticeCase,
+    calls: tuple[CrmCall, ...],
+    *,
+    level: Level = "medium",
+    focus: Kind | None = None,
+) -> Rehearsal:
     if level not in LEVELS:
         names = ", ".join(LEVELS)
         raise ValueError(f"Уровень должен быть одним из: {names}. Получено {level!r}.")
-    return Rehearsal(case=case, learned=learn(calls), level=level)
+    chosen = _focused_case(case, focus)
+    return Rehearsal(case=chosen, learned=learn(calls), level=level, focus=focus)
+
+
+def _focused_case(case: PracticeCase, focus: Kind | None) -> PracticeCase:
+    if focus is None:
+        return case
+    if focus not in KINDS:
+        labels = ", ".join(kind_label(kind) for kind in KINDS)
+        raise ValueError(f"Возражение должно быть одним из: {labels}. Получено {focus!r}.")
+    picked = next((hit for hit in case.objections if hit.kind == focus), None)
+    if picked is None:
+        label = kind_label(focus)
+        raise ValueError(f"В этой карточке нет возражения «{label}».")
+    return replace(case, objections=(picked,))
 
 
 def _is_pitch(text: str, product: str) -> bool:

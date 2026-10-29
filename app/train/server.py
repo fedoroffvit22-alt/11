@@ -12,6 +12,7 @@ from urllib.parse import unquote, urlsplit
 
 from app.train.crm_parse import CrmImportError
 from app.train.library import Library, outcome_label, practice_case
+from app.train.model import KINDS, Kind
 from app.train.objections import kind_label
 from app.train.paths import sample_calls_path
 from app.train.rehearsal import LEVELS, Rehearsal, start_rehearsal
@@ -155,10 +156,19 @@ def make_handler(library: Library) -> type[BaseHTTPRequestHandler]:
             if not isinstance(level, str) or level not in LEVELS:
                 names = ", ".join(LEVELS)
                 raise HttpError(f"Уровень должен быть одним из: {names}.", 400)
+            focus = _requested_focus(body)
             with lock:
                 if case_id not in library.calls:
                     raise HttpError("Такого звонка в библиотеке нет.", 404)
-                rehearsal = start_rehearsal(library.case(case_id), library.ordered(), level=level)
+                try:
+                    rehearsal = start_rehearsal(
+                        library.case(case_id),
+                        library.ordered(),
+                        level=level,
+                        focus=focus,
+                    )
+                except ValueError as exc:
+                    raise HttpError(str(exc), 400) from exc
                 sessions[rehearsal.id] = rehearsal
                 payload = rehearsal.snapshot()
             self._json(200, payload)
@@ -237,6 +247,22 @@ def make_handler(library: Library) -> type[BaseHTTPRequestHandler]:
     return Handler
 
 
+def _requested_focus(body: dict[str, object]) -> Kind | None:
+    raw = body.get("focus", "")
+    if raw is None:
+        return None
+    if not isinstance(raw, str):
+        raise HttpError("Поле focus должно быть видом возражения.", 400)
+    token = raw.strip()
+    if not token:
+        return None
+    for kind in KINDS:
+        if kind == token:
+            return kind
+    labels = ", ".join(kind_label(kind) for kind in KINDS)
+    raise HttpError(f"Возражение должно быть одним из: {labels}.", 400)
+
+
 def _closed_snapshot(library: Library, rehearsal: Rehearsal, before: str) -> dict[str, object]:
     payload = rehearsal.snapshot()
     if before != "closed" and rehearsal.phase == "closed":
@@ -257,6 +283,7 @@ def library_payload(library: Library) -> dict[str, object]:
                 "outcome": call.outcome,
                 "outcome_label": outcome_label(call.outcome),
                 "objection_count": len(case.objections),
+                "kinds": [{"kind": hit.kind, "label": kind_label(hit.kind)} for hit in case.objections],
             }
         )
     learned: list[dict[str, object]] = []

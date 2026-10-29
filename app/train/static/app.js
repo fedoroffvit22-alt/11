@@ -19,6 +19,10 @@ formNode.addEventListener("submit", (event) => {
   importText(exportNode.value);
 });
 
+document.querySelector("#focus").addEventListener("change", () => {
+  renderCases();
+});
+
 document.querySelector("#examples").addEventListener("click", async () => {
   await run(async () => {
     const data = await api("/api/examples", { method: "POST", body: "{}" });
@@ -57,9 +61,12 @@ function applyLibrary(data, note) {
 async function startCall(caseId) {
   await run(async () => {
     const level = document.querySelector("#level").value;
+    const focus = document.querySelector("#focus").value;
+    const body = { case_id: caseId, level };
+    if (focus) body.focus = focus;
     session = await api("/api/sessions", {
       method: "POST",
-      body: JSON.stringify({ case_id: caseId, level }),
+      body: JSON.stringify(body),
     });
     renderAll();
     const field = document.querySelector("#say");
@@ -93,6 +100,8 @@ async function hangup() {
 async function repeatCall(row) {
   const select = document.querySelector("#level");
   if (select && row.level) select.value = row.level;
+  const focus = document.querySelector("#focus");
+  if (focus) focus.value = row.focus || "";
   await startCall(row.case_id);
 }
 
@@ -136,13 +145,24 @@ function renderAll() {
   renderCoach();
 }
 
+function visibleCases() {
+  const focus = document.querySelector("#focus").value;
+  if (!focus) return library.cases;
+  return library.cases.filter((item) => (item.kinds || []).some((entry) => entry.kind === focus));
+}
+
 function renderCases() {
   clear(casesNode);
   if (!library.cases.length) {
     casesNode.append(el("p", "empty", "Пока пусто. Загрузите выгрузку или откройте учебные звонки."));
     return;
   }
-  for (const item of library.cases) {
+  const cases = visibleCases();
+  if (!cases.length) {
+    casesNode.append(el("p", "empty", "Нет карточек с этим возражением."));
+    return;
+  }
+  for (const item of cases) {
     const card = el("article", session && session.case_id === item.id ? "case active" : "case");
     const who = item.client_name || "Клиент";
     const company = item.company ? ` · ${item.company}` : "";
@@ -266,9 +286,12 @@ function renderJournal() {
     const card = el("article", "case");
     card.append(el("h3", "who", row.client_name || row.case_id));
     const level = LEVEL_LABEL[row.level] || row.level || "уровень не записан";
+    const drill = row.focus_label ? ` Тренировка: ${row.focus_label}.` : "";
     const objections = row.objections ? ` · ${row.objections}` : "";
     const outcome = row.result_label || row.result;
-    card.append(el("p", "meta", `${outcome}. ${level}. Закрыто ${row.handled} из ${row.spoken}${objections}.`));
+    card.append(
+      el("p", "meta", `${outcome}. ${level}.${drill} Закрыто ${row.handled} из ${row.spoken}${objections}.`),
+    );
     const again = el("button", "quiet", "Ещё раз");
     again.type = "button";
     again.addEventListener("click", () => repeatCall(row));

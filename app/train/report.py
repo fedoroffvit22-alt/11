@@ -54,6 +54,8 @@ def session_row(item: dict[str, object]) -> dict[str, object]:
         "session_id": _text(item.get("id")),
         "case_id": _text(item.get("case_id")),
         "level": _text(item.get("level")),
+        "focus": _text(item.get("focus")),
+        "focus_label": _text(item.get("focus_label")),
         "result": _text(item.get("result")),
         "result_label": _text(item.get("result_label")),
         "client_name": name,
