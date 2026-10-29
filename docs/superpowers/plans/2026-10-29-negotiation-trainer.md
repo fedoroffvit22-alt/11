@@ -86,21 +86,21 @@ def test_operator_audio_becomes_a_client_line_without_loading_models() -> None:
     assert "qwen_tts" not in sys.modules
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `python3 -m pytest tests/test_train_voice.py::test_operator_audio_becomes_a_client_line_without_loading_models -v`
 Expected: FAIL, `play_operator_audio` не определён.
 
-- [ ] **Step 3: Write minimal implementation**
+- [x] **Step 3: Write minimal implementation**
 
 `ScriptedVoice` живёт в тесте. `play_operator_audio` вызывает `port.hear`, передаёт текст в `rehearsal.say`, затем `port.speak` на новые реплики клиента, появившиеся после этого хода. Пустой текст от `hear` — `say("")`, синтез не вызывается. Модуль `app/train/voice.py` не импортирует `tone`, `qwen_tts`, `pipecat`, `mlx_lm`.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `python3 -m pytest tests/test_train_voice.py -q && python3 -m pytest -q`
 Expected: PASS, прежние тесты агента тоже зелёные.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/train/voice.py tests/test_train_voice.py README.md
@@ -111,15 +111,15 @@ git commit -m "Speak rehearsal client lines through a voice port."
 
 ## Фаза 2. Аудиофайл из CRM в ту же карточку
 
-Отдельный план, когда фаза 1 зелёная.
+Сделано: `python -m app.train audio --wav … --transcript …`, тесты в `tests/test_audio_import.py`.
 
-Вход: моно PCM16 8000 Гц, либо стерео, где левый канал — оператор, правый — клиент. Рядом обязательна расшифровка в уже принятом JSON или тексте, пока веса не загружены. Без расшифровки и без явного `CALL_CENTER_LOAD_WEIGHTS=1` команда завершается ошибкой и файл в библиотеку не пишет. Так смоук остаётся без скачивания моделей.
+Вход: моно PCM16 8000 Гц, либо стерео, где левый канал — оператор, правый — клиент. Рядом обязательна расшифровка в уже принятом JSON или тексте. Без неё команда завершается ошибкой и файл в библиотеку не пишет. `CALL_CENTER_LOAD_WEIGHTS=1` эту команду не переключает на распознавание: `from_hugging_face` она не вызывает. Так смоук остаётся без скачивания моделей.
 
 Карточка после разбора — тот же `CrmCall`. Новый тип хранилища не заводим: библиотека остаётся `data/train/library.json`, аудио лежит рядом и в git не входит.
 
 ## Фаза 3. Уровни сложности
 
-Отдельный план. Три значения на сессию, не новый диалоговый движок:
+Сделано: поле `level` у сессии и список на странице. Тесты в `tests/test_levels.py`. Три значения на сессию, не новый диалоговый движок:
 
 - `basic` — подсказка до ответа, клиент ждёт два промаха.
 - `medium` — подсказка после ответа. Так страница работает сейчас.
@@ -129,7 +129,7 @@ git commit -m "Speak rehearsal client lines through a voice port."
 
 ## Фаза 4. Отчёт занятия
 
-Отдельный план. `GET /api/sessions/{id}` уже отдаёт разбор. Фаза добавляет `python -m app.train report --out занятие.csv`: карточка, итог, закрыто, сказано, виды возражений. Это и есть метрика успеха диалога из спецификации, которую можно посчитать без прослушивания.
+Сделано: закрытый звонок дописывается в `sessions.jsonl` рядом с библиотекой, повтор того же закрытия строку не дублирует. `python -m app.train report --out занятие.csv` пишет карточка, итог, закрыто, сказано, виды возражений. Тесты в `tests/test_report.py`. Это и есть метрика успеха диалога из спецификации, которую можно посчитать без прослушивания.
 
 ## Что не делаем в этих фазах
 
@@ -146,5 +146,5 @@ WER, MOS и бюджет в рублях. Это измерения и смет�
 ## Проверка этого документа
 
 Фаза 0: `python3 -m pytest -q` зелёный без сети и без весов.
-Фаза 1 начинается с падающего теста из шага 1 и не меняет `python -m app`.
-Фазы 2–4 не стартуют, пока предыдущая не коммитится отдельно.
+Фаза 1 не меняет `python -m app`.
+Фазы 2–4 лежат в том же пакете `app/train/` и входят в тот же прогон pytest.

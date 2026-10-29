@@ -154,6 +154,12 @@ def _tokens(text: str) -> set[str]:
     return {word for word in re.findall(r"[а-яё]+", text.casefold()) if len(word) >= 4 and word not in _STOP}
 
 
+def miss_hint(kind: Kind) -> str:
+    """Подсказка до ответа на базовом уровне. Не оценивает реплику."""
+
+    return _miss_text(kind)
+
+
 def _hit_text(kind: Kind) -> str:
     if kind == "price":
         return "Цена принята: вы ответили на слова клиента и не ушли в общий рассказ о продукте."

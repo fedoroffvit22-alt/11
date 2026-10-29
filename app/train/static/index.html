@@ -23,6 +23,12 @@
       <form id="import-form">
         <label for="export">Текст выгрузки</label>
         <textarea id="export" name="export" rows="5" placeholder="JSON с полем calls или текст:&#10;Оператор: …&#10;Клиент: …"></textarea>
+        <label for="level">Уровень</label>
+        <select id="level">
+          <option value="basic">Базовый — подсказка до ответа</option>
+          <option value="medium" selected>Средний — подсказка после ответа</option>
+          <option value="hard">Сложный — без подсказки, одна ошибка</option>
+        </select>
         <div class="row">
           <button type="submit">Разобрать</button>
           <button type="button" id="examples">Учебные</button>

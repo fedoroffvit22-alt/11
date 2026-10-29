@@ -14,7 +14,8 @@ from app.train.crm_parse import CrmImportError
 from app.train.library import Library, outcome_label, practice_case
 from app.train.objections import kind_label
 from app.train.paths import sample_calls_path
-from app.train.rehearsal import Rehearsal, start_rehearsal
+from app.train.rehearsal import LEVELS, Rehearsal, start_rehearsal
+from app.train.report import remember_closed
 
 _MAX_BODY = 2_000_000
 _STATIC = Path(__file__).resolve().parent / "static"
@@ -140,10 +141,14 @@ def make_handler(library: Library) -> type[BaseHTTPRequestHandler]:
             case_id = body.get("case_id")
             if not isinstance(case_id, str) or not case_id.strip():
                 raise HttpError("Нужен case_id карточки.", 400)
+            level = body.get("level", "medium")
+            if not isinstance(level, str) or level not in LEVELS:
+                names = ", ".join(LEVELS)
+                raise HttpError(f"Уровень должен быть одним из: {names}.", 400)
             with lock:
                 if case_id not in library.calls:
                     raise HttpError("Такого звонка в библиотеке нет.", 404)
-                rehearsal = start_rehearsal(library.case(case_id), library.ordered())
+                rehearsal = start_rehearsal(library.case(case_id), library.ordered(), level=level)
                 sessions[rehearsal.id] = rehearsal
                 payload = rehearsal.snapshot()
             self._json(200, payload)
@@ -165,8 +170,9 @@ def make_handler(library: Library) -> type[BaseHTTPRequestHandler]:
                 rehearsal = sessions.get(session_id)
                 if rehearsal is None:
                     raise HttpError("Такого звонка нет. Начните его заново.", 404)
+                before = rehearsal.phase
                 rehearsal.say(text)
-                payload = rehearsal.snapshot()
+                payload = _closed_snapshot(library, rehearsal, before)
             self._json(200, payload)
 
         def _hangup(self, session_id: str) -> None:
@@ -174,8 +180,9 @@ def make_handler(library: Library) -> type[BaseHTTPRequestHandler]:
                 rehearsal = sessions.get(session_id)
                 if rehearsal is None:
                     raise HttpError("Такого звонка нет. Начните его заново.", 404)
+                before = rehearsal.phase
                 rehearsal.hangup()
-                payload = rehearsal.snapshot()
+                payload = _closed_snapshot(library, rehearsal, before)
             self._json(200, payload)
 
         def _body(self) -> dict[str, object]:
@@ -218,6 +225,13 @@ def make_handler(library: Library) -> type[BaseHTTPRequestHandler]:
             self.wfile.write(body)
 
     return Handler
+
+
+def _closed_snapshot(library: Library, rehearsal: Rehearsal, before: str) -> dict[str, object]:
+    payload = rehearsal.snapshot()
+    if before != "closed" and rehearsal.phase == "closed":
+        remember_closed(library, payload)
+    return payload
 
 
 def library_payload(library: Library) -> dict[str, object]:

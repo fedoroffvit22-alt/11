@@ -7,12 +7,14 @@ import uuid
 from dataclasses import dataclass, field
 from typing import Literal, assert_never
 
-from app.train.coach import review_objection
+from app.train.coach import miss_hint, review_objection
 from app.train.library import learn, outcome_label
 from app.train.model import CrmCall, LearnedKind, PracticeCase, Turn
 from app.train.objections import kind_label
 
 Phase = Literal["pitch", "objection", "closed"]
+Level = Literal["basic", "medium", "hard"]
+LEVELS: tuple[Level, ...] = ("basic", "medium", "hard")
 Result = Literal["open", "next_step", "refused", "hungup"]
 StudyStatus = Literal["handled", "missed", "unanswered"]
 _AGREEMENT = "Хорошо. Пришлите коротко условия сегодня, я посмотрю до вечера."
@@ -40,6 +42,7 @@ class Rehearsal:
     started_ms: int = field(default_factory=lambda: int(time.time() * 1000))
     ended_ms: int | None = None
     transcript: list[Turn] = field(default_factory=list)
+    level: Level = "medium"
     coach: str = "Клиент снял трубку. Представьтесь и скажите, зачем звоните. Возражения заранее не показаны."
     objection_index: int = 0
     misses: int = 0
@@ -75,6 +78,7 @@ class Rehearsal:
         return {
             "id": self.id,
             "case_id": call.id,
+            "level": self.level,
             "phase": self.phase,
             "result": self.result,
             "result_label": _result_label(self.result),
@@ -113,10 +117,11 @@ class Rehearsal:
             self._raise_objection(review.coach)
             return
         self.misses += 1
-        if self.misses >= 2:
+        if self.misses >= _miss_limit(self.level):
             self._resolve(self.objection_index, "missed")
             self.transcript.append(Turn("client", _REFUSAL))
-            self._close("refused", review.coach)
+            note = "Клиент завершил разговор." if self.level == "hard" else review.coach
+            self._close("refused", note)
             return
         self.transcript.append(Turn("client", f"Я уже сказал: {hit.client_text}"))
 
@@ -139,6 +144,13 @@ class Rehearsal:
         self.delivered += 1
         self.phase = "objection"
         label = kind_label(hit.kind)
+        if self.level == "hard":
+            self.coach = "Клиент ждёт ответа."
+            return
+        if self.level == "basic":
+            hint = miss_hint(hit.kind)
+            self.coach = f"{prior} {hint}".strip() if prior else f"Возражение: {label}. {hint}"
+            return
         if prior:
             self.coach = f"{prior} Дальше другое: {label}."
         else:
@@ -189,8 +201,11 @@ class Rehearsal:
         }
 
 
-def start_rehearsal(case: PracticeCase, calls: tuple[CrmCall, ...]) -> Rehearsal:
-    return Rehearsal(case=case, learned=learn(calls))
+def start_rehearsal(case: PracticeCase, calls: tuple[CrmCall, ...], *, level: Level = "medium") -> Rehearsal:
+    if level not in LEVELS:
+        names = ", ".join(LEVELS)
+        raise ValueError(f"Уровень должен быть одним из: {names}. Получено {level!r}.")
+    return Rehearsal(case=case, learned=learn(calls), level=level)
 
 
 def _is_pitch(text: str, product: str) -> bool:
@@ -211,6 +226,14 @@ def _pattern(learned: tuple[LearnedKind, ...], product: str, kind: str) -> Learn
         if item.product == product and item.kind == kind:
             return item
     return None
+
+
+def _miss_limit(level: Level) -> int:
+    if level == "hard":
+        return 1
+    if level == "basic" or level == "medium":
+        return 2
+    assert_never(level)
 
 
 def _result_label(result: Result) -> str:

@@ -84,6 +84,18 @@ def test_page_import_call_and_delete(tmp_path: Path) -> None:
         assert status == 200
         assert isinstance(ended, dict)
         assert ended["result"] == "hungup"
+        log = tmp_path / "sessions.jsonl"
+        stored_lines = [line for line in log.read_text(encoding="utf-8").splitlines() if line.strip()]
+        assert len(stored_lines) == 1
+        stored = json.loads(stored_lines[0])
+        assert stored["case_id"] == "salon-marina"
+        assert stored["result"] == "hungup"
+
+        status, again = _request(port, "POST", f"/api/sessions/{session_id}/hangup", {})
+        assert status == 200
+        assert isinstance(again, dict)
+        stored_lines = [line for line in log.read_text(encoding="utf-8").splitlines() if line.strip()]
+        assert len(stored_lines) == 1
 
         status, library_body = _request(port, "DELETE", "/api/cases/salon-marina")
         assert status == 200

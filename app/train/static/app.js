@@ -53,9 +53,10 @@ function applyLibrary(data, note) {
 
 async function startCall(caseId) {
   await run(async () => {
+    const level = document.querySelector("#level").value;
     session = await api("/api/sessions", {
       method: "POST",
-      body: JSON.stringify({ case_id: caseId }),
+      body: JSON.stringify({ case_id: caseId, level }),
     });
     renderAll();
     const field = document.querySelector("#say");
