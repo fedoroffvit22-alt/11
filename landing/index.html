@@ -3,442 +3,431 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Апартамент 57,8 м² у метро Владыкино · Аквилон Signal · переуступка от собственника</title>
-<meta name="description" content="Двухкомнатный апартамент 57,8 м² с кухней 14 м² в корпусе 1 «Аквилон Signal», 6 этаж, 200 м до метро и МЦК «Владыкино». Переуступка от собственника, дешевле цены застройщика.">
-<meta property="og:title" content="57,8 м² у метро Владыкино — дешевле, чем у застройщика">
-<meta property="og:description" content="Аквилон Signal, корпус 1, 6 этаж. Две комнаты и кухня 14 м². Переуступка от собственника.">
-<meta name="theme-color" content="#f3f0e8">
+<title>Лот 142 · Аквилон Signal · 57,8 м² у метро Владыкино</title>
+<meta name="description" content="Апартамент 57,8 м²: две изолированные комнаты и кухня 14 м², корпус 1, 6 этаж, «Аквилон Signal», 100 м до метро «Владыкино». Переуступка от собственника.">
+<meta property="og:title" content="Лот 142 · Аквилон Signal · 57,8 м² у метро Владыкино">
+<meta property="og:description" content="Две комнаты и кухня 14 м², 6 этаж, корпус 1. Переуступка от собственника, за метр ниже прайса застройщика.">
+<meta name="theme-color" content="#0f1110">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --paper:#f3f0e8; --paper-2:#ebe6da; --ink:#151513; --ink-2:#55534d; --ink-3:#8b877d;
-  --line:#d6d0c2; --accent:#d9472b; --accent-ink:#a8321b; --green:#2f6b4f;
-  --sans:"Onest","Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --serif:"Literata",Georgia,"Times New Roman",serif;
-  --wrap:1180px; --r:4px;
+  --bg:#0f1110; --s1:#151816; --s2:#1b1f1c; --line:#262b28; --line-2:#343a36;
+  --ink:#ecebe6; --ink-2:#a6aaa4; --ink-3:#737873;
+  --acc:#e8573a; --acc-ink:#ff8a6e; --dev:#5b93d9; --ok:#5fbf8a;
+  --sans:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --wrap:1200px; --r:6px;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
-body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.55 var(--sans);font-feature-settings:"tnum" 1,"lnum" 1}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;background:var(--bg)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
+body{margin:0;color:var(--ink);font:400 16.5px/1.55 var(--sans);font-feature-settings:"tnum" 1,"lnum" 1;overflow-x:hidden}
 a{color:inherit}
-img,svg{display:block;max-width:100%}
-.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
-h1,h2,h3{font-weight:600;letter-spacing:-.025em;margin:0}
-h2{font-size:clamp(30px,4.2vw,52px);line-height:1.04}
-h3{font-size:20px;line-height:1.25;letter-spacing:-.01em}
+svg{display:block;max-width:100%}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 28px}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.03em}
+h2{font-size:clamp(30px,4.4vw,56px);line-height:1.02}
+h3{font-size:19px;letter-spacing:-.01em;line-height:1.3}
 p{margin:0 0 1em}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.02em;text-transform:uppercase;color:var(--ink-3)}
 .muted{color:var(--ink-2)}
-.small{font-size:14px;line-height:1.45}
-.num{font-variant-numeric:tabular-nums}
-.eyebrow{font-size:13px;font-weight:500;letter-spacing:.02em;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;margin-bottom:22px}
-.eyebrow b{color:var(--accent);font-weight:600}
-section{padding:110px 0;border-top:1px solid var(--line)}
-.sec-head{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:40px;align-items:end;margin-bottom:56px}
-.sec-head p{font-size:18px;color:var(--ink-2);margin:0;max-width:440px}
-.btn{display:inline-flex;align-items:center;gap:10px;height:54px;padding:0 26px;border-radius:var(--r);font:600 16px/1 var(--sans);text-decoration:none;border:1px solid var(--ink);cursor:pointer;transition:background .2s,color .2s,transform .2s}
-.btn-dark{background:var(--ink);color:var(--paper)}
-.btn-dark:hover{background:var(--accent);border-color:var(--accent)}
-.btn-ghost{background:transparent;color:var(--ink)}
-.btn-ghost:hover{background:var(--ink);color:var(--paper)}
-.btn:active{transform:translateY(1px)}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+sup.src{font:500 10px var(--mono);margin-left:2px;vertical-align:super;line-height:0}
+sup.src a{color:var(--ink-3);text-decoration:none;border-bottom:1px dotted var(--ink-3)}
+sup.src a:hover{color:var(--acc-ink);border-color:var(--acc-ink)}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 24px;border-radius:var(--r);font:600 15.5px var(--sans);text-decoration:none;cursor:pointer;border:1px solid var(--line-2);background:transparent;color:var(--ink);transition:background .2s,border-color .2s,color .2s}
+.btn:hover{border-color:var(--ink)}
+.btn-acc{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn-acc:hover{background:#ff6a4b;border-color:#ff6a4b}
 
-/* top bar */
-.top{position:sticky;top:0;z-index:30;background:rgba(243,240,232,.92);backdrop-filter:saturate(1.2) blur(8px);-webkit-backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid transparent;transition:border-color .2s}
-.top.scrolled{border-color:var(--line)}
-.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:20px}
-.logo{font-weight:600;font-size:15px;text-decoration:none;display:flex;gap:10px;align-items:center;white-space:nowrap}
-.logo i{width:10px;height:10px;background:var(--accent);border-radius:50%;display:inline-block}
-.logo span{color:var(--ink-3);font-weight:400}
-.nav{display:flex;gap:26px;font-size:14px}
+.grid-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;opacity:.22;mask-image:radial-gradient(ellipse at 70% 0%,#000 0%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at 70% 0%,#000 0%,transparent 70%)}
+
+.top{position:sticky;top:0;z-index:50;background:rgba(15,17,16,.84);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:18px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 0 rgba(232,87,58,.6);animation:ping 2.6s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 9px rgba(232,87,58,0)}100%{box-shadow:0 0 0 0 rgba(232,87,58,0)}}
+.brand small{font:400 12px var(--mono);color:var(--ink-3);letter-spacing:.04em}
+.nav{display:flex;gap:24px;font-size:14px}
 .nav a{text-decoration:none;color:var(--ink-2)}
-.nav a:hover{color:var(--ink)}
-.top .btn{height:40px;padding:0 16px;font-size:14px}
+.nav a:hover,.nav a.on{color:var(--ink)}
+.top .btn{height:38px;padding:0 14px;font-size:14px}
+.progress{position:absolute;left:0;bottom:-1px;height:1px;background:var(--acc);width:0}
 
-/* hero */
-.hero{padding:56px 0 0;border:0}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:56px;align-items:start}
-.hero h1{font-size:clamp(40px,6.4vw,86px);line-height:.98;letter-spacing:-.04em}
-.hero h1 em{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:-.02em}
-.hero-lead{font-size:20px;line-height:1.5;color:var(--ink-2);max-width:560px;margin:30px 0 36px}
-.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
-.price-card{background:var(--ink);color:var(--paper);padding:30px 30px 26px;border-radius:var(--r);position:relative}
-.price-card .label{font-size:13px;color:#a9a597;margin-bottom:8px}
-.price-card .big{font-size:clamp(40px,4.6vw,58px);font-weight:600;letter-spacing:-.035em;line-height:1}
-.price-card .per{color:#c9c5b8;font-size:15px;margin-top:10px}
-.price-card hr{border:0;border-top:1px solid #3a3934;margin:24px 0}
-.cmp-row{display:flex;justify-content:space-between;gap:12px;font-size:15px;padding:6px 0}
-.cmp-row s{color:#8f8b80}
-.cmp-row .save{color:#ff8f74;font-weight:600}
-.price-card .note{font-size:12.5px;color:#8f8b80;margin-top:16px;line-height:1.45}
-.status{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#d7d3c6;margin-bottom:20px}
-.status i{width:8px;height:8px;border-radius:50%;background:#58c38a;box-shadow:0 0 0 0 rgba(88,195,138,.6);animation:pulse 2.4s infinite}
-@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(88,195,138,0)}100%{box-shadow:0 0 0 0 rgba(88,195,138,0)}}
-.facts{display:grid;grid-template-columns:repeat(5,1fr);margin-top:80px;border-top:1px solid var(--ink)}
-.fact{padding:22px 18px 26px 0;border-right:1px solid var(--line)}
-.fact+.fact{padding-left:18px}
-.fact:last-child{border-right:0}
-.fact b{display:block;font-size:clamp(26px,3vw,38px);font-weight:600;letter-spacing:-.03em;line-height:1.05}
-.fact span{font-size:14px;color:var(--ink-2)}
+.ticker{border-bottom:1px solid var(--line);overflow:hidden;white-space:nowrap;background:var(--s1)}
+.ticker-in{display:inline-flex;gap:44px;padding:10px 0;animation:tick 70s linear infinite}
+.ticker:hover .ticker-in{animation-play-state:paused}
+@keyframes tick{to{transform:translateX(-50%)}}
+.tk{font:400 12.5px var(--mono);color:var(--ink-2);letter-spacing:.02em}
+.tk b{color:var(--ink);font-weight:500;margin:0 6px}
+.tk i{font-style:normal;color:var(--ink-3)}
 
-/* plan */
-.plan-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:48px;align-items:start}
-.plan-box{background:#fbfaf6;border:1px solid var(--line);border-radius:var(--r);padding:28px}
-.plan-tabs{display:inline-flex;border:1px solid var(--ink);border-radius:var(--r);overflow:hidden;margin-bottom:22px}
-.plan-tabs button{font:500 14px var(--sans);white-space:nowrap;padding:10px 16px;border:0;background:transparent;color:var(--ink);cursor:pointer}
-.plan-tabs button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
-#plan .room{fill:#fbfaf6;stroke:none;cursor:pointer;transition:fill .2s}
-#plan .room:hover,#plan .room.on{fill:#f6dcd3}
-#plan .wall{fill:none;stroke:var(--ink);stroke-width:7;stroke-linejoin:miter}
-#plan .iwall{stroke:var(--ink);stroke-width:3.5}
-#plan .win{stroke:#fbfaf6;stroke-width:5}
-#plan .win2{stroke:var(--ink);stroke-width:1}
+.hero{padding:64px 0 40px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:40px;align-items:center}
+.tagline{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.chip{font:500 12px var(--mono);letter-spacing:.03em;text-transform:uppercase;padding:6px 10px;border:1px solid var(--line-2);border-radius:999px;color:var(--ink-2)}
+.chip.acc{border-color:rgba(232,87,58,.5);color:var(--acc-ink)}
+.hero h1{font-size:clamp(42px,6.6vw,92px);line-height:.96;letter-spacing:-.045em}
+.hero h1 .thin{color:var(--ink-3);font-weight:500}
+.lead{font-size:19px;line-height:1.5;color:var(--ink-2);max-width:540px;margin:26px 0 30px}
+.price-row{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px 34px;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:28px}
+.price-row .big{font-size:clamp(34px,4vw,52px);font-weight:600;letter-spacing:-.035em;line-height:1}
+.price-row .k{display:block;margin-bottom:8px}
+.price-row .v{font-size:20px;font-weight:500}
+.price-row .v.acc{color:var(--acc-ink)}
+.ctas{display:flex;gap:12px;flex-wrap:wrap}
+
+.tower-box{position:relative;aspect-ratio:1/1.08;max-height:640px;width:100%}
+#tower{width:100%;height:100%;overflow:visible}
+#tower .fl{cursor:pointer}
+.hud{position:absolute;font:400 11.5px/1.5 var(--mono);color:var(--ink-2);letter-spacing:.03em;text-transform:uppercase;pointer-events:none}
+.hud b{display:block;color:var(--ink);font-weight:500;font-size:13px}
+.hud.h1{top:4%;right:0;text-align:right}
+.hud.h2{bottom:8%;left:0}
+.floor-tip{position:absolute;left:0;top:0;transform:translate(-50%,-130%);background:var(--ink);color:var(--bg);font:500 12px var(--mono);padding:5px 8px;border-radius:4px;pointer-events:none;opacity:0;transition:opacity .15s;white-space:nowrap}
+
+section{padding:110px 0;border-top:1px solid var(--line);position:relative}
+.sh{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:40px;align-items:end;margin-bottom:52px}
+.sh .idx{display:block;margin-bottom:18px}
+.sh p{color:var(--ink-2);font-size:17.5px;margin:0;max-width:440px}
+
+.spec{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--s1)}
+.spec > div{padding:22px 22px 24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-height:142px;display:flex;flex-direction:column;justify-content:space-between;gap:14px}
+.spec > div:nth-child(4n){border-right:0}
+.spec > div:nth-last-child(-n+4){border-bottom:0}
+.spec b{font-size:clamp(24px,2.7vw,34px);font-weight:600;letter-spacing:-.03em;line-height:1.05}
+.spec .d{font-size:13.5px;color:var(--ink-2);margin-top:6px;display:block}
+
+.plan-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:40px;align-items:start}
+.panel{background:var(--s1);border:1px solid var(--line);border-radius:var(--r);padding:24px}
+.seg{display:inline-flex;border:1px solid var(--line-2);border-radius:var(--r);overflow:hidden;flex-wrap:wrap}
+.seg button{font:500 13.5px var(--sans);padding:9px 14px;border:0;background:transparent;color:var(--ink-2);cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.seg-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+#plan .room{fill:var(--s2);cursor:pointer;transition:fill .2s}
+#plan .room:hover,#plan .room.on{fill:rgba(232,87,58,.18)}
+#plan .wall{fill:none;stroke:var(--ink);stroke-width:6}
+#plan .iw{stroke:var(--ink);stroke-width:3}
 #plan .door{fill:none;stroke:var(--ink-3);stroke-width:1}
+#plan .win{stroke:var(--dev);stroke-width:4}
 #plan text{font-family:var(--sans);pointer-events:none}
-#plan .rn{font-size:13px;fill:var(--ink-2)}
+#plan .rn{font-size:12.5px;fill:var(--ink-2)}
 #plan .ra{font-size:20px;font-weight:600;fill:var(--ink)}
-#plan .furn{fill:none;stroke:#9c978b;stroke-width:1.2;opacity:0;transition:opacity .35s}
+#plan .furn{fill:none;stroke:var(--ink-3);stroke-width:1.2;opacity:0;transition:opacity .35s}
 #plan.f-life .furn.life,#plan.f-rent .furn.rent{opacity:1}
-#plan .dim{font-size:11px;fill:var(--ink-3)}
-.plan-caption{font-size:13px;color:var(--ink-3);margin-top:14px}
-.room-info{border-top:1px solid var(--ink);padding-top:22px}
-.room-info .ri-area{font-size:64px;font-weight:600;letter-spacing:-.04em;line-height:1}
-.room-info .ri-area small{font-size:24px;font-weight:500}
-.room-info h3{margin:14px 0 10px}
-.room-list{list-style:none;padding:0;margin:30px 0 0;border-top:1px solid var(--line)}
-.room-list li{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px;cursor:pointer}
-.room-list li:hover,.room-list li.on{color:var(--accent-ink)}
-.room-list li.total{font-weight:600;cursor:default;color:var(--ink)}
+#plan .dimln{stroke:var(--ink-3);stroke-width:1}
+#plan .dimt{font:400 10.5px var(--mono);fill:var(--ink-3)}
+#plan .dims{opacity:0;transition:opacity .3s}
+#plan.show-dims .dims{opacity:1}
+.ri{border-top:1px solid var(--line-2);padding-top:22px}
+.ri .area{font-size:68px;font-weight:600;letter-spacing:-.045em;line-height:1}
+.ri .area small{font-size:24px;font-weight:500;color:var(--ink-2)}
+.ri h3{margin:12px 0 8px}
+.rlist{list-style:none;margin:26px 0 0;padding:0;border-top:1px solid var(--line)}
+.rlist li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px;cursor:pointer}
+.rlist li .bar{flex:1;height:3px;background:var(--line);margin:0 10px;border-radius:2px;overflow:hidden}
+.rlist li .bar i{display:block;height:100%;background:var(--ink-3);transition:background .2s}
+.rlist li:hover .bar i,.rlist li.on .bar i{background:var(--acc)}
+.rlist li.on{color:var(--acc-ink)}
+.rlist li.total{cursor:default;font-weight:600}
 
-/* compare */
-.compare{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px}
-.bars{display:flex;flex-direction:column;gap:20px}
-.bar{display:grid;grid-template-columns:190px 1fr;gap:18px;align-items:center}
-.bar .bl{font-size:14px;line-height:1.3}
-.bar .bl small{display:block;color:var(--ink-3)}
-.bar .track{height:46px;position:relative}
-.bar .fill{height:100%;background:var(--paper-2);border-radius:2px;width:0;transition:width 1s cubic-bezier(.2,.7,.2,1);display:flex;align-items:center;justify-content:flex-end;padding-right:12px;font-weight:600;font-size:15px;white-space:nowrap}
-.bar.me .fill{background:var(--accent);color:#fff}
-.bar.dev .fill{background:#cfc8b8}
-.saving{background:var(--ink);color:var(--paper);border-radius:var(--r);padding:34px}
-.saving .k{font-size:14px;color:#a9a597}
-.saving .v{font-size:clamp(44px,5vw,68px);font-weight:600;letter-spacing:-.04em;line-height:1;margin:10px 0 18px}
-.saving ul{margin:22px 0 0;padding:0;list-style:none;font-size:15px;color:#d7d3c6}
-.saving li{padding:10px 0;border-top:1px solid #3a3934}
-.saving li b{color:var(--paper);font-weight:500}
+.chart-wrap{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:40px;align-items:start}
+.chart-panel{position:relative}
+#scatter text{font-family:var(--mono)}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font:500 12.5px/1.45 var(--sans);padding:9px 11px;border-radius:5px;opacity:0;transform:translate(-50%,calc(-100% - 12px));transition:opacity .12s;white-space:nowrap;z-index:5}
+.tip b{font-weight:600}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--ink-2);margin-top:12px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;vertical-align:-1px}
+.table-toggle{background:none;border:0;color:var(--ink-2);font:500 13px var(--sans);text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:0;margin-top:12px}
+.dtable{width:100%;border-collapse:collapse;font-size:14px;margin-top:14px;display:none}
+.dtable.show{display:table}
+.dtable th,.dtable td{text-align:left;padding:9px 10px 9px 0;border-bottom:1px solid var(--line)}
+.dtable th{font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3)}
+.dtable tr.me td{color:var(--acc-ink);font-weight:600}
+.delta{border:1px solid var(--line);border-radius:var(--r);background:var(--s1);padding:28px}
+.delta .num{font-size:clamp(44px,5vw,66px);font-weight:600;letter-spacing:-.045em;line-height:1;margin:10px 0 8px}
+.delta ul{list-style:none;padding:0;margin:22px 0 0}
+.delta li{padding:13px 0;border-top:1px solid var(--line);font-size:15px;color:var(--ink-2)}
+.delta li b{color:var(--ink);font-weight:500}
 
-/* calculators */
-.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:0;border:1px solid var(--ink);border-radius:var(--r);overflow:hidden;background:#fbfaf6}
-.calc-in{padding:36px;border-right:1px solid var(--ink)}
-.calc-out{padding:36px;background:var(--paper)}
-.field{margin-bottom:30px}
-.field label{display:flex;justify-content:space-between;font-size:14px;color:var(--ink-2);margin-bottom:12px;gap:12px}
-.field label output{color:var(--ink);font-weight:600;font-size:18px}
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;cursor:pointer}
-input[type=range]::-webkit-slider-runnable-track{height:2px;background:var(--ink)}
-input[type=range]::-moz-range-track{height:2px;background:var(--ink)}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--accent);border:3px solid #fbfaf6;box-shadow:0 0 0 1px var(--ink);margin-top:-10px}
-input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--accent);border:3px solid #fbfaf6;box-shadow:0 0 0 1px var(--ink)}
-.seg{display:flex;flex-wrap:wrap;gap:8px}
-.seg button{font:500 14px var(--sans);padding:10px 14px;border:1px solid var(--line);background:transparent;border-radius:var(--r);cursor:pointer;color:var(--ink)}
-.seg button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--paper)}
-.out-big{font-size:clamp(36px,4vw,54px);font-weight:600;letter-spacing:-.035em;line-height:1}
-.out-k{font-size:14px;color:var(--ink-2);margin-bottom:8px}
-.split{display:flex;height:14px;border-radius:2px;overflow:hidden;margin:26px 0 12px;background:var(--paper-2)}
-.split span{display:block;height:100%;transition:width .5s}
-.split .s1{background:var(--accent)}
-.split .s2{background:var(--ink)}
-.legend{display:flex;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--ink-2)}
-.legend i{display:inline-block;width:10px;height:10px;margin-right:6px;vertical-align:-1px}
-.sched{margin-top:28px;border-top:1px solid var(--ink)}
-.sched div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px}
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.calc-in{padding:32px;background:var(--s1);border-right:1px solid var(--line)}
+.calc-out{padding:32px;background:var(--bg)}
+.field{margin-bottom:28px}
+.field:last-child{margin-bottom:0}
+.field .lab{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:10px}
+.field output{font-weight:600;font-size:19px;letter-spacing:-.01em}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:30px;background:transparent;cursor:pointer;--p:50%}
+input[type=range]::-webkit-slider-runnable-track{height:3px;border-radius:2px;background:linear-gradient(90deg,var(--acc) var(--p),var(--line-2) var(--p))}
+input[type=range]::-moz-range-track{height:3px;border-radius:2px;background:var(--line-2)}
+input[type=range]::-moz-range-progress{height:3px;background:var(--acc)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--ink);border:4px solid var(--acc);margin-top:-8.5px}
+input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:var(--ink);border:4px solid var(--acc)}
+.minmax{display:flex;justify-content:space-between;font:400 11.5px var(--mono);color:var(--ink-3)}
+.o-big{font-size:clamp(36px,4.2vw,56px);font-weight:600;letter-spacing:-.04em;line-height:1}
+.stack{display:flex;height:12px;border-radius:3px;overflow:hidden;margin:24px 0 10px;background:var(--bg);gap:2px}
+.stack span{display:block;height:100%;transition:width .5s cubic-bezier(.2,.7,.2,1)}
+.stack .a{background:var(--acc)}
+.stack .b{background:var(--dev)}
+.lg{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--ink-2)}
+.lg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:7px;vertical-align:-1px}
+.sched{margin-top:24px;border-top:1px solid var(--line-2)}
+.sched div{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14.5px}
 .sched div span:first-child{color:var(--ink-2)}
 .sched div.hl{font-weight:600}
 .sched div.hl span:first-child{color:var(--ink)}
+.cmpbars{margin-top:22px;display:grid;gap:12px}
+.cmpbar{display:grid;grid-template-columns:150px 1fr 62px;gap:12px;align-items:center;font-size:13.5px}
+.cmpbar .t{height:10px;background:var(--line);border-radius:2px;overflow:hidden}
+.cmpbar .t i{display:block;height:100%;border-radius:0 2px 2px 0;transition:width .5s}
+.cmpbar b{font-weight:600;text-align:right}
 
-/* location */
-.loc-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:56px}
-.line-map{background:#fbfaf6;border:1px solid var(--line);border-radius:var(--r);padding:28px 28px 18px}
-.line-map svg text{font-family:var(--sans)}
-.trip{display:grid;grid-template-columns:72px 1fr;gap:16px;padding:16px 0;border-bottom:1px solid var(--line);align-items:baseline}
-.trip b{font-size:28px;font-weight:600;letter-spacing:-.03em}
-.trip b small{font-size:14px;font-weight:500;color:var(--ink-2);margin-left:2px}
-.trip span{font-size:15px}
-.trip span small{display:block;color:var(--ink-3);font-size:13px}
-.honest{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:56px}
-.honest > div{border-top:2px solid var(--ink);padding-top:18px}
-.honest > div.minus{border-color:var(--ink-3)}
-.honest ul{margin:12px 0 0;padding:0;list-style:none}
-.honest li{padding:9px 0 9px 22px;position:relative;font-size:15.5px;border-bottom:1px solid var(--line)}
-.honest li:before{content:"+";position:absolute;left:0;color:var(--green);font-weight:600}
-.honest .minus li:before{content:"−";color:var(--ink-3)}
+.loc{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:40px}
+#metro text{font-family:var(--sans)}
+.trip{display:grid;grid-template-columns:96px 1fr;gap:16px;align-items:baseline;padding:15px 0;border-bottom:1px solid var(--line)}
+.trip b{font-size:30px;font-weight:600;letter-spacing:-.03em}
+.trip b small{font-size:13px;color:var(--ink-2);font-weight:500;margin-left:3px}
+.trip span small{display:block;color:var(--ink-3);font-size:13px;margin-top:2px}
+.pm{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:52px}
+.pm > div{border:1px solid var(--line);border-radius:var(--r);padding:22px;background:var(--s1)}
+.pm ul{list-style:none;padding:0;margin:12px 0 0}
+.pm li{padding:9px 0 9px 22px;position:relative;border-bottom:1px solid var(--line);font-size:15px;color:var(--ink-2)}
+.pm li:last-child{border-bottom:0}
+.pm li:before{content:"+";position:absolute;left:0;color:var(--ok);font-family:var(--mono)}
+.pm .minus li:before{content:"−";color:var(--ink-3)}
 
-/* apartments status */
-.status-tbl{width:100%;border-collapse:collapse;font-size:15.5px}
-.status-tbl th,.status-tbl td{text-align:left;padding:18px 18px 18px 0;border-bottom:1px solid var(--line);vertical-align:top}
-.status-tbl th{font-size:13px;font-weight:500;color:var(--ink-3);border-bottom:1px solid var(--ink)}
-.status-tbl td:first-child{font-weight:600;width:22%}
-.status-tbl td:nth-child(2){width:39%}
-.tag{display:inline-block;font-size:12px;font-weight:600;padding:3px 8px;border-radius:2px;margin-bottom:6px}
-.tag.ok{background:#dcebe2;color:var(--green)}
-.tag.mid{background:var(--paper-2);color:var(--ink-2)}
+.st{width:100%;border-collapse:collapse;font-size:15px}
+.st th,.st td{text-align:left;padding:18px 18px 18px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.st th{font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);border-bottom-color:var(--line-2)}
+.st td:first-child{font-weight:600;width:20%}
+.st td:nth-child(2){width:38%;color:var(--ink-2)}
+.tag{display:inline-block;font:500 10.5px var(--mono);text-transform:uppercase;letter-spacing:.05em;padding:3px 7px;border-radius:3px;margin-bottom:6px}
+.tag.ok{background:rgba(95,191,138,.14);color:var(--ok)}
+.tag.warn{background:rgba(232,87,58,.14);color:var(--acc-ink)}
 
-/* rent */
-.rent-kpis{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:8px}
-.rent-kpis > div{border-top:1px solid var(--ink);padding-top:14px}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.step{padding:24px 20px 26px;border-right:1px solid var(--line);background:var(--s1)}
+.step:last-child{border-right:0}
+.step .n{font:500 12px var(--mono);color:var(--acc-ink)}
+.step h3{font-size:17px;margin:14px 0 8px}
+.step p{font-size:14px;color:var(--ink-2);margin:0 0 14px}
 
-/* steps */
-.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;counter-reset:s;border-top:1px solid var(--ink)}
-.step{padding:24px 22px 0 0;position:relative}
-.step+.step{padding-left:22px;border-left:1px solid var(--line)}
-.step .n{font-family:var(--serif);font-style:italic;font-size:44px;line-height:1;color:var(--accent)}
-.step h3{font-size:17px;margin:16px 0 8px}
-.step p{font-size:14.5px;color:var(--ink-2)}
-.step .when{font-size:12.5px;color:var(--ink-3)}
-
-/* faq */
-.faq{border-top:1px solid var(--ink);max-width:900px}
+.faq{max-width:900px;border-top:1px solid var(--line-2)}
 .faq details{border-bottom:1px solid var(--line)}
-.faq summary{list-style:none;cursor:pointer;padding:22px 40px 22px 0;font-size:19px;font-weight:500;position:relative;letter-spacing:-.01em}
+.faq summary{list-style:none;cursor:pointer;padding:22px 44px 22px 0;font-size:18.5px;font-weight:500;position:relative}
 .faq summary::-webkit-details-marker{display:none}
-.faq summary:after{content:"";position:absolute;right:6px;top:50%;width:12px;height:12px;border-right:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);transform:translateY(-70%) rotate(45deg);transition:transform .25s}
-.faq details[open] summary:after{transform:translateY(-30%) rotate(-135deg)}
+.faq summary:after{content:"+";position:absolute;right:4px;top:18px;font:400 24px var(--mono);color:var(--ink-3);transition:transform .25s}
+.faq details[open] summary:after{transform:rotate(45deg)}
 .faq .a{padding:0 0 24px;color:var(--ink-2);max-width:760px}
 
-/* contact */
-.contact{background:var(--ink);color:var(--paper);border:0}
-.contact h2{color:var(--paper)}
-.contact .muted{color:#a9a597}
-.c-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px}
-.form .row{margin-bottom:18px}
-.form label{display:block;font-size:13px;color:#a9a597;margin-bottom:8px}
-.form input,.form select,.form textarea{width:100%;background:transparent;border:0;border-bottom:1px solid #55534d;color:var(--paper);font:400 18px var(--sans);padding:10px 0;border-radius:0}
-.form select option{color:var(--ink)}
-.form input:focus,.form select:focus,.form textarea:focus{outline:0;border-color:var(--accent)}
-.form .chips{display:flex;flex-wrap:wrap;gap:8px}
-.form .chips button{font:500 14px var(--sans);padding:9px 14px;border:1px solid #55534d;background:transparent;color:var(--paper);border-radius:var(--r);cursor:pointer}
-.form .chips button[aria-pressed="true"]{background:var(--paper);color:var(--ink);border-color:var(--paper)}
-.form .send{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
-.contact .btn-dark{background:var(--accent);border-color:var(--accent);color:#fff}
-.contact .btn-dark:hover{background:#fff;color:var(--ink);border-color:#fff}
-.contact .btn-ghost{color:var(--paper);border-color:#77746b}
-.contact .btn-ghost:hover{background:var(--paper);color:var(--ink)}
-.direct{border-top:1px solid #3a3934;margin-top:40px;padding-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.direct a{text-decoration:none;font-size:22px;font-weight:600;letter-spacing:-.02em}
-.direct small{display:block;font-size:13px;color:#a9a597;font-weight:400;letter-spacing:0;margin-bottom:4px}
-footer{background:var(--ink);color:#8f8b80;font-size:12.5px;line-height:1.55;padding:0 0 110px}
-footer .wrap{border-top:1px solid #3a3934;padding-top:28px}
+.srcs{list-style:none;margin:0;padding:0;columns:2;column-gap:40px}
+.srcs li{break-inside:avoid;padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--ink-2);display:grid;grid-template-columns:38px 1fr;gap:6px}
+.srcs li:target{background:rgba(232,87,58,.1)}
+.srcs li .i{font:500 12px var(--mono);color:var(--ink-3)}
+.srcs a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line-2);word-break:break-word}
+.srcs a:hover{border-color:var(--acc)}
+.srcs .dt{font:400 11.5px var(--mono);color:var(--ink-3)}
 
-/* mobile bar */
+.contact{background:var(--s1)}
+.c-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:60px}
+.form .row{margin-bottom:20px}
+.form label{display:block;margin-bottom:8px}
+.form input,.form textarea{width:100%;background:transparent;border:0;border-bottom:1px solid var(--line-2);color:var(--ink);font:400 18px var(--sans);padding:10px 0;border-radius:0;resize:vertical}
+.form input:focus,.form textarea:focus{outline:0;border-color:var(--acc)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{font:500 13.5px var(--sans);padding:9px 13px;border:1px solid var(--line-2);background:transparent;color:var(--ink-2);border-radius:999px;cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.preview{font:400 13px/1.5 var(--mono);color:var(--ink-2);border:1px dashed var(--line-2);border-radius:var(--r);padding:14px;margin-top:8px;white-space:pre-wrap}
+.direct{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px;padding-top:24px;border-top:1px solid var(--line)}
+.direct a{text-decoration:none;font-size:21px;font-weight:600;letter-spacing:-.02em}
+.direct small{display:block;margin-bottom:6px}
+footer{padding:36px 0 110px;font-size:12.5px;color:var(--ink-3);border-top:1px solid var(--line);line-height:1.55}
+
+.js .rv{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
+.js .rv.in{opacity:1;transform:none}
 .mbar{display:none}
 
-/* reveal */
-.rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
-.rv.in{opacity:1;transform:none}
-.no-js .rv{opacity:1;transform:none}
-
-@media (max-width:1020px){
+@media (max-width:1040px){
   .nav{display:none}
-  .hero-grid,.plan-grid,.compare,.loc-grid,.c-grid,.sec-head{grid-template-columns:1fr}
-  .sec-head{gap:18px}
-  .facts{grid-template-columns:repeat(3,1fr)}
-  .fact:nth-child(3){border-right:0}
-  .fact:nth-child(4){padding-left:0}
-  .fact:nth-child(n+4){border-top:1px solid var(--line)}
+  .hero-grid,.plan-grid,.chart-wrap,.loc,.c-grid,.sh{grid-template-columns:1fr}
+  .sh{gap:16px}
+  .tower-box{max-width:520px;margin:0 auto}
+  .spec{grid-template-columns:repeat(2,1fr)}
+  .spec > div:nth-child(4n){border-right:1px solid var(--line)}
+  .spec > div:nth-child(2n){border-right:0}
+  .spec > div:nth-last-child(-n+4){border-bottom:1px solid var(--line)}
+  .spec > div:nth-last-child(-n+2){border-bottom:0}
   .steps{grid-template-columns:1fr 1fr}
-  .step{padding:22px 18px 22px 0!important;border-left:0!important;border-bottom:1px solid var(--line)}
-  .step:nth-child(even){padding-left:18px!important;border-left:1px solid var(--line)!important}
+  .step{border-bottom:1px solid var(--line)}
+  .step:nth-child(2n){border-right:0}
   .calc{grid-template-columns:1fr}
-  .calc-in{border-right:0;border-bottom:1px solid var(--ink)}
+  .calc-in{border-right:0;border-bottom:1px solid var(--line)}
+  .srcs{columns:1}
 }
 @media (max-width:640px){
   body{font-size:16px}
   .wrap{padding:0 18px}
   section{padding:76px 0}
-  .hero{padding-top:30px}
-  .hero-lead{font-size:18px}
-  .top .btn{display:none}
-  .facts{grid-template-columns:1fr 1fr;margin-top:56px}
-  .fact{padding:18px 12px 20px 0!important;border-right:0!important;border-top:1px solid var(--line)}
-  .fact:nth-child(even){padding-left:14px!important;border-left:1px solid var(--line)}
-  .fact:first-child,.fact:nth-child(2){border-top:0}
-  .fact:last-child{grid-column:1/-1;border-left:0;padding-left:0!important}
-  .bar{grid-template-columns:1fr;gap:6px}
-  .honest,.direct,.rent-kpis{grid-template-columns:1fr}
+  .hero{padding-top:36px}
+  .lead{font-size:17.5px}
+  .top .btn,.brand small{display:none}
+  .spec > div{padding:16px 14px;min-height:124px}
+  .pm,.direct{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr}
-  .step,.step:nth-child(even){padding:20px 0!important;border-left:0!important}
-  .calc-in,.calc-out,.plan-box,.saving,.price-card{padding:22px}
-  .status-tbl thead{display:none}
-  .status-tbl tr{display:block;border-bottom:1px solid var(--line);padding:14px 0}
-  .status-tbl td{display:block;width:auto!important;border:0;padding:4px 0}
-  .faq summary{font-size:17px}
-  .plan-tabs button{padding:9px 11px;font-size:13px}
-  .mbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:40;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(243,240,232,.96);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .3s}
+  .step{border-right:0!important}
+  .calc-in,.calc-out,.panel,.delta{padding:20px}
+  .st thead{display:none}
+  .st tr{display:block;padding:14px 0;border-bottom:1px solid var(--line)}
+  .st td{display:block;width:auto!important;border:0;padding:3px 0}
+  .cmpbar{grid-template-columns:110px 1fr 54px}
+  .seg button{padding:8px 11px;font-size:13px}
+  .trip{grid-template-columns:82px 1fr}
+  .mbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(15,17,16,.95);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .3s}
   .mbar.show{transform:none}
-  .mbar .btn{height:48px;justify-content:center;padding:0 10px;font-size:15px}
+  .mbar .btn{height:48px}
 }
 </style>
 </head>
-<body class="no-js">
+<body>
+<div class="grid-bg" aria-hidden="true"></div>
 
-<header class="top" id="top">
+<header class="top">
   <div class="wrap">
-    <a class="logo" href="#"><i></i>Аквилон Signal, лот 142 <span>· переуступка</span></a>
+    <a class="brand" href="#"><span class="dot"></span>Лот 142 <small>AKVILON SIGNAL · К1 · ЭТ 6</small></a>
     <nav class="nav" aria-label="Разделы">
-      <a href="#plan-sec">Планировка</a>
-      <a href="#price">Цена</a>
-      <a href="#deal">Сделка</a>
-      <a href="#place">Район</a>
-      <a href="#faq">Вопросы</a>
+      <a href="#spec">Лот</a><a href="#plan-sec">Планировка</a><a href="#market">Цена</a><a href="#deal">Сделка</a><a href="#place">Район</a><a href="#sources">Источники</a>
     </nav>
-    <a class="btn btn-dark" href="#contact">Записаться на показ</a>
+    <a class="btn btn-acc" href="#contact">Записаться на показ</a>
   </div>
+  <div class="progress" id="progress"></div>
 </header>
 
-<main>
-<section class="hero">
-  <div class="wrap">
-    <div class="hero-grid">
-      <div>
-        <div class="eyebrow"><b>Переуступка от собственника</b> · Москва, СВАО, Сигнальный проезд, 12</div>
-        <h1>Две комнаты и&nbsp;кухня 14&nbsp;м² в&nbsp;двух минутах от&nbsp;<em>Владыкино</em></h1>
-        <p class="hero-lead">Апартамент 57,8 м² на 6 этаже первого корпуса «Аквилон Signal». Корпус для жизни, без отельного управления. Отдаю дешевле, чем такая же площадь сейчас стоит у застройщика.</p>
-        <div class="hero-ctas">
-          <a class="btn btn-dark" href="#contact">Получить документы по лоту</a>
-          <a class="btn btn-ghost" href="#plan-sec">Смотреть планировку</a>
-        </div>
-      </div>
-      <aside class="price-card rv" aria-label="Цена">
-        <div class="status"><i></i><span id="statusText">В продаже</span></div>
-        <div class="label">Цена лота</div>
-        <div class="big num" data-bind="price"></div>
-        <div class="per num" data-bind="ppm"></div>
-        <hr>
-        <div class="cmp-row"><span>Похожий лот у застройщика</span><s class="num" data-bind="devPrice"></s></div>
-        <div class="cmp-row"><span>Разница</span><span class="save num" data-bind="saving"></span></div>
-        <p class="note" data-bind="devNote"></p>
-      </aside>
-    </div>
+<div class="ticker" aria-label="Рыночные показатели"><div class="ticker-in" id="ticker"></div></div>
 
-    <div class="facts">
-      <div class="fact"><b>57,8 м²</b><span>общая площадь</span></div>
-      <div class="fact"><b>14,0 м²</b><span>отдельная кухня</span></div>
-      <div class="fact"><b>6 / 23</b><span>этаж, корпус 1</span></div>
-      <div class="fact"><b>2,87 м</b><span>потолки</span></div>
-      <div class="fact"><b>200 м</b><span>до метро и МЦК</span></div>
+<main>
+<section class="hero" style="border-top:0">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="tagline"><span class="chip acc">Переуступка от собственника</span><span class="chip">ДДУ · 214-ФЗ · эскроу</span><span class="chip">White box</span></div>
+      <h1>57,8&nbsp;м² <span class="thin">у&nbsp;метро</span> Владыкино</h1>
+      <p class="lead">Две изолированные комнаты и отдельная кухня 14 м² на 6 этаже первого корпуса «Аквилон Signal». Корпус для жизни, без отельного управления.</p>
+      <div class="price-row">
+        <div><span class="mono k">Цена лота</span><span class="big" data-b="price"></span></div>
+        <div><span class="mono k">За м²</span><span class="v" data-b="ppm"></span></div>
+        <div><span class="mono k">К прайсу застройщика</span><span class="v acc" data-b="gapShort" data-html="1"></span></div>
+      </div>
+      <div class="ctas">
+        <a class="btn btn-acc" href="#contact">Получить ДДУ и график платежей</a>
+        <a class="btn" href="#deal">Рассчитать свою сумму</a>
+      </div>
     </div>
+    <div class="tower-box rv" id="towerBox">
+      <svg id="tower" viewBox="0 0 520 560" role="img" aria-label="Схема корпуса 1, выделен 6 этаж из 23"></svg>
+      <div class="hud h1"><span>Корпус 1 · for life</span><b>Этаж 6 из 23</b><span>лот 142 · 57,8 м²</span></div>
+      <div class="hud h2"><span>до метро / МЦК</span><b data-b="metroDist" data-html="1"></b></div>
+      <div class="floor-tip" id="floorTip"></div>
+    </div>
+  </div>
+</section>
+
+<section id="spec">
+  <div class="wrap">
+    <div class="sh"><div><span class="mono idx">01 / Паспорт лота</span><h2>Всё про лот на&nbsp;одном экране</h2></div><p>Параметры лота — по договору участия в долевом строительстве. Параметры проекта — с номером источника, список с датами внизу страницы.</p></div>
+    <div class="spec rv" id="specGrid"></div>
   </div>
 </section>
 
 <section id="plan-sec">
   <div class="wrap">
-    <div class="sec-head">
-      <div><div class="eyebrow">01 · Планировка</div><h2>Комнаты не&nbsp;проходные, кухня не&nbsp;в&nbsp;гостиной</h2></div>
-      <p>В «Сигнале» в основном студии и евро-форматы. Две отдельные комнаты плюс кухня 14 м² встречаются в проекте редко, а на нижних этажах первого корпуса таких почти не осталось.</p>
-    </div>
+    <div class="sh"><div><span class="mono idx">02 / Планировка</span><h2>Ни одной проходной комнаты</h2></div><p>Каждая комната открывается в прихожую. Можно жить семьёй, сдавать целиком или по комнатам.</p></div>
     <div class="plan-grid">
-      <div class="plan-box rv">
-        <div class="plan-tabs" role="group" aria-label="Расстановка мебели">
-          <button type="button" data-f="none" aria-pressed="true">Без мебели</button>
-          <button type="button" data-f="life" aria-pressed="false">Для себя</button>
-          <button type="button" data-f="rent" aria-pressed="false">Под сдачу</button>
+      <div class="panel rv">
+        <div class="seg-row">
+          <div class="seg" role="group" aria-label="Мебель">
+            <button type="button" data-f="none" aria-pressed="true">Пусто</button>
+            <button type="button" data-f="life" aria-pressed="false">Для себя</button>
+            <button type="button" data-f="rent" aria-pressed="false">Под сдачу</button>
+          </div>
+          <div class="seg" role="group" aria-label="Размеры"><button type="button" id="dimBtn" aria-pressed="false">Подписи</button></div>
         </div>
-        <svg id="plan" viewBox="0 0 680 380" role="img" aria-label="Схема планировки апартамента 57,8 квадратных метра">
-          <!-- rooms: scale 60px per metre, origin 26,26 -->
+        <svg id="plan" viewBox="0 0 680 400" role="img" aria-label="Схема планировки 57,8 квадратных метра">
           <rect class="room" data-r="r1" x="26" y="26" width="234" height="252"/>
           <rect class="room" data-r="k"  x="260" y="26" width="200" height="252"/>
           <rect class="room" data-r="r2" x="460" y="26" width="193" height="252"/>
           <rect class="room" data-r="h"  x="26" y="278" width="424" height="80"/>
           <rect class="room" data-r="b"  x="450" y="278" width="203" height="80"/>
-
-          <!-- furniture: life -->
           <g class="furn life">
             <rect x="60" y="60" width="96" height="120" rx="3"/><rect x="66" y="64" width="38" height="20" rx="3"/><rect x="112" y="64" width="38" height="20" rx="3"/>
             <rect x="186" y="60" width="50" height="34"/><rect x="40" y="214" width="150" height="40"/>
             <rect x="300" y="60" width="130" height="30"/><rect x="306" y="166" width="90" height="56" rx="28"/>
-            <rect x="490" y="60" width="130" height="50" rx="4"/><rect x="520" y="160" width="80" height="44"/><rect x="600" y="228" width="40" height="40"/>
-            <rect x="470" y="300" width="80" height="40" rx="18"/><rect x="590" y="296" width="44" height="48"/>
-            <rect x="40" y="292" width="190" height="34"/>
+            <rect x="490" y="60" width="130" height="50" rx="4"/><rect x="520" y="160" width="80" height="44"/>
+            <rect x="470" y="300" width="80" height="40" rx="18"/><rect x="590" y="296" width="44" height="48"/><rect x="40" y="292" width="190" height="34"/>
           </g>
-          <!-- furniture: rent (two rooms with beds) -->
           <g class="furn rent">
             <rect x="60" y="60" width="96" height="120" rx="3"/><rect x="186" y="60" width="50" height="34"/><rect x="40" y="226" width="110" height="34"/>
             <rect x="300" y="60" width="130" height="30"/><rect x="320" y="150" width="80" height="80" rx="40"/>
             <rect x="500" y="60" width="96" height="120" rx="3"/><rect x="616" y="60" width="26" height="34"/><rect x="480" y="226" width="110" height="34"/>
-            <rect x="470" y="300" width="80" height="40" rx="18"/><rect x="590" y="296" width="44" height="48"/>
-            <rect x="40" y="292" width="140" height="34"/>
+            <rect x="470" y="300" width="80" height="40" rx="18"/><rect x="590" y="296" width="44" height="48"/><rect x="40" y="292" width="140" height="34"/>
           </g>
-
-          <!-- walls -->
           <rect class="wall" x="26" y="26" width="627" height="332"/>
-          <line class="iwall" x1="260" y1="26" x2="260" y2="250"/>
-          <line class="iwall" x1="460" y1="26" x2="460" y2="250"/>
-          <line class="iwall" x1="26" y1="278" x2="200" y2="278"/>
-          <line class="iwall" x1="244" y1="278" x2="318" y2="278"/>
-          <line class="iwall" x1="362" y1="278" x2="500" y2="278"/>
-          <line class="iwall" x1="544" y1="278" x2="653" y2="278"/>
-          <line class="iwall" x1="450" y1="278" x2="450" y2="358"/>
-          <!-- doors -->
-          <path class="door" d="M200 278 A44 44 0 0 1 244 234"/><line class="door" x1="244" y1="278" x2="244" y2="234"/>
-          <path class="door" d="M318 278 A44 44 0 0 1 362 234"/><line class="door" x1="362" y1="278" x2="362" y2="234"/>
-          <path class="door" d="M500 278 A44 44 0 0 1 544 234"/><line class="door" x1="544" y1="278" x2="544" y2="234"/>
-          <path class="door" d="M450 300 A36 36 0 0 0 486 336" transform="translate(0,0)"/>
-          <!-- windows on facade (top) -->
-          <line class="win" x1="80" y1="26" x2="210" y2="26"/><line class="win2" x1="80" y1="23" x2="210" y2="23"/><line class="win2" x1="80" y1="29" x2="210" y2="29"/>
-          <line class="win" x1="300" y1="26" x2="420" y2="26"/><line class="win2" x1="300" y1="23" x2="420" y2="23"/><line class="win2" x1="300" y1="29" x2="420" y2="29"/>
-          <line class="win" x1="495" y1="26" x2="615" y2="26"/><line class="win2" x1="495" y1="23" x2="615" y2="23"/><line class="win2" x1="495" y1="29" x2="615" y2="29"/>
-          <!-- entry -->
-          <line x1="26" y1="300" x2="26" y2="344" stroke="#fbfaf6" stroke-width="9"/>
-          <path d="M8 322 h14 m-6 -6 l6 6 -6 6" stroke="var(--accent)" stroke-width="2" fill="none"/>
-          <!-- labels -->
+          <line class="iw" x1="260" y1="26" x2="260" y2="250"/><line class="iw" x1="460" y1="26" x2="460" y2="250"/>
+          <line class="iw" x1="26" y1="278" x2="200" y2="278"/><line class="iw" x1="244" y1="278" x2="318" y2="278"/>
+          <line class="iw" x1="362" y1="278" x2="500" y2="278"/><line class="iw" x1="544" y1="278" x2="653" y2="278"/>
+          <line class="iw" x1="450" y1="278" x2="450" y2="358"/>
+          <path class="door" d="M200 278 A44 44 0 0 1 244 234"/><path class="door" d="M318 278 A44 44 0 0 1 362 234"/>
+          <path class="door" d="M500 278 A44 44 0 0 1 544 234"/><path class="door" d="M450 300 A36 36 0 0 0 486 336"/>
+          <line class="win" x1="80" y1="26" x2="210" y2="26"/><line class="win" x1="300" y1="26" x2="420" y2="26"/><line class="win" x1="495" y1="26" x2="615" y2="26"/>
+          <line x1="26" y1="300" x2="26" y2="344" stroke="#151816" stroke-width="8"/>
+          <path d="M6 322 h14 m-6 -6 l6 6 -6 6" stroke="#e8573a" stroke-width="2" fill="none"/>
           <text class="rn" x="143" y="200" text-anchor="middle">Комната</text><text class="ra" x="143" y="224" text-anchor="middle">16,4</text>
           <text class="rn" x="360" y="120" text-anchor="middle">Кухня</text><text class="ra" x="360" y="144" text-anchor="middle">14,0</text>
           <text class="rn" x="556" y="200" text-anchor="middle">Комната</text><text class="ra" x="556" y="224" text-anchor="middle">13,5</text>
           <text class="rn" x="270" y="316" text-anchor="middle">Прихожая</text><text class="ra" x="270" y="340" text-anchor="middle">9,4</text>
           <text class="rn" x="610" y="316" text-anchor="middle">С/у</text><text class="ra" x="610" y="340" text-anchor="middle">4,5</text>
-          <text class="dim" x="339" y="14" text-anchor="middle">окна на одну сторону · ориентацию уточню на показе</text>
+          <g class="dims">
+            <line class="dimln" x1="26" y1="382" x2="653" y2="382"/><line class="dimln" x1="26" y1="376" x2="26" y2="388"/><line class="dimln" x1="653" y1="376" x2="653" y2="388"/>
+            <text class="dimt" x="340" y="397" text-anchor="middle">ПРОЕКТНАЯ ПЛОЩАДЬ ПО ДДУ · 57,8 М²</text>
+            <text class="dimt" x="143" y="46" text-anchor="middle">ОКНО</text><text class="dimt" x="360" y="46" text-anchor="middle">ОКНО</text><text class="dimt" x="556" y="46" text-anchor="middle">ОКНО</text>
+            <text class="dimt" x="44" y="296" text-anchor="start">ВХОД</text>
+          </g>
         </svg>
-        <p class="plan-caption">Схема по экспликации из ДДУ, без соблюдения точных пропорций. Поэтажный план застройщика пришлю вместе с документами.</p>
+        <p class="mono" style="margin:14px 0 0;text-transform:none;font-size:12px">Схема по экспликации ДДУ, пропорции условные. Поэтажный план застройщика — вместе с документами.</p>
       </div>
       <div>
-        <div class="room-info" aria-live="polite">
-          <div class="ri-area num" id="riArea">57,8<small> м²</small></div>
+        <div class="ri" aria-live="polite">
+          <div class="area" id="riArea">57,8<small> м²</small></div>
           <h3 id="riTitle">Вся площадь</h3>
-          <p class="muted" id="riText">Нажмите на комнату на схеме, чтобы увидеть, как её можно использовать.</p>
+          <p class="muted" id="riText">Нажмите на помещение на схеме или в списке.</p>
         </div>
-        <ul class="room-list" id="roomList">
-          <li data-r="r1"><span>Комната</span><span class="num">16,4 м²</span></li>
-          <li data-r="k"><span>Кухня</span><span class="num">14,0 м²</span></li>
-          <li data-r="r2"><span>Комната</span><span class="num">13,5 м²</span></li>
-          <li data-r="h"><span>Прихожая</span><span class="num">9,4 м²</span></li>
-          <li data-r="b"><span>Санузел</span><span class="num">4,5 м²</span></li>
-          <li class="total"><span>Итого</span><span class="num">57,8 м²</span></li>
-        </ul>
-        <p class="small muted" style="margin-top:18px">Отделка white box: стены выровнены и подготовлены под покраску, стяжка, разводка инженерии. Ремонт делаете под себя, без переплаты за чужой вкус.</p>
+        <ul class="rlist" id="rlist"></ul>
+        <p class="muted" style="font-size:14px;margin-top:18px">Отделка white box: подготовка стен под чистовую отделку, стяжка, разведённые инженерные сети. Ремонт под себя.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section id="price">
+<section id="market">
   <div class="wrap">
-    <div class="sec-head">
-      <div><div class="eyebrow">02 · Цена</div><h2>Почему дешевле застройщика и&nbsp;в&nbsp;чём подвох</h2></div>
-      <p>Подвоха нет. У застройщика есть рекламный бюджет, ипотека и рассрочка, у меня их нет. Поэтому цена ниже: это плата за то, что покупать придётся в основном своими деньгами.</p>
-    </div>
-    <div class="compare">
-      <div class="bars rv" id="bars"></div>
-      <div class="saving rv">
-        <div class="k">Вы сохраняете по сравнению с застройщиком</div>
-        <div class="v num" data-bind="saving"></div>
-        <div class="k" data-bind="savingNote"></div>
+    <div class="sh"><div><span class="mono idx">03 / Цена</span><h2>Лот против прайса застройщика</h2></div><p>Синие точки — двухкомнатные лоты корпуса 1 со страниц сайта проекта. Наведите или нажмите на точку.</p></div>
+    <div class="chart-wrap">
+      <div class="panel chart-panel rv">
+        <div class="mono" style="margin-bottom:8px">Цена за м², тыс ₽ · по этажам корпуса 1</div>
+        <svg id="scatter" viewBox="0 0 640 380" role="img" aria-label="Цена за квадратный метр в зависимости от этажа"></svg>
+        <div class="tip" id="tip"></div>
+        <div class="legend"><span><i style="background:var(--dev)"></i>Застройщик, корпус 1, 2-комн.</span><span><i style="background:var(--acc)"></i>Лот 142, переуступка</span></div>
+        <button class="table-toggle" id="tblBtn" type="button">Показать таблицей</button>
+        <table class="dtable" id="dtable"><thead><tr><th>Лот</th><th>Площадь</th><th>Этаж</th><th>Цена</th><th>₽/м²</th></tr></thead><tbody></tbody></table>
+      </div>
+      <div class="delta rv">
+        <span class="mono">К самой низкой цене за м² в выборке</span>
+        <div class="num" data-b="ppmGap"></div>
+        <div class="muted" data-b="ppmGapNote" data-html="1"></div>
         <ul>
-          <li><b>Тот же корпус, та же отделка.</b> Договор ДДУ по 214-ФЗ, деньги на эскроу в Сбербанке.</li>
-          <li><b>Этаж ниже, чем обычно в продаже.</b> У застройщика в первом корпусе сейчас в основном лоты с 11 этажа и выше.</li>
-          <li><b>Торг обсуждаем.</b> При задатке до 15 декабря и понятной схеме оплаты цена ниже.</li>
+          <li><b>Тот же корпус и отделка.</b> ДДУ по 214-ФЗ, расчёты через эскроу в Сбербанке.</li>
+          <li><b>Нижний этаж.</b> В открытом прайсе двушки корпуса 1 — на этажах с 9 по 23.<span data-b="srcFloors" data-html="1"></span></li>
+          <li><b>Прайс без скидок.</b> Агрегаторы пишут о скидке до 5% при полной оплате, но даже с ней метр здесь дешевле.</li>
         </ul>
       </div>
     </div>
@@ -447,71 +436,45 @@ footer .wrap{border-top:1px solid #3a3934;padding-top:28px}
 
 <section id="deal">
   <div class="wrap">
-    <div class="sec-head">
-      <div><div class="eyebrow">03 · Как платить</div><h2>Покупаете не&nbsp;всю сумму сразу</h2></div>
-      <p>Лот куплен в рассрочку застройщика, часть уже выплачена. Вы платите мне за выплаченное и наценку, а остаток рассрочки платите застройщику по графику. Посчитайте свою сумму.</p>
-    </div>
+    <div class="sh"><div><span class="mono idx">04 / Сделка</span><h2>Сколько платить и&nbsp;когда</h2></div><p>Лот куплен в рассрочку застройщика. При уступке с переводом долга вы платите продавцу оплаченную часть с наценкой, остаток — застройщику по графику ДДУ.</p></div>
     <div class="calc rv">
       <div class="calc-in">
         <div class="field">
-          <label for="pPrice">Цена сделки <output id="pPriceOut" class="num"></output></label>
-          <input type="range" id="pPrice" step="50000">
-          <div class="small muted" style="display:flex;justify-content:space-between"><span data-bind="pMin"></span><span data-bind="pMax"></span></div>
+          <div class="lab"><span class="mono">Цена сделки</span><output id="pOut"></output></div>
+          <input type="range" id="pIn" step="50000" aria-label="Цена сделки">
+          <div class="minmax"><span data-b="pMin"></span><span data-b="pMax"></span></div>
         </div>
         <div class="field">
-          <label>Когда регистрируем уступку</label>
-          <div class="seg" id="pMonth"></div>
-        </div>
-        <div class="field" style="margin-bottom:0">
-          <label>Схема</label>
-          <div class="seg" id="pScheme">
-            <button type="button" data-s="debt" aria-pressed="true">Перевод долга на вас</button>
-            <button type="button" data-s="full" aria-pressed="false">Рассрочка закрыта до сделки</button>
-          </div>
-          <p class="small muted" id="schemeNote" style="margin-top:12px"></p>
+          <div class="lab"><span class="mono">Регистрация уступки</span></div>
+          <div class="seg" id="mSeg"></div>
         </div>
       </div>
       <div class="calc-out">
-        <div class="out-k">Вы платите мне при сделке</div>
-        <div class="out-big num" id="oSeller"></div>
-        <div class="split"><span class="s1" id="sp1"></span><span class="s2" id="sp2"></span></div>
-        <div class="legend"><span><i style="background:var(--accent)"></i>мне при сделке</span><span><i style="background:var(--ink)"></i>застройщику по графику</span></div>
-        <div class="sched" id="oSched"></div>
+        <span class="mono">Продавцу при сделке, через аккредитив</span>
+        <div class="o-big" id="oSeller" style="margin-top:10px"></div>
+        <div class="stack"><span class="a" id="s1"></span><span class="b" id="s2"></span></div>
+        <div class="lg"><span><i style="background:var(--acc)"></i>продавцу при сделке</span><span><i style="background:var(--dev)"></i>застройщику по графику</span></div>
+        <div class="sched" id="sched"></div>
       </div>
     </div>
-    <p class="small muted" style="margin-top:18px;max-width:820px">Расчёт по графику платежей из ДДУ, если все платежи вносились вовремя. Перевод долга оформляется с согласия застройщика. Точные цифры покажу по выписке и справке об оплате до задатка.</p>
+    <p class="muted" style="font-size:13.5px;margin-top:16px;max-width:820px">Расчёт по графику платежей ДДУ при оплате в срок. Перевод долга — с согласия застройщика. Точные суммы — по справке застройщика об оплате до задатка.</p>
   </div>
 </section>
 
 <section id="rent">
   <div class="wrap">
-    <div class="sec-head">
-      <div><div class="eyebrow">04 · Для инвестора</div><h2>Если берёте под&nbsp;сдачу</h2></div>
-      <p>Две изолированные комнаты дают выбор: целиком семье или паре, либо по комнатам. Метро и МЦК у дома, вузы и деловые районы по серой ветке без пересадок: спрос на аренду здесь ровный круглый год.</p>
-    </div>
+    <div class="sh"><div><span class="mono idx">05 / Для инвестора</span><h2>Сдача: честный расчёт</h2></div><p>Двигайте ползунки. Для сравнения — средняя максимальная ставка по вкладам. Арендный доход ниже вклада, зато в цене может расти сам объект.</p></div>
     <div class="calc rv">
       <div class="calc-in">
-        <div class="field">
-          <label for="rRent">Аренда в месяц <output id="rRentOut" class="num"></output></label>
-          <input type="range" id="rRent" min="65000" max="110000" step="1000">
-        </div>
-        <div class="field">
-          <label for="rFit">Ремонт и мебель <output id="rFitOut" class="num"></output></label>
-          <input type="range" id="rFit" min="1500000" max="4000000" step="50000">
-        </div>
-        <div class="field" style="margin-bottom:0">
-          <label for="rOcc">Загрузка в году <output id="rOccOut" class="num"></output></label>
-          <input type="range" id="rOcc" min="8" max="12" step="0.5">
-        </div>
+        <div class="field"><div class="lab"><span class="mono">Аренда в месяц</span><output id="rRo"></output></div><input type="range" id="rR" min="60000" max="120000" step="1000" aria-label="Аренда"><div class="minmax"><span>60 тыс</span><span data-b="rentHint" data-html="1"></span><span>120 тыс</span></div></div>
+        <div class="field"><div class="lab"><span class="mono">Ремонт и мебель</span><output id="rFo"></output></div><input type="range" id="rF" min="1500000" max="4000000" step="50000" aria-label="Ремонт"><div class="minmax"><span>1,5 млн</span><span>4 млн</span></div></div>
+        <div class="field"><div class="lab"><span class="mono">Месяцев сдачи в году</span><output id="rOo"></output></div><input type="range" id="rO" min="8" max="12" step="0.5" aria-label="Загрузка"><div class="minmax"><span>8</span><span>12</span></div></div>
       </div>
       <div class="calc-out">
-        <div class="out-k">Доходность на вложенные деньги, в год</div>
-        <div class="out-big num" id="rYield"></div>
-        <div class="rent-kpis">
-          <div><div class="out-k">Чистый доход в год</div><b class="num" id="rNet" style="font-size:24px"></b></div>
-          <div><div class="out-k">Вложения всего</div><b class="num" id="rInv" style="font-size:24px"></b></div>
-        </div>
-        <p class="small muted" style="margin-top:24px" id="rNote"></p>
+        <span class="mono">Чистая доходность, % годовых</span>
+        <div class="o-big" id="rY" style="margin-top:10px"></div>
+        <div class="cmpbars" id="cmpbars"></div>
+        <p class="muted" style="font-size:13px;margin-top:20px">Учтены налог 6% с аренды, около 9 тыс ₽ в месяц на коммунальные платежи и обслуживание, около 60 тыс ₽ в год налога на имущество. Это допущения расчёта, не данные. Рост стоимости объекта не учтён.</p>
       </div>
     </div>
   </div>
@@ -519,323 +482,390 @@ footer .wrap{border-top:1px solid #3a3934;padding-top:28px}
 
 <section id="place">
   <div class="wrap">
-    <div class="sec-head">
-      <div><div class="eyebrow">05 · Район</div><h2>Метро у&nbsp;дома, Ботанический сад рядом</h2></div>
-      <p>Станция «Владыкино» серой ветки и станция МЦК с тем же названием в 200 метрах. До центра без пересадок.</p>
+    <div class="sh"><div><span class="mono idx">06 / Локация</span><h2>Две станции в&nbsp;одной точке</h2></div><p>Серая ветка метро и МЦК, обе станции называются «Владыкино», между ними крытый переход.</p></div>
+    <div class="loc">
+      <div class="panel rv"><svg id="metro" viewBox="0 0 560 420" role="img" aria-label="Схема: лот, метро и МЦК Владыкино, станции до центра"></svg></div>
+      <div id="trips"></div>
     </div>
-    <div class="loc-grid">
-      <div class="line-map rv">
-        <svg viewBox="0 0 560 360" role="img" aria-label="Схема поездок от дома">
-          <line x1="70" y1="40" x2="70" y2="330" stroke="#9a9a96" stroke-width="8" stroke-linecap="round"/>
-          <path d="M70 92 C 220 92 300 60 520 60" stroke="#e8414a" stroke-width="5" fill="none" stroke-dasharray="1 0"/>
-          <circle cx="70" cy="92" r="13" fill="#fbfaf6" stroke="#151513" stroke-width="3"/>
-          <rect x="22" y="76" width="34" height="32" rx="2" fill="var(--accent)"/>
-          <text x="39" y="97" font-size="11" fill="#fff" text-anchor="middle" font-weight="600">ДОМ</text>
-          <text x="96" y="80" font-size="16" font-weight="600" fill="#151513">Владыкино</text>
-          <text x="96" y="114" font-size="13" fill="#55534d">метро + МЦК · 2–4 мин пешком</text>
-          <g font-size="13" fill="#151513">
-            <circle cx="70" cy="160" r="6" fill="#fbfaf6" stroke="#151513" stroke-width="2"/><text x="96" y="165">Петровско-Разумовская · пересадка на зелёную</text>
-            <circle cx="70" cy="215" r="6" fill="#fbfaf6" stroke="#151513" stroke-width="2"/><text x="96" y="220">Савёловская · вокзал, БКЛ</text>
-            <circle cx="70" cy="265" r="6" fill="#fbfaf6" stroke="#151513" stroke-width="2"/><text x="96" y="270">Менделеевская</text>
-            <circle cx="70" cy="315" r="6" fill="#fbfaf6" stroke="#151513" stroke-width="2"/><text x="96" y="320" font-weight="600">Чеховская · Тверская</text>
-          </g>
-          <text x="520" y="48" font-size="12" fill="#e8414a" text-anchor="end">МЦК: Окружная ← → Ботанический сад</text>
-        </svg>
-      </div>
-      <div>
-        <div class="trip"><b>3<small>мин</small></b><span>Метро и МЦК «Владыкино»<small>пешком, по данным застройщика 100–200 м</small></span></div>
-        <div class="trip"><b>10<small>мин</small></b><span>Главный ботанический сад РАН<small>пешком до ближайшего входа</small></span></div>
-        <div class="trip"><b>≈20<small>мин</small></b><span>«Чеховская», центр<small>по серой ветке без пересадок, 7 станций</small></span></div>
-        <div class="trip"><b>≈15<small>мин</small></b><span>ВДНХ, Останкино<small>на МЦК или на машине</small></span></div>
-        <div class="trip"><b>≈15<small>мин</small></b><span>ТТК<small>на машине без пробок</small></span></div>
-      </div>
-    </div>
-    <div class="honest">
-      <div><h3>Что понравится</h3><ul>
-        <li>Две станции в одной точке: радиальная ветка и кольцо</li>
-        <li>Ботанический сад, парк «Отрада», ВДНХ рядом</li>
-        <li>Быстрый выезд на СВХ, Алтуфьевское шоссе, проспект Мира</li>
-        <li>ТЦ, школы и сады рядом, во дворе свой коворкинг и фитнес</li>
-      </ul></div>
-      <div class="minus"><h3>Что лучше знать заранее</h3><ul>
-        <li>Рядом промзона и мусоросортировочный комплекс, иногда бывает запах</li>
-        <li>Шумные магистрали и электродепо «Владыкино» неподалёку</li>
-        <li>Район переходный: старая промышленная застройка соседствует с новыми ЖК</li>
-      </ul></div>
+    <div class="pm">
+      <div><h3>Сильные стороны</h3><ul id="plus"></ul></div>
+      <div class="minus"><h3>Что важно знать</h3><ul id="minus"></ul></div>
     </div>
   </div>
 </section>
 
 <section id="status">
   <div class="wrap">
-    <div class="sec-head">
-      <div><div class="eyebrow">06 · Статус</div><h2>Это апартамент. Что это меняет на&nbsp;практике</h2></div>
-      <p>Лучше узнать всё сейчас, чем на сделке. Вот разница с квартирой по пунктам.</p>
-    </div>
-    <table class="status-tbl rv">
-      <thead><tr><th>Вопрос</th><th>Как есть</th><th>Что это значит для вас</th></tr></thead>
-      <tbody>
-        <tr><td>Регистрация</td><td>Только временная, по месту пребывания</td><td><span class="tag mid">важно</span><br>Если нужна постоянная прописка для школы или поликлиники, лот вам не подойдёт</td></tr>
-        <tr><td>Ипотека</td><td>Семейной и льготной нет, только рыночная</td><td><span class="tag mid">важно</span><br>Сделка в основном за собственные деньги. Если банк одобрит рыночную ипотеку на апартаменты, тоже работаем</td></tr>
-        <tr><td>Налог на имущество</td><td>Выше, чем у квартиры, считается от кадастровой стоимости</td><td>Ориентир — порядка десятков тысяч рублей в год. Точную сумму рассчитаю, когда у объекта появится кадастровая стоимость</td></tr>
-        <tr><td>Коммунальные платежи</td><td>Могут считаться по тарифам для нежилых помещений</td><td>Платёж чуть выше, чем в соседних квартирах</td></tr>
-        <tr><td>Надёжность</td><td>ДДУ по 214-ФЗ, эскроу в Сбербанке, Группа Аквилон</td><td><span class="tag ok">плюс</span><br>Деньги застройщик получит только после ввода дома. Риск недостроя минимальный</td></tr>
-        <tr><td>Цена</td><td>Апартаменты дешевле квартир рядом</td><td><span class="tag ok">плюс</span><br>Метр у метро в Москве по цене спального района</td></tr>
-      </tbody>
-    </table>
+    <div class="sh"><div><span class="mono idx">07 / Статус</span><h2>Апартамент, а&nbsp;не&nbsp;квартира</h2></div><p>Всё, что это меняет, — до звонка, а не на сделке.</p></div>
+    <table class="st rv"><thead><tr><th>Вопрос</th><th>Как есть</th><th>Что это значит</th></tr></thead><tbody id="stBody"></tbody></table>
   </div>
 </section>
 
 <section id="steps">
   <div class="wrap">
-    <div class="sec-head">
-      <div><div class="eyebrow">07 · Сделка</div><h2>От&nbsp;звонка до&nbsp;регистрации за&nbsp;3–6 недель</h2></div>
-      <p>Деньги передаются через аккредитив или ячейку банка только после регистрации уступки в Росреестре.</p>
-    </div>
-    <div class="steps rv">
-      <div class="step"><div class="n">1</div><h3>Документы</h3><p>Присылаю ДДУ, график платежей, справку об оплате. Персональные данные закрыты до встречи.</p><div class="when">в день обращения</div></div>
-      <div class="step"><div class="n">2</div><h3>Показ</h3><p>Офис продаж, макет и шоурум корпуса, по возможности сам объект на стройке.</p><div class="when">1–3 дня</div></div>
-      <div class="step"><div class="n">3</div><h3>Задаток</h3><p>Фиксируем цену и схему в соглашении о задатке, снимаем лот с продажи.</p><div class="when">неделя 1</div></div>
-      <div class="step"><div class="n">4</div><h3>Согласие</h3><p>Застройщик согласует уступку и перевод долга, банк открывает аккредитив.</p><div class="when">1–3 недели</div></div>
-      <div class="step"><div class="n">5</div><h3>Росреестр</h3><p>Подаём договор уступки на регистрацию, после неё банк раскрывает аккредитив.</p><div class="when">5–9 рабочих дней</div></div>
-    </div>
+    <div class="sh"><div><span class="mono idx">08 / Процесс</span><h2>От&nbsp;звонка до&nbsp;Росреестра</h2></div><p>Деньги продавцу — через аккредитив, только после регистрации уступки.</p></div>
+    <div class="steps rv" id="stepsBox"></div>
   </div>
 </section>
 
 <section id="faq">
   <div class="wrap">
-    <div class="sec-head">
-      <div><div class="eyebrow">08 · Вопросы</div><h2>Что обычно спрашивают</h2></div>
-      <p>Не нашли свой вопрос? Звоните или пишите, отвечу лично.</p>
-    </div>
-    <div class="faq">
-      <details><summary>Почему продаёте до сдачи дома?</summary><div class="a">Лот брали как вложение в январе 2025 года. Рост цены за это время устраивает, деньги нужны под другую задачу, а держать их в стройке до передачи ключей смысла нет.</div></details>
-      <details><summary>Когда дом сдадут и когда ключи?</summary><div class="a" data-bind="faqDates"></div></details>
-      <details><summary>Можно ли взять ипотеку?</summary><div class="a">Льготные программы на апартаменты не действуют. Рыночную ипотеку под залог прав по ДДУ на апартаменты дают немногие банки, и решение по ставке и одобрению за банком. Проще всего сделка проходит за собственные деньги, при этом остаток рассрочки можно платить застройщику по графику.</div></details>
-      <details><summary>Что с налогом для покупателя?</summary><div class="a">Покупателю платить налог при сделке не нужно. Имущественный вычет при покупке апартаментов не положен, потому что это нежилое помещение. Налог при продаже платит продавец.</div></details>
-      <details><summary>Нужно ли согласие застройщика?</summary><div class="a">Да, потому что рассрочка не закрыта и долг переходит к вам. Согласование беру на себя и заранее узнаю регламент и размер платы за согласие.</div></details>
-      <details><summary>Можно ли посмотреть объект?</summary><div class="a">Покажу шоурум и макет в офисе продаж, документы и ход стройки. На сам этаж пускают по правилам стройплощадки, договоримся с застройщиком отдельно.</div></details>
-      <details><summary>Работаете с агентами?</summary><div class="a">Продаю без агентства. С агентами покупателей работаю, вознаграждение агенту обсуждаем при первом звонке.</div></details>
-    </div>
+    <div class="sh"><div><span class="mono idx">09 / Вопросы</span><h2>Частые вопросы</h2></div><p>Не нашли ответ — напишите, отвечу лично.</p></div>
+    <div class="faq" id="faqBox"></div>
+  </div>
+</section>
+
+<section id="sources">
+  <div class="wrap">
+    <div class="sh"><div><span class="mono idx">10 / Источники</span><h2>Откуда цифры</h2></div><p>Номер в квадратных скобках рядом с цифрой ведёт сюда. Где у источника нет даты, указана дата проверки. Если источники расходятся, на странице взята цифра застройщика и это отмечено.</p></div>
+    <ol class="srcs" id="srcList"></ol>
   </div>
 </section>
 
 <section class="contact" id="contact">
   <div class="wrap c-grid">
     <div>
-      <div class="eyebrow" style="color:#a9a597">09 · Связаться</div>
-      <h2>Пришлю ДДУ, график платежей и&nbsp;поэтажный план в&nbsp;течение часа</h2>
-      <p class="muted" style="margin-top:22px;font-size:18px;max-width:460px">Отметьте, что вам важно, и сообщение для меня соберётся само. Отправить можно в Telegram или WhatsApp.</p>
+      <span class="mono">11 / Связь</span>
+      <h2 style="margin-top:18px">ДДУ, справка об оплате и&nbsp;поэтажный план — в&nbsp;течение часа</h2>
       <div class="direct">
-        <a href="#" data-link="tel"><small>Телефон</small><span data-bind="phone"></span></a>
-        <a href="#" data-link="tg" target="_blank" rel="noopener"><small>Telegram</small><span data-bind="tgName"></span></a>
+        <a href="#" data-link="tel"><small class="mono">Телефон</small><span data-b="phone"></span></a>
+        <a href="#" data-link="tg" target="_blank" rel="noopener"><small class="mono">Telegram</small><span data-b="tgName"></span></a>
       </div>
     </div>
-    <form class="form" id="form" onsubmit="return false">
-      <div class="row"><label for="fName">Как к вам обращаться</label><input id="fName" autocomplete="name" placeholder="Имя"></div>
-      <div class="row">
-        <label>Что интересует</label>
-        <div class="chips" id="fChips">
-          <button type="button" aria-pressed="true">Документы по лоту</button>
-          <button type="button" aria-pressed="false">Показ</button>
-          <button type="button" aria-pressed="false">Торг</button>
-          <button type="button" aria-pressed="false">Схема оплаты</button>
-          <button type="button" aria-pressed="false">Я агент покупателя</button>
-        </div>
+    <form class="form" id="form" novalidate>
+      <div class="row"><label class="mono" for="fN">Имя</label><input id="fN" autocomplete="name" placeholder="Как к вам обращаться"></div>
+      <div class="row"><span class="mono" style="display:block;margin-bottom:10px">Что нужно</span>
+        <div class="chips" id="chips"><button type="button" aria-pressed="true">Документы</button><button type="button" aria-pressed="false">Показ</button><button type="button" aria-pressed="false">Торг</button><button type="button" aria-pressed="false">Схема оплаты</button><button type="button" aria-pressed="false">Я агент</button></div>
       </div>
-      <div class="row"><label for="fMsg">Комментарий</label><textarea id="fMsg" rows="2" placeholder="Например: удобно созвониться после 19:00"></textarea></div>
-      <div class="send">
-        <a class="btn btn-dark" id="sendTg" href="#" target="_blank" rel="noopener">Отправить в Telegram</a>
-        <a class="btn btn-ghost" id="sendWa" href="#" target="_blank" rel="noopener">WhatsApp</a>
+      <div class="row"><label class="mono" for="fM">Комментарий</label><textarea id="fM" rows="2" placeholder="Например: удобно после 19:00"></textarea></div>
+      <span class="mono">Ваше сообщение</span>
+      <div class="preview" id="preview"></div>
+      <div class="ctas" style="margin-top:20px">
+        <a class="btn btn-acc" id="sTg" href="#" target="_blank" rel="noopener">Отправить в Telegram</a>
+        <a class="btn" id="sWa" href="#" target="_blank" rel="noopener">WhatsApp</a>
       </div>
     </form>
   </div>
 </section>
 </main>
 
-<footer>
-  <div class="wrap">
-    <p>Объявление частного лица о продаже права требования по договору участия в долевом строительстве. Не является публичной офертой. Площадь проектная, окончательная определяется по обмерам БТИ, взаиморасчёт по разнице площадей по условиям ДДУ. Схема планировки иллюстративная. Цены застройщика указаны по открытым данным на дату обновления страницы и могут измениться.</p>
-    <p data-bind="updated"></p>
-  </div>
-</footer>
+<footer><div class="wrap">
+  <p>Объявление частного лица о продаже права требования по договору участия в долевом строительстве. Не является публичной офертой. Площадь проектная, окончательная — по обмерам БТИ с взаиморасчётом по условиям ДДУ. Схемы иллюстративные. Рыночные данные и цены застройщика — по открытым источникам на указанные даты и могут измениться.</p>
+  <p data-b="updated"></p>
+</div></footer>
 
-<div class="mbar" id="mbar">
-  <a class="btn btn-ghost" href="#" data-link="tel">Позвонить</a>
-  <a class="btn btn-dark" href="#contact">Написать</a>
-</div>
+<div class="mbar" id="mbar"><a class="btn" href="#" data-link="tel">Позвонить</a><a class="btn btn-acc" href="#contact">Написать</a></div>
 
 <script>
-/* ===== Все данные лота в одном месте. Меняйте здесь. ===== */
-const LOT = {
-  price: 18900000,          // цена в объявлении (старт экспозиции)
-  priceMin: 17900000,       // нижняя граница торга (видна только в калькуляторе как минимум слайдера)
-  area: 57.8,
-  devPrice: 19700000,       // ориентир: прайс застройщика на 57–58 м² в корп. 1 (СВЕРИТЬ в офисе продаж)
-  devNote: "Ориентир по прайсу застройщика на двухкомнатные лоты 53–57 м² в корпусе 1: 337–365 тыс ₽ за м². Точную цену на дату показа сверим вместе.",
-  peerPpm: null,            // ₽/м² по другим переуступкам в проекте (null — не показывать)
-  peerLabel: "",
-  // график рассрочки по ДДУ
-  paidUntil: "2026-10",     // последний оплаченный месяц
-  monthly: 170419,
-  lastMonthly: "2026-12",
-  balloon: 9713867,
-  balloonDate: "20 января 2027",
-  total: 16991881,
-  firstPay: 3358377,
-  firstMonthly: "2025-02",
-  dates: "Ввод в эксплуатацию по ДДУ: IV квартал 2026 года, застройщик называет декабрь. Передача объекта по договору: не позднее 31 декабря 2027 года, на практике ключи ожидаются в 2027 году. Ход стройки и статус разрешения на ввод покажу по данным застройщика на дату показа.",
-  phone: "+7 900 000-00-00",       // ЗАМЕНИТЬ
-  tg: "username",                   // ЗАМЕНИТЬ: ник без @
-  wa: "79000000000",                // ЗАМЕНИТЬ: номер без +
-  updated: "Данные обновлены 1 ноября 2026 года."
+/* =========================================================
+   ДАННЫЕ. Всё, что выводится на странице, — здесь.
+   Цифра без источника на странице не показывается.
+   ========================================================= */
+const LOT={
+  price:18900000, priceMin:17900000, priceMax:19900000, area:57.8, floor:6, floors:23,
+  paidUntil:"2026-10", monthly:170419, lastMonthly:"2026-12", balloon:9713867, balloonDate:"20.01.2027",
+  total:16991881, firstPay:3358377, firstMonthly:"2025-02",
+  phone:"+7 900 000-00-00", tg:"username", wa:"79000000000",   // ЗАМЕНИТЬ на свои контакты
+  updated:"Данные проверены 1 ноября 2026 года."
 };
+const CHECKED="проверено 01.11.2026";
+const SOURCES=[
+ {id:1, t:"Договор участия в долевом строительстве, лот 142, корпус 1 (документ собственника)", u:"", d:"20.01.2025"},
+ {id:2, t:"Сайт проекта «Аквилон Signal»: расстояние до метро и МЦК, архитектор, инфраструктура", u:"https://akvilon-signal.ru/", d:CHECKED},
+ {id:3, t:"Сайт Группы Аквилон, страница проекта: корпуса 1–2 for life, white box; 2-комн. в корпусе 1 на этажах 9–23", u:"https://msk.group-akvilon.ru/project/akvilon-signal/", d:CHECKED},
+ {id:4, t:"Лот 415: 2-комн., 62,1 м², 19 этаж, корпус 1 — 23 081 195 ₽", u:"https://akvilon-signal.ru/flats/2-komnatnaya-kvartira-62.1m-korpus-1-kv-415", d:CHECKED},
+ {id:5, t:"Лот 499: 2-комн., 62,1 м², 23 этаж, корпус 1 — 23 865 517 ₽", u:"https://akvilon-signal.ru/flats/2-komnatnaya-kvartira-62.1m-korpus-1-kv-499", d:CHECKED},
+ {id:6, t:"Лоты 235, 403, 487: 2-комн., 67 м², корпус 1 (11, 19, 23 этаж)", u:"https://akvilon-signal.ru/flats/2-komnatnaya-kvartira-67m-korpus-1-kv-235", d:CHECKED},
+ {id:7, t:"Новострой.ру: потолки 2,87 м, срок ввода IV кв. 2026, 23 этажа (часть агрегаторов пишет 24)", u:"https://www.novostroy.ru/buildings/akvilon-signal/", d:CHECKED},
+ {id:8, t:"Циан: 4 башни на общем стилобате, эскроу во всех корпусах", u:"https://zhk-akvilon-signal-i.cian.ru/", d:CHECKED},
+ {id:9, t:"Anwin: 1 699 апартаментов, из них 941 в корпусах для проживания", u:"https://anwin.ru/project/zhk-akvilon-signal", d:CHECKED},
+ {id:10,t:"ЕРЗ.РФ: ТОП застройщиков РФ, Группа Аквилон — 20 место", u:"https://erzrf.ru/top-zastroyshchikov", d:"октябрь 2026"},
+ {id:11,t:"Банк России: ключевая ставка 14,00%, решение 23.10.2026; следующее заседание 18.12.2026", u:"https://www.cbr.ru/press/keypr/", d:"23.10.2026"},
+ {id:12,t:"ДОМ.РФ, обзор ставок: рыночная ипотека на новостройки 18,74%", u:"https://спроси.дом.рф/news/obzor-stavok-po-ipoteke-v-bankakh-na-28-oktyabrya-2026-goda/", d:"28.10.2026"},
+ {id:13,t:"Банк России через Интерфакс: средняя максимальная ставка по вкладам топ-10 банков 13,06%", u:"https://www.interfax.ru/business/1124000", d:"II декада октября 2026"},
+ {id:14,t:"Метриум, итоги III кв. 2026: апартаменты бизнес-класса «старой» Москвы 442 940 ₽/м²", u:"https://finance.mail.ru/article/itogi-iii-kvartala-2026-goda-na-pervichnom-rynke-biznes-klassa-moskvy-69232221/", d:"октябрь 2026"},
+ {id:15,t:"IRN.RU: индекс цен вторичного жилья Москвы 305 078 ₽/м²", u:"https://www.irn.ru/analitika/", d:"сентябрь 2026"},
+ {id:16,t:"Циан: аренда 2-комн. у МЦК «Владыкино», в среднем 80 тыс ₽/мес, 66 объявлений", u:"https://www.cian.ru/snyat-2-komnatnuyu-kvartiru-moskva-stanciya-mck-vladykino-28/", d:CHECKED},
+ {id:17,t:"Википедия: станция МЦК «Владыкино», соседние станции, пересадка на метро", u:"https://ru.wikipedia.org/wiki/Владыкино_(станция_МЦК)", d:CHECKED},
+ {id:18,t:"Википедия: Серпуховско-Тимирязевская линия, порядок станций", u:"https://ru.wikipedia.org/wiki/Серпуховско-Тимирязевская_линия", d:CHECKED},
+ {id:19,t:"NovostroyCity: до МКАД около 20 мин на машине; стилобат 5–6 этажей", u:"https://novostroycity.ru/novostroiki/otradnoe/zhk-akvilon-signal", d:CHECKED},
+ {id:20,t:"Zoon: ТРЦ «Алтуфьевский», Алтуфьевское ш., 8", u:"https://zoon.ru/msk/mall/tts_altufevskij_na_altufevskom_shosse/", d:CHECKED},
+ {id:21,t:"Википедия: электродепо «Владыкино», Сигнальный проезд проходит над парковыми путями", u:"https://ru.wikipedia.org/wiki/Владыкино_(электродепо)", d:CHECKED},
+ {id:22,t:"Версия: сортировочный комплекс «ЭкоЛайн», Сигнальный пр-д, 37Б с2; отзывы жителей о запахе летом", u:"https://versia.ru/proekt-developera-capital-group-i-podryadchika-gk-pik-zhk-signalnyj-16-imeet-podvox", d:"дата не указана"},
+ {id:23,t:"РБК Недвижимость: Конституционный суд разрешил временную регистрацию в апартаментах", u:"https://realty.rbc.ru/news/69983de89a7947270de231ae", d:"февраль 2026"},
+ {id:24,t:"Сайт проекта: премия Green Property Awards 2024", u:"https://akvilon-signal.ru/press/akvilon-signal-pobeditel-premii-green-property-awards-2024", d:"2024"}
+];
+/* 2-комн. лоты корпуса 1 со страниц сайта проекта. Цены лотов 235/403/487 — округлены в источнике. */
+const DEV_LOTS=[
+ {id:"235",area:67.0,floor:11,price:24420000,src:6},
+ {id:"403",area:67.0,floor:19,price:24730000,src:6},
+ {id:"487",area:67.0,floor:23,price:25630000,src:6},
+ {id:"415",area:62.1,floor:19,price:23081195,src:4},
+ {id:"499",area:62.1,floor:23,price:23865517,src:5}
+];
+const TICKER=[
+ {k:"Ключевая ставка ЦБ",v:"14,00%",d:"решение 23.10.2026",src:11},
+ {k:"Рыночная ипотека, новостройки",v:"18,74%",d:"ДОМ.РФ, 28.10.2026",src:12},
+ {k:"Вклады, топ-10 банков",v:"13,06%",d:"ЦБ, II декада окт.",src:13},
+ {k:"Апартаменты бизнес-класса",v:"442 940 ₽/м²",d:"Метриум, III кв. 2026",src:14},
+ {k:"Вторичка Москвы",v:"305 078 ₽/м²",d:"IRN, сентябрь 2026",src:15},
+ {k:"Аренда 2-комн. у МЦК Владыкино",v:"≈80 тыс ₽",d:"Циан",src:16},
+ {k:"Группа Аквилон",v:"20 место",d:"ТОП ЕРЗ РФ, окт. 2026",src:10},
+ {k:"Следующее заседание ЦБ",v:"18.12.2026",d:"",src:11}
+];
+const SPEC=[
+ {k:"Площадь",v:"57,8 м²",d:"проектная, по ДДУ",src:1},
+ {k:"Кухня",v:"14,0 м²",d:"отдельная, с окном",src:1},
+ {k:"Комнаты",v:"16,4 + 13,5",d:"изолированные, м²",src:1},
+ {k:"Этаж",v:"6 из 23",d:"корпус 1 «for life»",src:1},
+ {k:"Потолки",v:"2,87 м",d:"по данным агрегаторов",src:7},
+ {k:"До метро",v:"100 м",d:"по данным застройщика",src:2},
+ {k:"До МЦК",v:"150 м",d:"по данным застройщика",src:2},
+ {k:"Отделка",v:"White box",d:"корпуса 1–2",src:3},
+ {k:"Ввод дома",v:"IV кв. 2026",d:"по ДДУ и проектной документации",src:1},
+ {k:"Передача по ДДУ",v:"до 31.12.2027",d:"крайний срок по договору",src:1},
+ {k:"Проект",v:"1 699",d:"апартаментов, 4 башни на стилобате",src:9},
+ {k:"Застройщик",v:"20 место",d:"ТОП застройщиков РФ, ЕРЗ, октябрь 2026",src:10}
+];
+const TRIPS=[
+ {v:"100",u:"м",k:"Метро «Владыкино»",d:"пешком, по данным застройщика: около 1 мин",src:2},
+ {v:"150",u:"м",k:"МЦК «Владыкино»",d:"пешком, по данным застройщика: около 2 мин",src:2},
+ {v:"7",u:"станций",k:"«Чеховская», центр",d:"по серой ветке без пересадок",src:18},
+ {v:"15",u:"мин",k:"ТТК на машине",d:"по данным застройщика",src:2},
+ {v:"≈20",u:"мин",k:"МКАД на машине",d:"по данным агрегатора",src:19}
+];
+const METRO_STATIONS=[
+ {n:"Петровско-Разумовская · пересадка на зелёную",t:"1 ст."},
+ {n:"Савёловская · пересадка на БКЛ, вокзал",t:"4 ст."},
+ {n:"Менделеевская",t:"5 ст."},
+ {n:"Чеховская · Пушкинская · Тверская",t:"7 ст."}
+];
+const MCC_LABEL="МЦК: Окружная ← Владыкино → Ботанический сад";
+const PLUS=[
+ {t:"Метро и МЦК в одной точке, между станциями крытый переход",src:17},
+ {t:"Соседние станции МЦК: «Окружная» (МЦД-1, Люблинско-Дмитровская) и «Ботанический сад» (Калужско-Рижская)",src:17},
+ {t:"ТРЦ «Алтуфьевский» на Алтуфьевском шоссе, 8",src:20},
+ {t:"Во дворе комплекса фитнес, коворкинг, лобби, эксплуатируемая кровля стилобата с террасами",src:2},
+ {t:"Проект — лауреат Green Property Awards 2024",src:24}
+];
+const MINUS=[
+ {t:"На Сигнальном проезде, 37Б работает мусоросортировочный комплекс «ЭкоЛайн». Жители соседних домов пишут о запахе летом",src:22},
+ {t:"Рядом электродепо «Владыкино», Сигнальный проезд идёт над его путями",src:21},
+ {t:"Апартаменты: постоянной прописки нет, льготная ипотека не действует",src:23}
+];
+const STATUS=[
+ ["Регистрация","Постоянной нет. Временная регистрация возможна после решения Конституционного суда 2026 года"+"#23","Если для школы или поликлиники нужна постоянная прописка, лот не подойдёт","warn"],
+ ["Ипотека","Семейной и льготной нет, только рыночная: в среднем 18,74% на новостройки"+"#12","Сделка в основном за собственные деньги. Остаток рассрочки можно платить по графику","warn"],
+ ["Налог на имущество","Считается от кадастровой стоимости, ставка для апартаментов выше, чем для квартир","До регистрации собственности налога нет. Сумму можно будет рассчитать после постановки на кадастровый учёт",""],
+ ["Надёжность","ДДУ по 214-ФЗ, эскроу в Сбербанке"+"#1"+", застройщик в ТОП-20 ЕРЗ"+"#10","Застройщик получает деньги только после ввода дома","ok"],
+ ["Цена за метр","Апартаменты дешевле квартир в соседних новостройках","Метр у метро по цене ниже прайса этого же проекта","ok"]
+];
+const FAQ=[
+ ["Почему продаёте до сдачи?","Лот брали как вложение в январе 2025 года. Результат устраивает, деньги нужны под другую задачу."],
+ ["Когда сдача дома и ключи?","По ДДУ ввод в эксплуатацию — IV квартал 2026 года, передача объекта — не позднее 31.12.2027. Разрешения на ввод на 1 ноября 2026 года в открытых источниках нет, актуальный статус проверим вместе по данным застройщика."],
+ ["Можно ли купить в ипотеку?","Льготные программы на апартаменты не действуют. Рыночную ипотеку под залог прав по ДДУ дают не все банки, средняя ставка на новостройки — 18,74% по обзору ДОМ.РФ на 28.10.2026. Проще всего сделка проходит за собственные деньги."],
+ ["Платит ли покупатель налог?","Нет, налог с продажи платит продавец. Имущественный вычет при покупке апартаментов не положен, это нежилое помещение."],
+ ["Нужно ли согласие застройщика?","Да: рассрочка не закрыта, и долг переходит к покупателю. Согласование продавец берёт на себя."],
+ ["Можно посмотреть объект?","Да: шоурум, макет и документы в офисе продаж. Выход на этаж — по правилам стройплощадки, договоримся с застройщиком."],
+ ["Работаете с агентами?","Да. Вознаграждение агенту покупателя обсуждаем при первом звонке."]
+];
+const DEPOSIT={k:"Вклады, топ-10",v:13.06,src:13};
+const RENT_DEFAULT=80000;
+</script>
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+document.documentElement.classList.add("js");
+const nb=n=>Math.round(n).toLocaleString("ru-RU").replace(/[\s,]/g," ");
+const rub=n=>nb(n)+" ₽";
+const mln=(n,d=2)=>(n/1e6).toLocaleString("ru-RU",{minimumFractionDigits:1,maximumFractionDigits:d})+" млн ₽";
+const S=id=>{const s=SOURCES.find(x=>x.id===id);return s?`<sup class="src"><a href="#src-${id}" title="${s.t.replace(/"/g,"")}">[${id}]</a></sup>`:""};
+const withSrc=t=>t.replace(/#(\d+)/g,(m,i)=>S(+i));
+const bind=(k,v)=>$$(`[data-b="${k}"]`).forEach(e=>e.dataset.html?e.innerHTML=v:e.textContent=v);
 
-const rub = n => Math.round(n).toLocaleString("ru-RU").replace(/,/g," ") + " ₽";
-const mln = n => (n/1e6).toLocaleString("ru-RU",{minimumFractionDigits:1,maximumFractionDigits:2}) + " млн ₽";
-const set = (k,v)=>document.querySelectorAll(`[data-bind="${k}"]`).forEach(e=>e.textContent=v);
-document.body.classList.remove("no-js");
+function fill(){
+  const ppm=LOT.price/LOT.area;
+  const ref=DEV_LOTS.map(d=>({...d,ppm:d.price/d.area})).sort((a,b)=>a.ppm-b.ppm)[0];
+  const gap=ref.ppm-ppm;
+  bind("price",rub(LOT.price)); bind("ppm",nb(ppm)+" ₽");
+  bind("gapShort","−"+nb(gap/1000)+" тыс ₽/м²"+S(ref.src));
+  bind("ppmGap","−"+nb(gap/1000)+" тыс ₽/м²");
+  bind("ppmGapNote",`Лот 142 — ${nb(ppm)} ₽/м². Самый дешёвый метр среди двушек корпуса 1 в выборке — ${nb(ref.ppm)} ₽ (лот ${ref.id}, ${ref.floor} этаж)${S(ref.src)}. На всю площадь лота разница — ${mln(gap*LOT.area)}.`);
+  bind("srcFloors",S(3));
+  bind("metroDist","100 м / 150 м"+S(2));
+  bind("rentHint","средняя ≈80 тыс"+S(16));
+  bind("pMin",mln(LOT.priceMin)); bind("pMax",mln(LOT.priceMax));
+  bind("phone",LOT.phone); bind("tgName","@"+LOT.tg); bind("updated",LOT.updated);
+  $$('[data-link="tel"]').forEach(a=>a.href="tel:"+LOT.phone.replace(/[^\d+]/g,""));
+  $$('[data-link="tg"]').forEach(a=>a.href="https://t.me/"+LOT.tg);
 
-function mIdx(s){const [y,m]=s.split("-").map(Number);return y*12+m-1}
-const MONTHS=["январь","февраль","март","апрель","май","июнь","июль","август","сентябрь","октябрь","ноябрь","декабрь"];
-const MONTHS_G=["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
-
-/* hero + compare */
-function fillStatic(){
-  set("price", rub(LOT.price));
-  set("ppm", Math.round(LOT.price/LOT.area).toLocaleString("ru-RU").replace(/,/g," ")+" ₽ за м²");
-  set("devPrice", mln(LOT.devPrice));
-  const s = LOT.devPrice-LOT.price;
-  set("saving", "−"+rub(s).replace(" ₽","")+" ₽");
-  set("savingNote", `${(s/LOT.devPrice*100).toFixed(1).replace(".",",")}% к цене застройщика за ту же площадь`);
-  set("devNote", LOT.devNote);
-  set("faqDates", LOT.dates);
-  set("phone", LOT.phone); set("tgName", "@"+LOT.tg);
-  set("updated", LOT.updated);
-  set("pMin", mln(LOT.priceMin)); set("pMax", mln(LOT.devPrice));
-  document.querySelectorAll('[data-link="tel"]').forEach(a=>a.href="tel:"+LOT.phone.replace(/[^\d+]/g,""));
-  document.querySelectorAll('[data-link="tg"]').forEach(a=>a.href="https://t.me/"+LOT.tg);
-
-  const rows=[
-    {cls:"dev",l:"Застройщик сейчас",s:"аналог в корпусе 1",v:LOT.devPrice/LOT.area},
-    {cls:"me",l:"Этот лот",s:"переуступка, лот 142",v:LOT.price/LOT.area},
-  ];
-  if(LOT.peerPpm) rows.splice(1,0,{cls:"",l:"Другие переуступки",s:LOT.peerLabel,v:LOT.peerPpm});
-  rows.push({cls:"",l:"Цена покупки по ДДУ",s:"январь 2025",v:LOT.total/LOT.area});
-  const max=Math.max(...rows.map(r=>r.v));
-  const box=document.getElementById("bars");
-  box.innerHTML=rows.map(r=>`<div class="bar ${r.cls}"><div class="bl">${r.l}<small>${r.s}</small></div><div class="track"><div class="fill" data-w="${(r.v/max*100).toFixed(1)}">${Math.round(r.v/1000)} тыс ₽/м²</div></div></div>`).join("");
+  const tk=TICKER.map(t=>`<span class="tk">${t.k}<b>${t.v}</b><i>${t.d}</i></span>`).join("");
+  $("#ticker").innerHTML=tk+tk;
+  $("#specGrid").innerHTML=SPEC.map(s=>`<div><span class="mono">${s.k}</span><div><b>${s.v}</b>${S(s.src)}<span class="d">${s.d}</span></div></div>`).join("");
+  $("#trips").innerHTML=TRIPS.map(t=>`<div class="trip"><b>${t.v}<small>${t.u}</small></b><span>${t.k}${S(t.src)}<small>${t.d}</small></span></div>`).join("");
+  $("#plus").innerHTML=PLUS.map(x=>`<li>${x.t}${S(x.src)}</li>`).join("");
+  $("#minus").innerHTML=MINUS.map(x=>`<li>${x.t}${S(x.src)}</li>`).join("");
+  $("#srcList").innerHTML=SOURCES.map(s=>`<li id="src-${s.id}"><span class="i">[${s.id}]</span><span>${s.u?`<a href="${s.u}" target="_blank" rel="noopener">${s.t}</a>`:s.t}<br><span class="dt">${s.d}</span></span></li>`).join("");
 }
 
-/* plan */
-const ROOMS={
-  r1:{t:"Комната у окна",a:"16,4",x:"Самая большая комната. Спальня с гардеробом или кабинет: помещается кровать 160 и рабочий стол у окна."},
-  k:{t:"Кухня-столовая",a:"14,0",x:"Отдельная кухня с окном. Гарнитур вдоль стены и обеденный стол на четверых, можно поставить диван."},
-  r2:{t:"Вторая комната",a:"13,5",x:"Детская, гостевая или вторая спальня. При сдаче по комнатам у каждой своя дверь из прихожей."},
-  h:{t:"Прихожая",a:"9,4",x:"Широкая прихожая: шкаф-купе во всю стену, место под стиральную машину и хранение."},
-  b:{t:"Санузел",a:"4,5",x:"Совмещённый, помещаются ванна или большой душ, раковина и стиральная машина."},
-};
-function pickRoom(id){
-  document.querySelectorAll("#plan .room,#roomList li").forEach(e=>e.classList.toggle("on",e.dataset.r===id));
-  const r=ROOMS[id]; if(!r) return;
-  document.getElementById("riArea").innerHTML=r.a+"<small> м²</small>";
-  document.getElementById("riTitle").textContent=r.t;
-  document.getElementById("riText").textContent=r.x;
-}
-document.querySelectorAll("#plan .room,#roomList li[data-r]").forEach(e=>e.addEventListener("click",()=>pickRoom(e.dataset.r)));
-document.querySelectorAll(".plan-tabs button").forEach(b=>b.addEventListener("click",()=>{
-  document.querySelectorAll(".plan-tabs button").forEach(x=>x.setAttribute("aria-pressed",x===b));
-  const p=document.getElementById("plan"); p.classList.remove("f-life","f-rent");
-  if(b.dataset.f!=="none") p.classList.add("f-"+b.dataset.f);
-}));
-
-/* deal calculator */
-const pPrice=document.getElementById("pPrice");
-pPrice.min=LOT.priceMin; pPrice.max=LOT.devPrice; pPrice.value=LOT.price;
-let scheme="debt";
-const now=new Date(); const startIdx=Math.max(mIdx(LOT.paidUntil)+1, now.getFullYear()*12+now.getMonth());
-const lastIdx=mIdx(LOT.lastMonthly)+1; // включая месяц баллона (январь)
-const monthOpts=[];
-for(let i=startIdx;i<=lastIdx;i++) monthOpts.push(i);
-let dealIdx=monthOpts[0];
-const segM=document.getElementById("pMonth");
-segM.innerHTML=monthOpts.map((i,n)=>`<button type="button" data-i="${i}" aria-pressed="${n===0}">${MONTHS[i%12][0].toUpperCase()+MONTHS[i%12].slice(1)} ${Math.floor(i/12)}</button>`).join("");
-segM.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{segM.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));dealIdx=+b.dataset.i;calc();}));
-document.querySelectorAll("#pScheme button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#pScheme button").forEach(x=>x.setAttribute("aria-pressed",x===b));scheme=b.dataset.s;calc();}));
-pPrice.addEventListener("input",calc);
-
-function calc(){
-  const price=+pPrice.value;
-  document.getElementById("pPriceOut").textContent=mln(price);
-  // до месяца сделки продавец платит сам все месяцы раньше dealIdx
-  const paidIdx=dealIdx-1;
-  const nMonthsPaid=Math.max(0,Math.min(paidIdx,mIdx(LOT.lastMonthly))-mIdx(LOT.firstMonthly)+1);
-  const paid=LOT.firstPay+nMonthsPaid*LOT.monthly;
-  const futureMonthly=[];
-  for(let i=dealIdx;i<=mIdx(LOT.lastMonthly);i++) futureMonthly.push(i);
-  const debt=LOT.total-paid;
-  const sched=document.getElementById("oSched");
-  let toSeller, toDev;
-  if(scheme==="debt"){
-    toSeller=price-debt; toDev=debt;
-    let rows=`<div><span>Цена сделки</span><span class="num">${rub(price)}</span></div>`;
-    rows+=`<div><span>Мне при регистрации</span><span class="num">${rub(toSeller)}</span></div>`;
-    futureMonthly.forEach(i=>rows+=`<div><span>Застройщику, ${MONTHS[i%12]} ${Math.floor(i/12)}</span><span class="num">${rub(LOT.monthly)}</span></div>`);
-    rows+=`<div class="hl"><span>Застройщику до ${LOT.balloonDate}</span><span class="num">${rub(LOT.balloon)}</span></div>`;
-    sched.innerHTML=rows;
-    document.getElementById("schemeNote").textContent="Вы становитесь стороной ДДУ и продолжаете платить по графику. Остаток долга на дату сделки: "+rub(debt)+".";
-  } else {
-    toSeller=price; toDev=0;
-    sched.innerHTML=`<div><span>Цена сделки</span><span class="num">${rub(price)}</span></div><div class="hl"><span>Мне, через аккредитив</span><span class="num">${rub(price)}</span></div><div><span>Застройщику</span><span class="num">0 ₽</span></div>`;
-    document.getElementById("schemeNote").textContent="Продавец закрывает рассрочку до сделки, вы получаете полностью оплаченный ДДУ без перевода долга. Возможна после 20 января 2027 года, цена обсуждается отдельно.";
+function tower(){
+  const svg=$("#tower"), N=LOT.floors, W=150, D=110, H=19, ox=255, oy=528;
+  const c=Math.cos(Math.PI/6), s=Math.sin(Math.PI/6);
+  const P=(x,y,z)=>[+(ox+(x-y)*c).toFixed(1), +(oy-(x+y)*s-z).toFixed(1)];
+  const poly=(pts,fill,extra="")=>`<polygon points="${pts.map(p=>p.join(",")).join(" ")}" fill="${fill}" ${extra}/>`;
+  let g="";
+  for(let i=-3;i<=7;i++){const a=P(i*30-30,-90,0),b=P(i*30-30,230,0);g+=`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="#262b28"/>`;}
+  for(let j=-3;j<=7;j++){const a=P(-120,j*30-30,0),b=P(260,j*30-30,0);g+=`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="#262b28"/>`;}
+  for(let f=1;f<=N;f++){
+    const z0=(f-1)*H, z1=f*H-2.4, me=f===LOT.floor;
+    const L=me?"#e8573a":(f%2?"#232825":"#202522"), R=me?"#b8432b":(f%2?"#1a1e1b":"#181c19");
+    let win="";
+    for(let k=0;k<9;k++){const x=9+k*15.5;win+=poly([P(x,D,z0+4),P(x+8,D,z0+4),P(x+8,D,z1-3),P(x,D,z1-3)],me?"#ffd2c4":"#2f3632");}
+    for(let k=0;k<6;k++){const y=9+k*16.5;win+=poly([P(W,y,z0+4),P(W,y+8,z0+4),P(W,y+8,z1-3),P(W,y,z1-3)],me?"#ffb9a6":"#272d2a");}
+    g+=`<g class="fl" data-f="${f}">${poly([P(0,D,z0),P(W,D,z0),P(W,D,z1),P(0,D,z1)],L)}${poly([P(W,0,z0),P(W,D,z0),P(W,D,z1),P(W,0,z1)],R)}${win}</g>`;
   }
-  document.getElementById("oSeller").textContent=rub(toSeller);
-  document.getElementById("sp1").style.width=(toSeller/price*100)+"%";
-  document.getElementById("sp2").style.width=(toDev/price*100)+"%";
+  g+=poly([P(0,0,N*H),P(W,0,N*H),P(W,D,N*H),P(0,D,N*H)],"#2b312d");
+  const a=P(W*.12,D,(LOT.floor-.5)*H);
+  g+=`<circle cx="${a[0]}" cy="${a[1]}" r="4" fill="#e8573a"/><line x1="${a[0]}" y1="${a[1]}" x2="${a[0]-64}" y2="${a[1]}" stroke="#e8573a"/>`;
+  g+=`<text x="${a[0]-70}" y="${a[1]-5}" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="11" fill="#ff8a6e">ЛОТ 142</text><text x="${a[0]-70}" y="${a[1]+11}" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="11" fill="#a6aaa4">6 ЭТ · 57,8 М²</text>`;
+  const L0=P(0,D,0), R0=P(W,0,0);
+  g+=`<rect id="scan" x="${L0[0]}" width="${R0[0]-L0[0]}" height="2" fill="#e8573a" opacity="0"/>`;
+  svg.innerHTML=g;
+  const tip=$("#floorTip"), box=$("#towerBox");
+  svg.querySelectorAll(".fl").forEach(el=>{
+    const f=+el.dataset.f, ps=el.querySelectorAll("polygon");
+    el.addEventListener("pointerenter",()=>{if(f!==LOT.floor){ps[0].style.fill="#34443b";ps[1].style.fill="#2b3832";}tip.style.opacity=1;tip.textContent=f===LOT.floor?"6 этаж · лот 142":`${f} этаж`;});
+    el.addEventListener("pointermove",e=>{const r=box.getBoundingClientRect();tip.style.left=(e.clientX-r.left)+"px";tip.style.top=(e.clientY-r.top)+"px";});
+    el.addEventListener("pointerleave",()=>{ps[0].style.fill="";ps[1].style.fill="";tip.style.opacity=0;});
+  });
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const scan=$("#scan"), top=P(0,D,N*H)[1]-4, bot=L0[1]-4; const t0=performance.now();
+  (function loop(t){const p=((t-t0)/5600)%1;const e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;scan.setAttribute("y",(bot-(bot-top)*e).toFixed(1));scan.setAttribute("opacity",(p<.08?p/.08:p>.92?(1-p)/.08:1)*.85);requestAnimationFrame(loop);})(t0);
 }
 
-/* rent calculator */
-const rR=document.getElementById("rRent"),rF=document.getElementById("rFit"),rO=document.getElementById("rOcc");
-rR.value=85000; rF.value=2800000; rO.value=11;
+const ROOMS={
+  r1:{n:"Комната",a:16.4,t:"Комната у окна",x:"Самая большая: кровать 160×200, гардероб и рабочее место у окна."},
+  k:{n:"Кухня",a:14.0,t:"Кухня-столовая",x:"Отдельная кухня с окном: гарнитур вдоль стены, стол на четверых, диван."},
+  r2:{n:"Комната",a:13.5,t:"Вторая комната",x:"Детская, кабинет или вторая спальня. Вход из прихожей."},
+  h:{n:"Прихожая",a:9.4,t:"Прихожая",x:"Шкаф во всю стену, место под стиральную машину и хранение."},
+  b:{n:"Санузел",a:4.5,t:"Санузел",x:"Совмещённый: ванна или душ, раковина, стиральная машина."}
+};
+function plan(){
+  $("#rlist").innerHTML=Object.entries(ROOMS).map(([k,r])=>`<li data-r="${k}"><span>${r.n}</span><span class="bar"><i style="width:${r.a/16.4*100}%"></i></span><span>${r.a.toFixed(1).replace(".",",")} м²</span></li>`).join("")+`<li class="total"><span>Итого</span><span>57,8 м²</span></li>`;
+  const pick=id=>{$$("#plan .room,#rlist li").forEach(e=>e.classList.toggle("on",e.dataset.r===id));const r=ROOMS[id];$("#riArea").innerHTML=r.a.toFixed(1).replace(".",",")+"<small> м²</small>";$("#riTitle").textContent=r.t;$("#riText").textContent=r.x;};
+  $$("#plan .room,#rlist li[data-r]").forEach(e=>e.addEventListener("click",()=>pick(e.dataset.r)));
+  $$("#plan-sec .seg button[data-f]").forEach(b=>b.addEventListener("click",()=>{$$("#plan-sec .seg button[data-f]").forEach(x=>x.setAttribute("aria-pressed",x===b));const p=$("#plan");p.classList.remove("f-life","f-rent");if(b.dataset.f!=="none")p.classList.add("f-"+b.dataset.f);}));
+  $("#dimBtn").addEventListener("click",e=>{const on=e.currentTarget.getAttribute("aria-pressed")!=="true";e.currentTarget.setAttribute("aria-pressed",on);$("#plan").classList.toggle("show-dims",on);});
+}
+
+function scatter(){
+  const svg=$("#scatter"), tip=$("#tip"), panel=svg.parentElement;
+  const pts=[...DEV_LOTS,{id:"142",area:LOT.area,floor:LOT.floor,price:LOT.price,me:true}].map(d=>({...d,ppm:d.price/d.area}));
+  const W=640,H=380,m={l:50,r:20,t:18,b:42};
+  const yv=pts.map(p=>p.ppm/1000), ymin=Math.floor((Math.min(...yv)-12)/10)*10, ymax=Math.ceil((Math.max(...yv)+8)/10)*10;
+  const x=f=>m.l+f/(LOT.floors+1)*(W-m.l-m.r), y=v=>H-m.b-(v-ymin)/(ymax-ymin)*(H-m.t-m.b);
+  let g="";
+  for(let v=ymin;v<=ymax;v+=10) g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${y(v)}" y2="${y(v)}" stroke="#262b28"/><text x="${m.l-10}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="#737873">${v}</text>`;
+  [1,6,9,11,15,19,23].forEach(f=>g+=`<text x="${x(f)}" y="${H-m.b+22}" text-anchor="middle" font-size="11" fill="#737873">${f}</text>`);
+  g+=`<text x="${W-m.r}" y="${H-4}" text-anchor="end" font-size="10.5" fill="#737873">ЭТАЖ</text>`;
+  // band: floors with dev 2-room lots in price list (9–23)
+  g+=`<rect x="${x(8.5)}" y="${m.t}" width="${x(23.5)-x(8.5)}" height="${H-m.t-m.b}" fill="#5b93d9" opacity=".05"/><text x="${x(8.7)}" y="${m.t+14}" font-size="10.5" fill="#5b93d9">2-КОМН. В ПРАЙСЕ: 9–23 ЭТ.</text>`;
+  pts.forEach((p,i)=>{
+    const cx=x(p.floor)+(p.me?0:(p.area<65?-7:7)), cy=y(p.ppm/1000), r=p.me?9:7;
+    g+=`<g class="pt" data-i="${i}" style="cursor:pointer"><circle cx="${cx}" cy="${cy}" r="18" fill="transparent"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="${p.me?"#e8573a":"#5b93d9"}" stroke="#151816" stroke-width="2"/></g>`;
+    if(p.me) g+=`<text x="${cx+15}" y="${cy+4}" font-size="11.5" fill="#ff8a6e">ЛОТ 142 · ${nb(p.ppm/1000)}</text>`;
+  });
+  svg.innerHTML=g;
+  svg.querySelectorAll(".pt").forEach(el=>{
+    const p=pts[+el.dataset.i];
+    const show=()=>{const r=panel.getBoundingClientRect(),c=el.lastElementChild.getBoundingClientRect();tip.style.left=(c.left+c.width/2-r.left)+"px";tip.style.top=(c.top-r.top)+"px";tip.style.opacity=1;
+      tip.innerHTML=`<b>${p.me?"Лот 142 · переуступка":"Застройщик · кв. "+p.id}</b><br>${String(p.area).replace(".",",")} м² · ${p.floor} этаж<br>${mln(p.price)} · ${nb(p.ppm)} ₽/м²`;};
+    el.addEventListener("pointerenter",show); el.addEventListener("click",show);
+    el.addEventListener("pointerleave",()=>tip.style.opacity=0);
+  });
+  $("#dtable tbody").innerHTML=[...pts].sort((a,b)=>a.floor-b.floor||a.area-b.area).map(p=>`<tr class="${p.me?"me":""}"><td>${p.me?"142, переуступка":p.id}${p.me?S(1):S(p.src)}</td><td>${String(p.area).replace(".",",")} м²</td><td>${p.floor}</td><td>${mln(p.price)}</td><td>${nb(p.ppm)}</td></tr>`).join("");
+  $("#tblBtn").addEventListener("click",e=>{const t=$("#dtable");t.classList.toggle("show");e.currentTarget.textContent=t.classList.contains("show")?"Скрыть таблицу":"Показать таблицей";});
+}
+
+const mi=s=>{const[a,b]=s.split("-").map(Number);return a*12+b-1};
+const MON=["январь","февраль","март","апрель","май","июнь","июль","август","сентябрь","октябрь","ноябрь","декабрь"];
+const rangeFill=el=>el.style.setProperty("--p",((el.value-el.min)/(el.max-el.min)*100)+"%");
+function deal(){
+  const pIn=$("#pIn"); pIn.min=LOT.priceMin; pIn.max=LOT.priceMax; pIn.value=LOT.price;
+  const now=new Date(), start=Math.max(mi(LOT.paidUntil)+1, now.getFullYear()*12+now.getMonth()), last=mi(LOT.lastMonthly)+1;
+  const opts=[]; for(let i=start;i<=last;i++) opts.push(i);
+  let di=opts[0];
+  $("#mSeg").innerHTML=opts.map((i,n)=>`<button type="button" data-i="${i}" aria-pressed="${n===0}">${MON[i%12][0].toUpperCase()+MON[i%12].slice(1)} ${Math.floor(i/12)}</button>`).join("");
+  $$("#mSeg button").forEach(b=>b.addEventListener("click",()=>{$$("#mSeg button").forEach(x=>x.setAttribute("aria-pressed",x===b));di=+b.dataset.i;calc();}));
+  const calc=()=>{
+    rangeFill(pIn);
+    const price=+pIn.value; $("#pOut").textContent=mln(price);
+    const n=Math.max(0,Math.min(di-1,mi(LOT.lastMonthly))-mi(LOT.firstMonthly)+1);
+    const paid=LOT.firstPay+n*LOT.monthly, debt=LOT.total-paid, toS=price-debt;
+    $("#oSeller").textContent=rub(toS);
+    $("#s1").style.width=(toS/price*100)+"%"; $("#s2").style.width=(debt/price*100)+"%";
+    let r=`<div><span>Цена сделки</span><span>${rub(price)}</span></div><div><span>Продавцу при регистрации</span><span>${rub(toS)}</span></div>`;
+    for(let i=di;i<=mi(LOT.lastMonthly);i++) r+=`<div><span>Застройщику, ${MON[i%12]} ${Math.floor(i/12)}</span><span>${rub(LOT.monthly)}</span></div>`;
+    r+=`<div class="hl"><span>Застройщику до ${LOT.balloonDate}</span><span>${rub(LOT.balloon)}</span></div>`;
+    $("#sched").innerHTML=r;
+  };
+  pIn.addEventListener("input",calc); calc();
+}
+
 function rent(){
-  const r=+rR.value,f=+rF.value,o=+rO.value, price=LOT.price;
-  document.getElementById("rRentOut").textContent=rub(r);
-  document.getElementById("rFitOut").textContent=mln(f);
-  document.getElementById("rOccOut").textContent=String(o).replace(".",",")+" мес";
-  const gross=r*o;
-  const costs=gross*0.06 /* налог НПД/УСН ≈6% */ + 12*9000 /* коммуналка и обслуживание, ориентир */ + 60000 /* налог на имущество, ориентир */;
-  const net=gross-costs, inv=price+f;
-  document.getElementById("rYield").textContent=(net/inv*100).toFixed(1).replace(".",",")+"%";
-  document.getElementById("rNet").textContent=rub(net);
-  document.getElementById("rInv").textContent=mln(inv);
-  document.getElementById("rNote").textContent="Учтены налог 6% с аренды, около 9 тыс ₽ в месяц на коммунальные платежи и обслуживание, налог на имущество около 60 тыс ₽ в год. Рост стоимости самого объекта в расчёт не входит.";
-}
-[rR,rF,rO].forEach(e=>e.addEventListener("input",rent));
-
-/* form → messenger */
-const chips=document.querySelectorAll("#fChips button");
-chips.forEach(b=>b.addEventListener("click",()=>{b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")!=="true");msg();}));
-["fName","fMsg"].forEach(id=>document.getElementById(id).addEventListener("input",msg));
-function msg(){
-  const n=document.getElementById("fName").value.trim();
-  const ch=[...chips].filter(b=>b.getAttribute("aria-pressed")==="true").map(b=>b.textContent.toLowerCase());
-  const c=document.getElementById("fMsg").value.trim();
-  let t=`Здравствуйте! Пишу по апартаменту 57,8 м² в Аквилон Signal (корпус 1, 6 этаж).`;
-  if(n) t+=` Меня зовут ${n}.`;
-  if(ch.length) t+=` Интересует: ${ch.join(", ")}.`;
-  if(c) t+=` ${c}`;
-  const e=encodeURIComponent(t);
-  document.getElementById("sendTg").href=`https://t.me/${LOT.tg}?text=${e}`;
-  document.getElementById("sendWa").href=`https://wa.me/${LOT.wa}?text=${e}`;
+  const R=$("#rR"),F=$("#rF"),O=$("#rO"); R.value=RENT_DEFAULT; F.value=2800000; O.value=11;
+  const calc=()=>{[R,F,O].forEach(rangeFill);
+    const r=+R.value,f=+F.value,o=+O.value;
+    $("#rRo").textContent=rub(r); $("#rFo").textContent=mln(f); $("#rOo").textContent=String(o).replace(".",",");
+    const gross=r*o, net=gross-(gross*.06+12*9000+60000), y=net/(LOT.price+f)*100;
+    $("#rY").textContent=y.toFixed(1).replace(".",",")+"%";
+    const rows=[{k:"Аренда этого лота",v:y,c:"var(--acc)"},{k:DEPOSIT.k,v:DEPOSIT.v,c:"var(--dev)",src:DEPOSIT.src}];
+    const mx=Math.max(...rows.map(x=>x.v));
+    $("#cmpbars").innerHTML=rows.map(x=>`<div class="cmpbar"><span>${x.k}${x.src?S(x.src):""}</span><span class="t"><i style="width:${x.v/mx*100}%;background:${x.c}"></i></span><b>${x.v.toFixed(x.src?2:1).replace(".",",")}%</b></div>`).join("");
+  };
+  [R,F,O].forEach(e=>e.addEventListener("input",calc)); calc();
 }
 
-/* scroll effects */
-const top_=document.getElementById("top"), mbar=document.getElementById("mbar");
-addEventListener("scroll",()=>{const y=scrollY;top_.classList.toggle("scrolled",y>8);mbar.classList.toggle("show",y>500);},{passive:true});
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");e.target.querySelectorAll(".fill").forEach(f=>f.style.width=f.dataset.w+"%");io.unobserve(e.target);}}),{threshold:.2});
+function metro(){
+  let g=`<line x1="96" y1="60" x2="96" y2="400" stroke="#8d918c" stroke-width="7" stroke-linecap="round"/>`;
+  g+=`<path d="M16 96 L96 96 C 220 96 320 66 540 66" stroke="#e05a6a" stroke-width="5" fill="none"/>`;
+  g+=`<rect x="14" y="120" width="56" height="30" rx="3" fill="#e8573a"/><text x="42" y="140" font-size="11" fill="#fff" text-anchor="middle" font-weight="600" font-family="JetBrains Mono,monospace">ЛОТ</text><line x1="70" y1="135" x2="86" y2="106" stroke="#e8573a" stroke-dasharray="3 3"/>`;
+  g+=`<circle cx="96" cy="96" r="13" fill="#0f1110" stroke="#ecebe6" stroke-width="3"/>`;
+  g+=`<text x="122" y="88" font-size="17" font-weight="600" fill="#ecebe6">Владыкино</text><text x="122" y="118" font-size="12.5" fill="#a6aaa4">метро 100 м · МЦК 150 м</text>`;
+  METRO_STATIONS.forEach((s,i)=>{const yy=180+i*58;g+=`<circle cx="96" cy="${yy}" r="6" fill="#0f1110" stroke="#ecebe6" stroke-width="2"/><text x="122" y="${yy+4}" font-size="13.5" fill="#ecebe6">${s.n}</text><text x="540" y="${yy+4}" font-size="12" fill="#a6aaa4" text-anchor="end" font-family="JetBrains Mono,monospace">${s.t}</text>`;});
+  g+=`<text x="540" y="50" font-size="11.5" fill="#e05a6a" text-anchor="end">${MCC_LABEL}</text>`;
+  $("#metro").innerHTML=g;
+}
 
-fillStatic(); calc(); rent(); msg();
-document.querySelectorAll(".rv").forEach(e=>io.observe(e));
+function blocks(){
+  $("#stBody").innerHTML=STATUS.map(r=>`<tr><td>${r[0]}</td><td>${withSrc(r[1])}</td><td>${r[3]?`<span class="tag ${r[3]}">${r[3]==="ok"?"плюс":"важно"}</span><br>`:""}${r[2]}</td></tr>`).join("");
+  const STEPS=[["Документы","ДДУ, график платежей, справка об оплате. Персональные данные закрыты до встречи.","в день обращения"],["Показ","Офис продаж, шоурум и макет. Выход на этаж — по правилам стройплощадки.","1–3 дня"],["Задаток","Фиксируем цену и схему оплаты, лот снимается с продажи.","неделя 1"],["Согласие","Застройщик согласует уступку с переводом долга, банк открывает аккредитив.","1–3 недели"],["Росреестр","Регистрация уступки, после неё банк раскрывает аккредитив.","5–9 рабочих дней"]];
+  $("#stepsBox").innerHTML=STEPS.map((s,i)=>`<div class="step"><span class="n">0${i+1}</span><h3>${s[0]}</h3><p>${s[1]}</p><span class="mono">${s[2]}</span></div>`).join("");
+  $("#faqBox").innerHTML=FAQ.map(q=>`<details><summary>${q[0]}</summary><div class="a">${q[1]}</div></details>`).join("");
+}
+
+function form(){
+  const chips=$$("#chips button");
+  const upd=()=>{
+    const n=$("#fN").value.trim(), c=$("#fM").value.trim(), ch=chips.filter(b=>b.getAttribute("aria-pressed")==="true").map(b=>b.textContent.toLowerCase());
+    let t="Здравствуйте! Пишу по лоту 142 в «Аквилон Signal»: 57,8 м², корпус 1, 6 этаж.";
+    if(n) t+=` Меня зовут ${n}.`; if(ch.length) t+=` Интересует: ${ch.join(", ")}.`; if(c) t+=` ${c}`;
+    $("#preview").textContent=t; const e=encodeURIComponent(t);
+    $("#sTg").href=`https://t.me/${LOT.tg}?text=${e}`; $("#sWa").href=`https://wa.me/${LOT.wa}?text=${e}`;
+  };
+  chips.forEach(b=>b.addEventListener("click",()=>{b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")!=="true");upd();}));
+  ["#fN","#fM"].forEach(s=>$(s).addEventListener("input",upd)); $("#form").addEventListener("submit",e=>e.preventDefault()); upd();
+}
+
+function scroll(){
+  const pr=$("#progress"), mb=$("#mbar"), links=$$(".nav a"), secs=links.map(a=>$(a.getAttribute("href")));
+  addEventListener("scroll",()=>{const h=document.documentElement;pr.style.width=(h.scrollTop/(h.scrollHeight-innerHeight)*100)+"%";mb.classList.toggle("show",scrollY>520);
+    let cur=-1; secs.forEach((s,i)=>{if(s&&s.getBoundingClientRect().top<140)cur=i}); links.forEach((a,i)=>a.classList.toggle("on",i===cur));},{passive:true});
+  if(!("IntersectionObserver" in window)){$$(".rv").forEach(e=>e.classList.add("in"));return;}
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.1,rootMargin:"0px 0px -40px 0px"});
+  $$(".rv").forEach(e=>io.observe(e));
+}
+
+fill(); tower(); plan(); scatter(); deal(); rent(); metro(); blocks(); form(); scroll();
 </script>
 </body>
 </html>
