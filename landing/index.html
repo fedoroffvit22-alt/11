@@ -679,7 +679,8 @@ footer{padding:36px 0 110px;font-size:12.5px;color:var(--ink-3);border-top:1px s
     <div>
       <span class="mono">14 / Связь</span>
       <h2 style="margin-top:18px">ДДУ, справка об оплате и&nbsp;поэтажный план — в&nbsp;течение часа</h2>
-      <div class="direct">
+      <p style="margin:26px 0 0;font-size:19px;font-weight:600" data-b="cname"></p>
+      <div class="direct" style="margin-top:14px">
         <a href="#" data-link="tel"><small class="mono">Телефон</small><span data-b="phone"></span></a>
         <a href="#" data-link="tg" target="_blank" rel="noopener"><small class="mono">Telegram</small><span data-b="tgName"></span></a>
       </div>
@@ -728,7 +729,7 @@ const LOT={
   price:18900000, priceMin:17900000, priceMax:19900000, area:57.8, floor:6, floors:23,
   paidUntil:"2026-10", monthly:170419, lastMonthly:"2026-12", balloon:9713867, balloonDate:"20.01.2027",
   total:16991881, firstPay:3358377, firstMonthly:"2025-02",
-  phone:"+7 900 000-00-00", tg:"username", wa:"79000000000",   // ЗАМЕНИТЬ на свои контакты
+  name:"Наталья Семенова", phone:"+7 925 856-46-02", tg:"+79258564602", wa:"79258564602",
   updated:"Данные проверены 1 ноября 2026 года."
 };
 const CHECKED="проверено 01.11.2026";
@@ -758,6 +759,8 @@ const SOURCES=[
  {id:23,t:"РБК Недвижимость: Конституционный суд разрешил временную регистрацию в апартаментах", u:"https://realty.rbc.ru/news/69983de89a7947270de231ae", d:"февраль 2026"},
  {id:24,t:"Сайт проекта: премия Green Property Awards 2024", u:"https://akvilon-signal.ru/press/akvilon-signal-pobeditel-premii-green-property-awards-2024", d:"2024"},
  {id:25,t:"Сайт проекта, ход строительства: фотоотчёт", u:"https://akvilon-signal.ru/hod-stroitelstva", d:"альбом от 30.09.2026"},
+
+ {id:27,t:"Циан и Авито: двухкомнатные по переуступке в «Аквилон Signal» — 41–45 м², white box, 13,9–15,75 млн",u:"https://www.cian.ru/kupit-2-komnatnuyu-kvartiru-zhiloy-kompleks-apartkompleks-akvilon-signal-4623414/",d:"01.11.2026"},
  {id:26,t:"Сайт проекта, страница лота № 142: планировка (у застройщика лот отмечен проданным — он продан нынешнему собственнику)", u:"https://akvilon-signal.ru/flats/2-komnatnaya-kvartira-57.8m-korpus-1-kv-142", d:CHECKED},
  {id:27,t:"Группа Аквилон: ход строительства в сентябре 2026 года", u:"https://akvilon-signal.ru/press/gruppa-akvilon-moskva-hod-stroitelstva-v-sentjabre-2026", d:"08.10.2026"},
  {id:28,t:"Группа Аквилон: акции сентября 2026 — скидка 5% при полной оплате для корпусов 1–2 (расходится с текущим каталогом)", u:"https://akvilon-signal.ru/press/gruppa-akvilon-moskva-aktsii-sentjabrja-2026", d:"01.09.2026"}
@@ -900,7 +903,7 @@ function fill(){
   bind("ppmGapNote",`Лот 142 — ${nb(ppm)} ₽/м². Самый дешёвый метр среди двушек корпуса 1 в выборке — ${nb(ref.ppm)} ₽ (лот ${ref.id}, ${ref.floor} этаж)${S(ref.src)}. На всю площадь лота разница — ${mln(gap*LOT.area)}.`);
   bind("srcPlan",S(26)); bind("srcDdu",S(1)); bind("srcBuild",S(25)); bind("srcGallery",S(2)); bind("srcWB",S(3));
   bind("pMin",mln(LOT.priceMin)); bind("pMax",mln(LOT.priceMax));
-  bind("phone",LOT.phone); bind("tgName","@"+LOT.tg); bind("updated",LOT.updated);
+  bind("phone",LOT.phone); bind("cname",LOT.name); bind("tgName",LOT.tg.startsWith("+")?"по номеру телефона":"@"+LOT.tg); bind("updated",LOT.updated);
   $$('[data-link="tel"]').forEach(a=>a.href="tel:"+LOT.phone.replace(/[^\d+]/g,""));
   $$('[data-link="tg"]').forEach(a=>a.href="https://t.me/"+LOT.tg);
   const tk=TICKER.map(t=>`<span class="tk">${t.k}<b>${t.v}</b><i>${t.d}${t.d?" · ":""}[${t.src}]</i></span>`).join("");
@@ -915,6 +918,7 @@ function fill(){
 }
 const DELTA=[
  "<b>У застройщика это цена со скидкой 25%.</b> Она действует при 100% оплате сразу.#4 Базовая цена без акции — от 489 520 ₽/м².#4 У застройщика при рассрочке цена может быть выше указанной на сайте.#6 Здесь остаток платится по графику ДДУ без удорожания.",
+ "<b>Переуступки в проекте — меньше и без отделки.</b> Двушки по переуступке — евро-формат 41–45 м² в white box, 322–346 тыс ₽/м².#27 Здесь 57,8 м², две изолированные комнаты, отдельная кухня 14 м² и отделка Greystone по договору.",
  "<b>Шестой этаж и 57,8 м².</b> Свободные двушки корпуса 1 — только на этажах 9–23 и от 62,1 м². Двушек 52–60 м² у застройщика в продаже нет.#4",
  "<b>Тот же корпус, плюс отделка.</b> У застройщика двушки корпуса 1 — в white box, здесь в договоре отделка Greystone. ДДУ по 214-ФЗ, эскроу в Сбербанке.#1",
  "<b>Где источники расходятся.</b> В сентябре застройщик писал о скидке 5% при полной оплате,#28 сейчас каталог показывает 25%. На странице — цифры текущего каталога застройщика."
@@ -1083,7 +1087,7 @@ function form(){
   const chips=$$("#chips button");
   const upd=()=>{
     const n=$("#fN").value.trim(), c=$("#fM").value.trim(), ch=chips.filter(b=>b.getAttribute("aria-pressed")==="true").map(b=>b.textContent.toLowerCase());
-    let t="Здравствуйте! Пишу по лоту 142 в «Аквилон Signal»: 57,8 м², корпус 1, 6 этаж.";
+    let t=`Здравствуйте, ${LOT.name.split(" ")[0]}! Пишу по лоту 142 в «Аквилон Signal»: 57,8 м², корпус 1, 6 этаж.`;
     if(n) t+=` Меня зовут ${n}.`; if(ch.length) t+=` Интересует: ${ch.join(", ")}.`; if(c) t+=` ${c}`;
     $("#preview").textContent=t; const e=encodeURIComponent(t);
     $("#sTg").href=`https://t.me/${LOT.tg}?text=${e}`; $("#sWa").href=`https://wa.me/${LOT.wa}?text=${e}`;

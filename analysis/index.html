@@ -399,7 +399,7 @@ footer .sig svg{width:44px;height:36px}
       <span>Разбор цены · лот 142 <small>для собственника</small></span>
     </a>
     <nav class="chap" aria-label="Главы">
-      <a href="#c1">Вывод</a><a href="#c2">Объект</a><a href="#c3">Рынок</a><a href="#c4">Аналоги</a><a href="#c5">Цена</a><a href="#c7">Срок</a><a href="#c8">Сценарии</a>
+      <a href="#c1">Вывод</a><a href="#c2">Объект</a><a href="#cR">Переуступки</a><a href="#c3">Рынок</a><a href="#c4">Аналоги</a><a href="#c5">Цена</a><a href="#c7">Срок</a><a href="#c8">Сценарии</a>
     </nav>
     <span class="rbar" id="rbar"></span>
   </div>
@@ -529,19 +529,36 @@ footer .sig svg{width:44px;height:36px}
   </div>
 </section>
 
+<section class="ch" id="cR">
+  <div class="wrap">
+    <div class="ch-head rv"><span class="ch-num">04</span><h2>Переуступки — главный ориентир</h2><p>Что прямо сейчас выставлено по переуступке в «Аквилон Signal». Именно с этим покупатель сравнит ваш лот, поэтому цена считается от них.</p></div>
+    <div class="hist" style="margin-top:0">
+      <div class="swarm-box rv" style="padding:16px"><span class="lbl">Цена за м² и сколько объявление висит</span><svg id="dom" viewBox="0 0 640 360" role="img" aria-label="Двушки-переуступки: цена за метр и дни в продаже" style="margin-top:8px"></svg><div class="legend" style="margin-top:6px"><span><i style="background:#2F6BA8"></i>двушка-переуступка, white box</span><span><i style="background:#D9771A;opacity:.6;border-radius:2px"></i>коридор вашего лота</span></div></div>
+      <div class="rv">
+        <h3 style="margin-bottom:10px">Дороже рынок не берёт</h3>
+        <p class="muted" id="domText"></p>
+      </div>
+    </div>
+    <div class="tscroll rv" style="margin-top:36px"><table class="dt" id="resTable"></table></div>
+    <p class="small" style="margin-top:12px" id="resNote"></p>
+    <h3 style="margin:44px 0 8px">Переуступки двушек-апартаментов в Москве</h3>
+    <div class="tscroll rv"><table class="dt" id="mosTable"></table></div>
+  </div>
+</section>
+
 <section class="ch" id="c4">
   <div class="wrap">
-    <div class="ch-head rv"><span class="ch-num">04</span><h2>Ближайшие аналоги</h2><p>Двушки и большая евро-однушка застройщика, которые покупатель увидит рядом с вашим объявлением. Планировки — с сайта проекта.</p></div>
+    <div class="ch-head rv"><span class="ch-num">05</span><h2>Ближайшие аналоги</h2><p>Двушки и большая евро-однушка застройщика, которые покупатель увидит рядом с вашим объявлением. Планировки — с сайта проекта.</p></div>
     <div class="comps" id="comps"></div>
   </div>
 </section>
 
 <section class="ch" id="c5">
   <div class="wrap">
-    <div class="ch-head rv"><span class="ch-num">05</span><h2>Как складывается цена</h2><p>Расчёт за квадратный метр: от прайса застройщика к цене вашего лота. Листайте — график меняется по шагам.</p></div>
+    <div class="ch-head rv"><span class="ch-num">06</span><h2>Как складывается цена</h2><p>Расчёт за квадратный метр: от прайса застройщика к цене вашего лота. Листайте — график меняется по шагам.</p></div>
     <div class="wf">
       <div class="wf-steps" id="wfSteps"></div>
-      <div class="wf-sticky"><svg id="wfchart" viewBox="0 0 560 400" role="img" aria-label="Каскадный график: из чего складывается цена за квадратный метр"></svg><p class="small" style="margin:8px 0 0">тыс ₽ за м² · <span class="note est">расчёт</span></p></div>
+      <div class="wf-sticky"><svg id="wfchart" viewBox="0 0 560 400" role="img" aria-label="Каскадный график: из чего складывается цена за квадратный метр"></svg><p class="small" style="margin:8px 0 0">тыс ₽ за м² · чёрный пунктир — 18,9 млн (327 тыс), синий — застройщик · <span class="note est">расчёт</span></p></div>
     </div>
   </div>
 </section>
@@ -564,19 +581,15 @@ footer .sig svg{width:44px;height:36px}
 
 <section class="ch" id="c6">
   <div class="wrap">
-    <div class="ch-head rv"><span class="ch-num">06</span><h2>Конкуренты в районе</h2><p>Что ещё смотрит покупатель с бюджетом 19–22 млн рядом с метро Владыкино.</p></div>
+    <div class="ch-head rv"><span class="ch-num">07</span><h2>Конкуренты в районе</h2><p>Что ещё смотрит покупатель с бюджетом 19–22 млн рядом с метро Владыкино.</p></div>
     <div class="tscroll rv"><table class="dist" id="dist"></table></div>
     <p class="small" style="margin-top:14px" id="distNote"></p>
-    <div style="margin-top:44px" class="rv">
-      <h3 style="margin-bottom:12px">Переуступки в самом «Аквилон Signal»</h3>
-      <div id="resale" class="muted"></div>
-    </div>
   </div>
 </section>
 
 <section class="ch" id="c7">
   <div class="wrap">
-    <div class="ch-head rv"><span class="ch-num">07</span><h2>Цена и срок продажи</h2><p>Двигайте цену в объявлении. Справа — где она в коридоре, сколько ждать задатка и сколько останется на руках.</p></div>
+    <div class="ch-head rv"><span class="ch-num">08</span><h2>Цена и срок продажи</h2><p>Двигайте цену в объявлении. Справа — где она в коридоре, сколько ждать задатка и сколько останется на руках.</p></div>
     <div class="calc rv">
       <div class="calc-in">
         <span class="lbl">Цена в объявлении</span>
@@ -604,14 +617,14 @@ footer .sig svg{width:44px;height:36px}
 
 <section class="ch" id="c8">
   <div class="wrap">
-    <div class="ch-head rv"><span class="ch-num">08</span><h2>Три сценария</h2><p>Продать сейчас, дождаться сдачи с отделкой или сдавать. Сравнение по деньгам и риску.</p></div>
+    <div class="ch-head rv"><span class="ch-num">09</span><h2>Три сценария</h2><p>Продать сейчас, дождаться сдачи с отделкой или сдавать. Сравнение по деньгам и риску.</p></div>
     <div class="scen rv" id="scen"></div>
   </div>
 </section>
 
 <section class="ch" id="c9">
   <div class="wrap">
-    <div class="ch-head rv"><span class="ch-num">09</span><h2>Риски и что проверить</h2><p>То, что может сдвинуть цену вверх или вниз, и вопросы к застройщику до старта продаж.</p></div>
+    <div class="ch-head rv"><span class="ch-num">10</span><h2>Риски и что проверить</h2><p>То, что может сдвинуть цену вверх или вниз, и вопросы к застройщику до старта продаж.</p></div>
     <div class="risks rv" id="risks"></div>
     <h3 style="margin:44px 0 12px">До публикации объявления</h3>
     <ul class="checks rv" id="checks"></ul>
@@ -620,7 +633,7 @@ footer .sig svg{width:44px;height:36px}
 
 <section class="ch" id="c10" style="border-bottom:0">
   <div class="wrap">
-    <div class="ch-head rv"><span class="ch-num">10</span><h2>Источники</h2><p>Номер в квадратных скобках ведёт сюда. Где у источника нет даты — дата проверки. Расчёты и оценки помечены отдельно.</p></div>
+    <div class="ch-head rv"><span class="ch-num">11</span><h2>Источники</h2><p>Номер в квадратных скобках ведёт сюда. Где у источника нет даты — дата проверки. Расчёты и оценки помечены отдельно.</p></div>
     <ol class="srcs" id="srcs"></ol>
   </div>
 </section>
@@ -639,12 +652,13 @@ const LOTP={area:57.8,floor:6,living:29.9,kitchen:14.0,total:16991881,balloon:97
 /* Оценка за м², ₽. analog — аналог у застройщика в white box при 100% оплате (модель по прайсу корпуса 1);
    fin — стоимость отделки Greystone для покупателя; disc — дисконт переуступки до ввода. */
 const VAL={
-  analog:{lo:360000,mid:366000,hi:372000},
-  finPct:{lo:.07,mid:.10,hi:.13},
-  disc:{lo:.06,mid:.08,hi:.11},
-  base:488000
+  resale:{lo:323000,mid:333000,hi:340000},   /* запросы по двушкам-переуступкам в проекте, white box */
+  bargain:{lo:.05,mid:.04,hi:.03},           /* торг на сделке */
+  size:{lo:.03,mid:.03,hi:.01},              /* 57,8 м² против 41–45 м²: метр большого лота дешевле */
+  fin:{lo:20000,mid:25000,hi:30000},         /* отделка Greystone: после ключей, без кухни и покраски */
+  analog:{mid:366000}, base:488000
 };
-const FINISH={note:"По Приложению № 2 к ДДУ застройщик выполняет отделку Greystone в цене договора. Работы — в течение 6 месяцев после передачи ключей: собственник подписывает акт и передаёт лот застройщику на отделку.#1",why:"Квартиры с готовой отделкой в новостройках Москвы в среднем на 14% дороже таких же без отделки в том же доме.#13 Отдельной цены отделки Greystone застройщик не публикует. В пакете нет кухни, стены под окраску — поэтому премия в расчёте осторожная: 7–13% к цене white box."};
+const FINISH={note:"По Приложению № 2 к ДДУ застройщик выполняет отделку Greystone в цене договора. Работы — в течение 6 месяцев после передачи ключей: собственник подписывает акт и передаёт лот застройщику на отделку.#1",why:"Квартиры с готовой отделкой в новостройках Москвы в среднем на 14% дороже таких же без отделки в том же доме.#13 Отдельной цены отделки Greystone застройщик не публикует. Работы идут после ключей, в пакете нет кухни, стены под окраску — поэтому в расчёте премия осторожная: 20–30 тыс ₽ за м², около 1,4 млн за лот."};
 const SOURCES=[
  {id:1,t:"Договор участия в долевом строительстве, лот 142 (документ собственника): цена, график платежей, п. 7.14 и Приложение № 2 «Перечень дополнительных работ» — отделка Greystone",u:"",d:"20.01.2025"},
  {id:2,t:"Каталог апартаментов «Аквилон Signal»: 346 свободных лотов, цена по акции «100% оплата» (−25%) и базовая цена, тип отделки, этаж, площадь",u:"https://akvilon-signal.ru/flats",d:"выгрузка 01.11.2026"},
@@ -669,7 +683,10 @@ const SOURCES=[
  {id:23,t:"ПИК, ЖК «Алтуфьевское 53»: 44 лота, цены, рендер",u:"https://api.pik.ru/v2/filter?block=1555",d:"01.11.2026"},
  {id:24,t:"ГК «Основа», «ВЭРИ на Ботанической»: лоты, цены, рендер",u:"https://gk-osnova.ru/very-botsad",d:"01.11.2026"},
  {id:25,t:"Яндекс Недвижимость, аренда двухкомнатных у м. Владыкино: 48 объявлений, медиана 93 650 ₽",u:"https://realty.yandex.ru/moskva/snyat/kvartira/dvuhkomnatnaya/metro-vladykino/",d:"01.11.2026"},
- {id:26,t:"Новострой-М, апарт-комплекс «Ботаник»: лоты застройщика распроданы",u:"https://www.novostroy-m.ru/baza/apartkompleks_botanik",d:"01.11.2026"}
+ {id:26,t:"Новострой-М, апарт-комплекс «Ботаник»: лоты застройщика распроданы",u:"https://www.novostroy-m.ru/baza/apartkompleks_botanik",d:"01.11.2026"},
+ {id:27,t:"Циан: двухкомнатные в «Аквилон Signal», переуступки от частных лиц и агентств",u:"https://www.cian.ru/kupit-2-komnatnuyu-kvartiru-zhiloy-kompleks-apartkompleks-akvilon-signal-4623414/",d:"01.11.2026"},
+ {id:28,t:"Авито: «Аквилон Сигнал», объявления о продаже апартаментов",u:"https://www.avito.ru/moskva/kvartiry/prodam-ASgBAgICAUSSA8YQ?q=аквилон+сигнал",d:"01.11.2026"},
+ {id:29,t:"Циан: переуступки двухкомнатных апартаментов в Москве (Мираполис, «Октябрь», «Инсайдер»)",u:"https://www.cian.ru/cat.php?deal_type=sale&engine_version=2&offer_type=flat&region=1&room2=1&object_type%5B0%5D=2&apartment=1",d:"01.11.2026"}
 ];
 const DISTRICT=[
  {n:"Сигнальный 16",img:"comp-signalny16",src:22,what:"ПИК, квартиры с отделкой, сдача 30.12.2026",ppm:382000,ppmT:"382 тыс · двушка 65,7 м² за 25,1 млн",plus:"Прописка, семейная ипотека, отделка",minus:"Дороже на 3–4 млн, до метро 10 мин, в продаже всего 3 лота"},
@@ -677,7 +694,7 @@ const DISTRICT=[
  {n:"ВЭРИ на Ботанической",img:"comp-very",src:24,what:"«Основа», бизнес-класс, без отделки, 2-я очередь 12.2027",ppm:577500,ppmT:"медиана 578 тыс · евро-2 от 27,95 млн",plus:"Класс, парк рядом",minus:"На 6+ млн дороже и без отделки"}
 ];
 const DIST_NOTE="«Римского-Корсакова 11» (ПИК) в продаже уже нет. Апарт-комплекс «Ботаник» у метро распродан застройщиком, там студии 17–20 м².#26 Рендеры — с сайтов застройщиков.#22#23#24";
-const RESALE="На Яндекс Недвижимости 6 объявлений не от застройщика, из них 4 переуступки. <b>Двухкомнатных переуступок нет ни одной.</b>#18 Студии и однушки 24–34 м² продают по 375–447 тыс ₽/м². Авито, Циан и Домклик на 1 ноября не отдали данные автоматически — проверю вручную перед стартом.";
+const RESALE="";
 const RISKS=[
  ["Отделка — после ключей","Застройщик делает её в течение 6 месяцев после передачи лота. Покупателю нужно объяснить: сначала акт, потом лот уходит на отделку. Кухни в пакете нет, стены под окраску.#1"],
  ["Застройщик вернёт скидки","Скидка 25% за полную оплату идёт с 2024 года с перерывами.#20 Если её уберут, ваш лот станет ещё выгоднее. Если углубят — давление на цену."],
@@ -718,15 +735,15 @@ const r100=n=>Math.round(n/100000)*100000;
 
 /* ---------- модель ---------- */
 const A=LOTP.area;
-VAL.fin={lo:VAL.analog.lo*VAL.finPct.lo,mid:VAL.analog.mid*VAL.finPct.mid,hi:VAL.analog.hi*VAL.finPct.hi};
-const ppm=k=>(VAL.analog[k]+VAL.fin[k])*(1-VAL.disc[k==="lo"?"hi":k==="hi"?"lo":"mid"]);
-/* если в ДДУ отделки нет — тот же расчёт без неё */
-const ppmWB=k=>VAL.analog[k]*(1-VAL.disc[k==="lo"?"hi":k==="hi"?"lo":"mid"]);
+const ppmWB=k=>VAL.resale[k]*(1-VAL.bargain[k])*(1-VAL.size[k]);
+const ppm=k=>ppmWB(k)+VAL.fin[k];
 const V={lo:ppm("lo")*A, mid:ppm("mid")*A, hi:ppm("hi")*A};
 const VWB={lo:ppmWB("lo")*A, mid:ppmWB("mid")*A, hi:ppmWB("hi")*A};
 /* старт объявления — самая высокая цена, при которой задаток ожидается не позже чем через 5 недель (успеваем до 15 декабря) */
-const DEAL=r100(V.mid*.98), FLOOR=r100(V.lo*.97);
+/* торг уже заложен в модель: сделка = середина коридора, нижняя граница = низ коридора */
+const DEAL=r100(V.mid), FLOOR=r100(V.lo);
 let ASK=r100(V.mid); for(let p=r100(V.hi*1.05);p>=V.lo;p-=100000){if(weeksFor(p*.97)<=5){ASK=p;break}}
+ASK=Math.max(r100(V.mid),Math.floor(ASK/500000)*500000-100000); /* цена «на 9»: 19,9 вместо 20,2 */
 function tax(p){let t=0,b=[[2.4e6,.13],[5e6,.15],[20e6,.18],[50e6,.20],[1e12,.22]],prev=0;for(const[c,r]of b){if(p>prev){t+=(Math.min(p,c)-prev)*r;prev=c}}return Math.max(0,t)}
 function money(price){const toSeller=price-LOTP.balloon, profit=price-LOTP.total, tx=tax(profit), cost=110000;return{toSeller,profit,tx,cost,net:toSeller-tx-cost,gain:profit-tx-cost}}
 /* экспертная кривая брокера: недели до задатка от отношения цены к середине коридора */
@@ -742,11 +759,11 @@ function fill(){
   bind("updated","Данные на "+AS_OF+". Расчёты обновляются в блоке данных страницы.");
   const devMin=Math.min(...LOTS.filter(l=>l[0]===1&&l[1]===2).map(l=>l[4]/l[2]));
   const LEAD=[
-   `<b>Ваш лот стоит ${m1(V.lo)}–${m1(V.hi)} млн ₽</b> как право требования с отделкой Greystone. Это ${nb(V.lo/A/1000)}–${nb(V.hi/A/1000)} тыс ₽ за м².`,
-   `<b>18,9 млн — заниженная цена.</b> Она считалась для white box. С отделкой и при текущем прайсе застройщика разумный старт — ${m1(ASK)} млн ₽, сделка — около ${m1(DEAL)} млн.`,
-   `<b>Отделка Greystone прописана в ДДУ</b> — Приложение № 2: потолки, полы, плитка, сантехника, двери. Без неё лот стоил бы ${m1(VWB.lo)}–${m1(VWB.hi)} млн, отделка добавляет около ${m1(V.mid-VWB.mid)} млн.#1`,
-   `<b>Застройщик продаёт двушки корпуса 1 от ${nb(devMin)} ₽/м²</b> — это уже со скидкой 25% и только при 100% оплате, в white box, от 62,1 м² и с 9 этажа.#2`,
-   `<b>Прямых конкурентов нет.</b> Двушек 52–60 м² у застройщика в продаже нет, у двушек 62,1 м² жилая площадь 24,9 м² против ваших 29,9. Двухкомнатных переуступок в проекте тоже нет.#2#18`,
+   `<b>Реальная стоимость — ${m1(V.lo)}–${m1(V.hi)} млн ₽</b>, вероятная сделка — около ${m1(DEAL)} млн. Расчёт от цен переуступок в самом проекте, с отделкой Greystone.`,
+   `<b>Переуступки двушек в проекте — 13,9–15,75 млн за 41–45 м²</b>, 322–346 тыс ₽/м², все в white box. Они висят от 2 недель до 7 месяцев: дороже рынок не берёт.#27#28`,
+   `<b>Старт объявления — ${m1(ASK)} млн, ниже ${m1(FLOOR)} не опускаться.</b> Так задаток реально получить до 15 декабря. 18,9 млн — внутри коридора, но без учёта отделки.`,
+   `<b>Отделка добавляет около ${m1(V.mid-VWB.mid)} млн, не больше.</b> Она прописана в ДДУ, но делается после ключей и без кухни — покупатель не заплатит за неё как за готовый ремонт.#1`,
+   `<b>Застройщик — потолок, а не ориентир.</b> Двушки корпуса 1 у него от 367 тыс ₽/м² в white box и только при 100% оплате, от 62,1 м², с 9 этажа.#2`,
    `<b>Срок важнее цены.</b> Последний платёж 9,71 млн — до 20 января 2027 года. Задаток нужен до 15 декабря, иначе платёж вносите сами.#1`
   ];
   $("#leadList").innerHTML=LEAD.map(t=>`<li><span>${W(t)}</span></li>`).join("");
@@ -755,7 +772,6 @@ function fill(){
   $("#srcs").innerHTML=SOURCES.map(s=>`<li id="src-${s.id}"><span class="i">[${s.id}]</span><span>${s.u?`<a href="${s.u}" target="_blank" rel="noopener">${s.t}</a>`:s.t}<br><span class="dt">${s.d}</span></span></li>`).join("");
   $("#risks").innerHTML=RISKS.map(r=>`<div><b>${r[0]}</b><span>${W(r[1].replace("${WB}",`${m1(VWB.lo)}–${m1(VWB.hi)} млн ₽`))}</span></div>`).join("");
   $("#checks").innerHTML=CHECKS.map(c=>`<li>${W(c)}</li>`).join("");
-  $("#resale").innerHTML=W(RESALE);
   $("#distNote").innerHTML=W(DIST_NOTE);
 }
 
@@ -813,9 +829,9 @@ function swarm(){
 function comps(){
   const C=[
    {me:1,img:"plan-142",t:"Ваш лот 142",b:"Корпус 1 · 6 этаж",area:57.8,live:"29,9",kit:"14,0, отдельная",fin:"Greystone",price:DEAL,note:"ваша вероятная цена сделки"},
-   {img:"plan-c1-62",t:"Двушка 62,1 м²",b:"Корпус 1 · 9 этаж · кв. 205",area:62.1,live:"24,9",kit:"14,0, отдельная",fin:"white box",price:22809438,src:2,vs:"Та же логика планировки, но жилая на 5 м² меньше, а цена при 100% оплате выше на 1,5–2 млн. С отделкой понадобится ещё ремонт."},
-   {img:"plan-c1-67",t:"Двушка 67 м²",b:"Корпус 1 · 11 этаж · кв. 235",area:67.0,live:"36,5",kit:"4,2, ниша",fin:"white box",price:24598380,src:2,vs:"Самый дешёвый метр у застройщика, но кухни как комнаты нет. Дороже на 3–4 млн за счёт площади."},
-   {img:"plan-c2-65",t:"Евро-двушка 65,2 м²",b:"Корпус 2 · 15 этаж · кв. 795",area:65.2,live:"37,9",kit:"кухня-гостиная",fin:"white box",price:23930534,src:2,vs:"Две спальни и кухня-гостиная. Нет отдельной кухни, бюджет на 3 млн выше."},
+   {img:"plan-c1-62",t:"Двушка 62,1 м²",b:"Корпус 1 · 9 этаж · кв. 205",area:62.1,live:"24,9",kit:"14,0, отдельная",fin:"white box",price:22809438,src:2,vs:`Та же логика планировки, но жилая на 5 м² меньше, цена при 100% оплате выше на ${m1(22809438-DEAL)} млн, и нужен ремонт.`},
+   {img:"plan-c1-67",t:"Двушка 67 м²",b:"Корпус 1 · 11 этаж · кв. 235",area:67.0,live:"36,5",kit:"4,2, ниша",fin:"white box",price:24598380,src:2,vs:`Самый дешёвый метр у застройщика, но кухни как комнаты нет. Дороже на ${m1(24598380-DEAL)} млн.`},
+   {img:"plan-c2-65",t:"Евро-двушка 65,2 м²",b:"Корпус 2 · 15 этаж · кв. 795",area:65.2,live:"37,9",kit:"кухня-гостиная",fin:"white box",price:23930534,src:2,vs:`Две спальни и кухня-гостиная, нет отдельной кухни. Бюджет выше на ${m1(23930534-DEAL)} млн.`},
    {img:"plan-c4-62",t:"Евро-двушка с отделкой",b:"Корпус 4 · 12 этаж · кв. 1566",area:62.7,live:"49,1",kit:"кухня-гостиная",fin:"чистовая",price:22496885,src:2,vs:"Корпус апарт-отеля с управляющей компанией. Отделка есть, но одна спальня и кухня-гостиная. Это продукт для инвестора, не для жизни."},
    {img:"plan-c1-58e",t:"Евро-однушка 58,9 м²",b:"Корпус 1 · 8 этаж · кв. 170",area:58.9,live:"33,8",kit:"кухня-гостиная",fin:"white box",price:24768156,src:2,vs:"Та же площадь, но одна спальня и метр на 50 тыс дороже. Покупатель «на 58 метров» сравнит именно с ней."}
   ];
@@ -832,18 +848,19 @@ function comps(){
 
 /* ---------- каскад ---------- */
 function waterfall(){
+  const r=VAL.resale.mid, b1=-r*VAL.bargain.mid, b2=-(r+b1)*VAL.size.mid;
   const st=[
-   {k:"Базовая цена застройщика",v:VAL.base,type:"abs",t:"Зачёркнутая цена в каталоге для аналога 57,8 м² на 6 этаже. По ней застройщик продаёт в рассрочку, и может быть ещё дороже.#2#7"},
-   {k:"Скидка 25% за полную оплату",v:VAL.analog.mid-VAL.base,type:"d",t:"Крупная цена в каталоге — это акция «100% оплата». Покупатель, у которого есть вся сумма, сравнивает вас именно с ней.#2"},
-   {k:"Отделка Greystone",v:VAL.fin.mid,type:"d",t:"В прайсе застройщика корпус 1 — white box. Ваш лот получает чистовую отделку, покупателю не нужно тратить деньги и время на ремонт.#1"},
-   {k:"Дисконт переуступки",v:-(VAL.analog.mid+VAL.fin.mid)*VAL.disc.mid,type:"d",t:`Покупка у частного лица до ввода дома — это согласие застройщика и юрист. Покупатель хочет скидку ${Math.round(VAL.disc.lo*100)}–${Math.round(VAL.disc.hi*100)}%. При пустой нише ниже, чем обычные 10–20%.`},
-   {k:"Рыночная стоимость",v:ppm("mid"),type:"abs",fin:1,t:`Середина коридора: ${nb(ppm("mid"))} ₽/м², ${m1(V.mid)} млн ₽ за лот. Коридор — ${m1(V.lo)}–${m1(V.hi)} млн.`}
+   {k:"Переуступки двушек в проекте",v:r,type:"abs",t:"Медиана запросов по двушкам-переуступкам в «Аквилон Signal»: 41–45 м², white box, Циан и Авито на 1 ноября.#27#28 Ниже — все объявления."},
+   {k:"Торг на сделке",v:b1,type:"d",t:`Объявления висят от 2 недель до 7 месяцев — запросы выше сделок. Закладываем торг ${Math.round(VAL.bargain.mid*100)}%.`},
+   {k:"Больше площадь",v:b2,type:"d",t:"57,8 м² против 41–45 м²: у большого лота метр дешевле. Поправка −3%."},
+   {k:"Отделка Greystone",v:VAL.fin.mid,type:"d",t:"По ДДУ лот получает отделку, переуступки в проекте — white box. Премия осторожная: работы после ключей, без кухни и покраски стен.#1"},
+   {k:"Рыночная стоимость",v:ppm("mid"),type:"abs",fin:1,t:`Середина коридора: ${nb(ppm("mid"))} ₽/м², ${m1(V.mid)} млн ₽ за лот. Коридор — ${m1(V.lo)}–${m1(V.hi)} млн. Потолок — застройщик: от 367 тыс ₽/м² в white box при полной оплате.#2`}
   ];
   $("#wfSteps").innerHTML=st.map((s,i)=>`<div class="wf-step" data-i="${i}"><span class="n">ШАГ ${i+1}</span><h3>${s.k}</h3><div class="v ${s.fin?"acc":""}">${s.type==="d"&&s.v>0?"+":""}${s.type==="d"&&s.v<0?"−":""}${nb(Math.abs(s.v))} ₽/м²</div><p class="muted">${W(s.t)}</p></div>`).join("");
-  const svg=$("#wfchart"), Wd=560,H=400,m={l:44,r:10,t:30,b:70}, maxV=520000;
+  const svg=$("#wfchart"), Wd=560,H=400,m={l:44,r:10,t:30,b:70}, maxV=400000;
   const bw=(Wd-m.l-m.r)/st.length;
   const y=v=>H-m.b-v/maxV*(H-m.t-m.b);
-  let g="";for(let v=0;v<=500000;v+=100000)g+=`<line x1="${m.l}" x2="${Wd-m.r}" y1="${y(v)}" y2="${y(v)}" stroke="#E2E5E7"/><text x="${m.l-8}" y="${y(v)+4}" text-anchor="end" font-size="12" fill="#7D8388">${v/1000}</text>`;
+  let g="";for(let v=0;v<=400000;v+=100000)g+=`<line x1="${m.l}" x2="${Wd-m.r}" y1="${y(v)}" y2="${y(v)}" stroke="#E2E5E7"/><text x="${m.l-8}" y="${y(v)+4}" text-anchor="end" font-size="12" fill="#7D8388">${v/1000}</text>`;
   let run=0;
   st.forEach((s,i)=>{let a,b;if(s.type==="abs"){a=0;b=s.v;run=s.v}else{a=run;b=run+s.v;run=b}
     const top=y(Math.max(a,b)),h=Math.abs(y(a)-y(b)),xx=m.l+i*bw+bw*.16,w=bw*.68;
@@ -851,11 +868,12 @@ function waterfall(){
     g+=`<g data-i="${i}" class="wfb" style="opacity:.0"><rect class="bar" x="${xx}" y="${top}" width="${w}" height="${Math.max(2,h)}" fill="${col}" style="transform:scaleY(0)"/>`;
     g+=`<text class="lbl-v" x="${xx+w/2}" y="${top-8}" text-anchor="middle" font-size="13" font-weight="800" fill="#23272B">${s.type==="d"?(s.v>0?"+":"−"):""}${nb(Math.abs(s.v)/1000)}</text>`;
     if(i<st.length-1){const ny=y(run);g+=`<line x1="${xx+w}" x2="${xx+bw}" y1="${ny}" y2="${ny}" stroke="#7D8388" stroke-dasharray="3 3"/>`}
-    const words=s.k.split(" ");let l1="",l2="";words.forEach(wd=>{if((l1+" "+wd).trim().length<=13&&!l2)l1=(l1+" "+wd).trim();else l2=(l2+" "+wd).trim()});
+    const words=s.k.split(" ");let l1="",l2="";words.forEach(wd=>{if((l1+" "+wd).trim().length<=12&&!l2)l1=(l1+" "+wd).trim();else l2=(l2+" "+wd).trim()});
     g+=`<text x="${xx+w/2}" y="${H-m.b+18}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#4F555A">${l1}</text><text x="${xx+w/2}" y="${H-m.b+33}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#4F555A">${l2}</text></g>`;
   });
+  g+=`<line x1="${m.l}" x2="${Wd-m.r}" y1="${y(367140)}" y2="${y(367140)}" stroke="#2F6BA8" stroke-dasharray="2 4"/><text x="${m.l+4}" y="${y(367140)-6}" font-size="11.5" font-weight="700" fill="#2F6BA8">застройщик, white box, 100% · 367</text>`;
   /* наша цена 18,9 */
-  g+=`<line x1="${m.l}" x2="${Wd-m.r}" y1="${y(LOTP.ask0/A)}" y2="${y(LOTP.ask0/A)}" stroke="#23272B" stroke-dasharray="5 4"/><text x="${m.l+4}" y="${y(LOTP.ask0/A)-6}" font-size="11.5" font-weight="700" fill="#23272B">18,9 млн = ${nb(LOTP.ask0/A/1000)}</text>`;
+  g+=`<line x1="${m.l}" x2="${Wd-m.r}" y1="${y(LOTP.ask0/A)}" y2="${y(LOTP.ask0/A)}" stroke="#23272B" stroke-dasharray="5 4"/>`;
   svg.innerHTML=g;
   const bars=$$(".wfb",svg), steps=$$(".wf-step");
   const setStep=n=>{steps.forEach((s,i)=>s.classList.toggle("on",i===n));bars.forEach((b,i)=>{const on=i<=n;b.style.opacity=on?1:.0;b.querySelector(".bar").style.transform=on?"scaleY(1)":"scaleY(0)"})};
@@ -891,7 +909,7 @@ function calc(){
 
 /* ---------- сценарии ---------- */
 function scen(){
-  const a=money(DEAL), readyLo=(VAL.analog.mid+VAL.fin.mid)*A, readyHi=readyLo*1.08;
+  const a=money(DEAL), readyLo=(VAL.analog.mid+VAL.fin.mid)*A*.97, readyHi=readyLo*1.08;
   const yRent=(110000*11*.94-12*9000-60000)/(DEAL+800000)*100;
   const S3=[
    {k:"А. Переуступка сейчас",rec:1,big:`${m1(DEAL)} млн`,rows:[["Когда деньги","декабрь 2026"],["Доложить","0 ₽"],["На руки",`≈ ${m2(a.net)} млн`],["Риск","дисконт к застройщику"]]},
@@ -934,6 +952,40 @@ function motion(){
 }
 
 
+
+
+/* ---------- переуступки ---------- */
+const RES=[
+ {u:"https://www.cian.ru/sale/flat/333775532/",src:"Циан",area:43,floor:6,kit:"евро, кухня-ниша",price:13900000,since:"2026-09-09",who:"частное лицо"},
+ {u:"https://www.cian.ru/sale/flat/335086925/",src:"Циан",area:45,floor:2,kit:"кухня-гостиная 16,3",price:14500000,since:"2026-10-19",who:"агентство"},
+ {u:"https://www.cian.ru/sale/flat/334587275/",src:"Циан, Авито",area:45,floor:2,kit:"евро",price:15000000,since:"2026-10-05",who:"собственник, дубли у агентств"},
+ {u:"https://www.cian.ru/sale/flat/333913610/",src:"Циан",area:45.5,floor:17,kit:"кухня-гостиная 15,2, 2 балкона",price:15750000,since:"2026-09-14",who:"«срочная продажа»"},
+ {u:"https://www.cian.ru/sale/flat/327787546/",src:"Циан",area:41.7,floor:10,kit:"кухня 15, 2 балкона",price:15500000,since:"2026-03-13",who:"агентство"},
+ {u:"https://www.avito.ru/moskva/kvartiry/2-k._apartamenty_366_m_723_et._8471730209",src:"Авито",area:36.6,floor:7,kit:"евро, 36,6 м²",price:15990000,since:"",who:"—"}
+];
+const MOS=[["Мираполис, СВАО","41,3",12900000,"IV кв. 2027"],["Мираполис, СВАО","37,9",13550000,"IV кв. 2026"],["Клубный дом «Октябрь», СЗАО","54,1",16900000,"II кв. 2027"],["«Инсайдер», ЮАО","66,15",19900000,"II кв. 2025"]];
+function resale(){
+  const now=new Date("2026-11-01");
+  const days=r=>r.since?Math.round((now-new Date(r.since))/864e5):null;
+  $("#resTable").innerHTML=`<thead><tr><th>Объявление</th><th class="r">м²</th><th class="r">Этаж</th><th>Планировка</th><th class="r">Цена</th><th class="r">₽/м²</th><th class="r">В продаже</th><th>Кто продаёт</th></tr></thead><tbody>`+
+   `<tr class="me"><td>Ваш лот 142</td><td class="r">57,8</td><td class="r">6</td><td>2 комнаты + кухня 14, Greystone</td><td class="r">${m2(DEAL)} млн</td><td class="r">${nb(DEAL/A)}</td><td class="r">—</td><td>расчёт</td></tr>`+
+   RES.map(r=>{const d=days(r);return `<tr><td><a href="${r.u}" target="_blank" rel="noopener">${r.src}</a></td><td class="r">${String(r.area).replace(".",",")}</td><td class="r">${r.floor}</td><td>${r.kit}</td><td class="r">${m2(r.price)} млн</td><td class="r">${nb(r.price/r.area)}</td><td class="r">${d===null?"—":d+" дн."}</td><td>${r.who}</td></tr>`}).join("")+`</tbody>`;
+  $("#resNote").innerHTML=W("Все двушки — white box. Циан и Авито, 1 ноября 2026.#27#28 Студии и однушки в проекте выставлены по 316–447 тыс ₽/м²: у маленьких лотов метр дороже, для двушки они не ориентир. Застройщик продаёт двушки от 367 тыс ₽/м², но только при полной оплате.#2");
+  $("#mosTable").innerHTML=`<thead><tr><th>Проект</th><th class="r">м²</th><th class="r">Цена</th><th class="r">₽/м²</th><th>Сдача</th></tr></thead><tbody>`+MOS.map(m=>`<tr><td>${m[0]}${S(29)}</td><td class="r">${m[1]}</td><td class="r">${m2(m[2])} млн</td><td class="r">${nb(m[2]/parseFloat(m[1].replace(",",".")))}</td><td>${m[3]}</td></tr>`).join("")+`</tbody>`;
+  /* график: ₽/м² × дни в продаже */
+  const svg=$("#dom"), nar=svg.parentElement.clientWidth<520, Wd=nar?400:640, H=nar?380:360, m={l:nar?40:48,r:16,t:20,b:40}, f1=nar?13:12;
+  svg.setAttribute("viewBox",`0 0 ${Wd} ${H}`);
+  const X0=300,X1=390, x=v=>m.l+(v-X0)/(X1-X0)*(Wd-m.l-m.r), y=d=>H-m.b-d/240*(H-m.t-m.b);
+  let g="";
+  for(let v=300;v<=390;v+=15)g+=`<line x1="${x(v)}" x2="${x(v)}" y1="${m.t}" y2="${H-m.b}" stroke="#E2E5E7"/><text x="${x(v)}" y="${H-m.b+18}" text-anchor="middle" font-size="${f1}" fill="#7D8388">${v}</text>`;
+  for(let d=0;d<=240;d+=60)g+=`<text x="${m.l-8}" y="${y(d)+4}" text-anchor="end" font-size="${f1}" fill="#7D8388">${d}</text>`;
+  g+=`<text x="${m.l}" y="${m.t-6}" font-size="${f1-1}" font-weight="700" fill="#7D8388">ДНЕЙ В ПРОДАЖЕ</text><text x="${Wd-m.r}" y="${H-4}" text-anchor="end" font-size="${f1-1}" font-weight="700" fill="#7D8388">ТЫС ₽ ЗА М²</text>`;
+  g+=`<rect x="${x(V.lo/A/1000)}" y="${m.t}" width="${x(V.hi/A/1000)-x(V.lo/A/1000)}" height="${H-m.t-m.b}" fill="#D9771A" opacity=".14"/><text x="${x(V.mid/A/1000)}" y="${m.t+14}" text-anchor="middle" font-size="${f1}" font-weight="800" fill="#C46A00">ваш коридор</text>`;
+  RES.filter(r=>r.since).forEach((r,i)=>{const cx=x(r.price/r.area/1000),cy=y(days(r)),rad=4+r.area/9;g+=`<circle class="dd" cx="${cx}" cy="${cy}" r="${rad}" fill="#2F6BA8" fill-opacity=".85" stroke="#fff" stroke-width="2" style="transform-origin:${cx}px ${cy}px"/><text x="${cx>Wd*.68?cx-rad-4:cx+rad+4}" y="${cy+4}" text-anchor="${cx>Wd*.68?"end":"start"}" font-size="${f1-1}" font-weight="700" fill="#23272B">${m1(r.price)} · ${String(r.area).replace(".",",")} м²</text>`});
+  svg.innerHTML=g;
+  if(window.gsap&&!RM) gsap.from($$("#dom .dd"),{scale:0.2,opacity:0,duration:.7,ease:"back.out(1.6)",stagger:.08,scrollTrigger:{trigger:"#dom",start:"top 80%",once:true}});
+  $("#domText").innerHTML=W(`Самая дорогая двушка — 15,5 млн за 41,7 м² (372 тыс за метр) — висит с марта, больше 230 дней.#27 Объявления по 322–346 тыс висят от 2 недель до 2 месяцев. Задаток быстро получают лоты не дороже ~335 тыс за метр в white box. Ваш лот больше по площади и с отделкой, поэтому его коридор — ${nb(V.lo/A/1000)}–${nb(V.hi/A/1000)} тыс ₽/м², или ${m1(V.lo)}–${m1(V.hi)} млн.`);
+}
 
 /* ---------- Greystone ---------- */
 const FIN_LIST=["Натяжные потолки","Обои под окраску","Ламинат или кварцвинил","Плитка на стенах и полу санузла","Ванна, раковина с тумбой, смесители","Унитаз-инсталляция","Тёплый пол и полотенцесушитель в санузле","Межкомнатные двери МДФ","Розетки, выключатели, светильники в санузле","Подоконники ПВХ"];
@@ -1081,7 +1133,7 @@ function spotlight(){
   $$(".comp").forEach(c=>c.addEventListener("pointermove",e=>{const r=c.getBoundingClientRect();c.style.setProperty("--mx",(e.clientX-r.left)+"px");c.style.setProperty("--my",(e.clientY-r.top)+"px")}));
 }
 
-fill(); finalNums(); gsStrip(); hist(); comps(); swarm(); waterfall(); calc(); scen(); district(); motion(); tower3d(); gsapFx(); spotlight();
+fill(); finalNums(); gsStrip(); hist(); resale(); comps(); swarm(); waterfall(); calc(); scen(); district(); motion(); tower3d(); gsapFx(); spotlight();
 let nw=innerWidth<600; addEventListener("resize",()=>{const n=innerWidth<600;if(n!==nw){nw=n;swarm();$("#swarm")._play()}});
 </script>
 <script type="module">
