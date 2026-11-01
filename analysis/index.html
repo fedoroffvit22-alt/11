@@ -96,7 +96,11 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .lead-list b{font-weight:800}
 
 /* object */
-.obj{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.85fr) minmax(0,.9fr);gap:28px;align-items:start}
+.obj{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.05fr);gap:28px;align-items:stretch}
+.obj > .sheet{display:flex;flex-direction:column}
+.obj > .sheet > .small{margin-top:auto!important;padding-top:10px}
+.planfit{aspect-ratio:330/610;display:grid;place-items:center}
+.planfit img{width:100%;height:100%;object-fit:contain}
 .sheet{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:16px;position:relative}
 .sheet .lbl{display:block;margin-bottom:10px}
 .planbox{position:relative}
@@ -346,6 +350,8 @@ footer .sig svg{width:44px;height:36px}
   .chap{display:none}
   .hero-grid,.obj,.ba-wrap,.wf,.calc{grid-template-columns:1fr}
   .hero-art .frame{min-height:0;aspect-ratio:4/3;flex:none}
+  .obj{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .obj > div:not(.sheet){grid-column:1/-1}
   .ch-head{grid-template-columns:72px minmax(0,1fr)}
   .ch-head p{grid-column:1/-1}
   .ch-num{font-size:48px}
@@ -371,6 +377,8 @@ footer .sig svg{width:44px;height:36px}
   .ch-head{grid-template-columns:1fr;gap:12px;margin-bottom:30px}
   .ch-num{font-size:40px}
   .vgrid{grid-template-columns:1fr}
+  .obj{grid-template-columns:1fr}
+  .obj > .sheet{width:100%;max-width:420px;margin:0 auto}
   .vgrid > div + div{padding-left:0;border-left:0;border-top:1px solid var(--line)}
   .vgrid > div{padding:12px 0 8px}
   .comps{grid-template-columns:1fr}
@@ -464,12 +472,12 @@ footer .sig svg{width:44px;height:36px}
           <img src="img/floor6.webp" width="330" height="610" alt="Поэтажный план 6 этажа корпуса 1, лот 142 в верхнем правом углу" loading="lazy" decoding="async">
           <svg viewBox="0 0 330 610" aria-hidden="true"><polygon class="outline draw" id="lotOutline" points="196,44 266,44 266,201 150,201 150,104 196,104"/></svg>
         </div>
-        <p class="small" style="margin:10px 0 0">План застройщика <sup class="src"><a href="#src-4">[4]</a></sup>. Обвод — граница лота, ориентировочно.</p>
+        <p class="small">План застройщика <sup class="src"><a href="#src-4">[4]</a></sup>. Обвод — граница лота, ориентировочно.</p>
       </div>
       <div class="sheet rv">
         <span class="lbl">Планировка лота 142</span>
-        <img src="img/plan-142.webp" width="690" height="940" alt="Планировка: комнаты 16,4 и 13,5 м², кухня 14,0, прихожая 9,4, санузел 4,5" loading="lazy" decoding="async">
-        <p class="small" style="margin:10px 0 0">Со страницы лота у застройщика <sup class="src"><a href="#src-5">[5]</a></sup>, площади совпадают с ДДУ <sup class="src"><a href="#src-1">[1]</a></sup>.</p>
+        <div class="planfit"><img src="img/plan-142.webp" width="690" height="940" alt="Планировка: комнаты 16,4 и 13,5 м², кухня 14,0, прихожая 9,4, санузел 4,5" loading="lazy" decoding="async"></div>
+        <p class="small">Со страницы лота у застройщика <sup class="src"><a href="#src-5">[5]</a></sup>, площади совпадают с ДДУ <sup class="src"><a href="#src-1">[1]</a></sup>.</p>
       </div>
       <div>
         <div class="specs rv" id="specs"></div>
