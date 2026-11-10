@@ -1,0 +1,440 @@
+{
+ "series": "ograblenie",
+ "rough_cut": "assets/ograblenie/video/chernovik-2.mp4",
+ "rough_cut_seconds": 68.4,
+ "montage_only": [
+  "00 титульная заставка",
+  "03 перемотка",
+  "08 титр-таймер",
+  "14 титр",
+  "19 плашка",
+  "20 тизер"
+ ],
+ "totals": {
+  "video_generations": 18,
+  "video_credits": 2520,
+  "rejected": 0,
+  "lipsync_credits": 60,
+  "music_credits": 160,
+  "sfx_credits": 40,
+  "voice_credits": 38
+ },
+ "shots": [
+  {
+   "id": "SHOT_01",
+   "scene": 1,
+   "duration": 4,
+   "status": "review",
+   "tier": "key",
+   "description": "Рука хозяина набирает код, огонёк меняется с красного на зелёный",
+   "keyframe": "assets/ograblenie/kadry-9x16/kadr-01.jpg",
+   "model": "kling-25",
+   "resolution": "720p",
+   "clip_seconds": 5,
+   "attempts": [
+    {
+     "n": 1,
+     "magnific_id": "CqArqcOEEy",
+     "credits": 140,
+     "result": "ok"
+    }
+   ],
+   "approved_file": "",
+   "credits_spent": 140
+  },
+  {
+   "id": "SHOT_02",
+   "scene": 2,
+   "duration": 3,
+   "status": "review",
+   "tier": "cheap",
+   "description": "Лицо хозяина в полутьме",
+   "keyframe": "assets/ograblenie/kadry-9x16/kadr-02.jpg",
+   "model": "kling-25",
+   "resolution": "720p",
+   "clip_seconds": 5,
+   "attempts": [
+    {
+     "n": 1,
+     "magnific_id": "hu35HkjvqL",
+     "credits": 140,
+     "result": "ok"
+    }
+   ],
+   "approved_file": "",
+   "credits_spent": 140
+  },
+  {
+   "id": "SHOT_04",
+   "scene": 4,
+   "duration": 5,
+   "status": "review",
+   "tier": "cheap",
+   "description": "Рука брокера расставляет сахарные кубики на плане",
+   "keyframe": "assets/ograblenie/kadry-9x16/kadr-04.jpg",
+   "model": "kling-25",
+   "resolution": "720p",
+   "clip_seconds": 5,
+   "attempts": [
+    {
+     "n": 1,
+     "magnific_id": "mEibFkMhJQ",
+     "credits": 140,
+     "result": "ok"
+    }
+   ],
+   "approved_file": "",
+   "credits_spent": 140
+  },
+  {
+   "id": "SHOT_05",
+   "scene": 5,
+   "duration": 4,
+   "status": "review",
+   "tier": "main",
+   "description": "Юрист снимает очки",
+   "keyframe": "assets/ograblenie/kadry-9x16/kadr-05.jpg",
+   "model": "kling-25",
+   "resolution": "720p",
+   "clip_seconds": 5,
+   "attempts": [
+    {
+     "n": 1,
+     "magnific_id": "Dowvtukpcl",
+     "credits": 140,
+     "result": "ok"
+    }
+   ],
+   "approved_file": "",
+   "credits_spent": 140
+  },
+  {
+   "id": "SHOT_06",
+   "scene": 6,
+   "duration": 6,
+   "status": "review",
+   "tier": "main",
+   "description": "Бухгалтер считает и смотрит поверх очков",
+   "keyframe": "assets/ograblenie/kadry-9x16/kadr-06.jpg",
+   "model": "kling-25",
+   "resolution": "720p",
+   "clip_seconds": 5,
+   "attempts": [
+    {
+     "n": 1,
+     "magnific_id": "xSey7icjfW",
+     "credits": 140,
+     "result": "ok"
+    }
+   ],
+   "approved_file": "",
+   "credits_spent": 140
+  },
+  {
+   "id": "SHOT_07",
+   "scene": 7,
+   "duration": 4,
+   "status": "review",
+   "tier": "main",
+   "description": "Инженер светит фонариком в камеру",
+   "keyframe": "assets/ograblenie/kadry-9x16/kadr-07.jpg",
+   "model": "kling-25",
+   "resolution": "720p",
+   "clip_seconds": 5,
+   "attempts": [
+    {
+     "n": 1,
+     "magnific_id": "gO864GHSXO",
+     "credits": 140,
+     "result": "ok"
+    }
+   ],
+   "approved_file": "",
+   "credits_spent": 140
+  },
+  {
+   "id": "SHOT_09a",
+   "scene": 9,
+   "duration": 2,
+   "status": "review",
+   "tier": "cheap",
+   "description": "Руки в перчатках пересчитывают наконечники",
+   "keyframe": "assets/ograblenie/kadry-9x16/kadr-09a.jpg",
+   "model": "kling-25",
+   "resolution": "720p",
+   "clip_seconds": 5,
+   "attempts": [
+    {
+     "n": 1,
+     "magnific_id": "YMjBefCWeC",
+     "credits": 140,
+     "result": "ok"
+    }
+   ],
+   "approved_file": "",
+   "credits_spent": 140
+  },
+  {
+   "id": "SHOT_09b",
+   "scene": 9,
+   "duration": 2,
+   "status": "review",
+   "tier": "cheap",
+   "description": "Связка ключей падает на стол",
+   "keyframe": "assets/ograblenie/kadry-9x16/kadr-09b.jpg",
+   "model": "kling-25",
+   "resolution": "720p",
+   "clip_seconds": 5,
+   "attempts": [
+    {
+     "n": 1,
+     "magnific_id": "rgpOwZoxtc",
+     "credits": 140,
+     "result": "ok"
+    }
+   ],
+   "approved_file": "",
+   "credits_spent": 140
+  },
+  {
+   "id": "SHOT_09c",
+   "scene": 9,
+   "duration": 2,
+   "status": "review",
+   "tier": "cheap",
+   "description": "Монитор на ресепшене ночью",
+   "keyframe": "assets/ograblenie/kadry-9x16/kadr-09c.jpg",
+   "model": "kling-25",
+   "resolution": "720p",
+   "clip_seconds": 5,
+   "attempts": [
+    {
+     "n": 1,
+     "magnific_id": "WDLodQIcXe",
+     "credits": 140,
+     "result": "ok"
+    }
+   ],
+   "approved_file": "",
+   "credits_spent": 140
+  },
+  {
+   "id": "SHOT_09d",
+   "scene": 9,
+   "duration": 2,
+   "status": "review",
+   "tier": "cheap",
+   "description": "Палец ведёт по строкам договора",
+   "keyframe": "assets/ograblenie/kadry-9x16/kadr-09d.jpg",
+   "model": "kling-25",
+   "resolution": "720p",
+   "clip_seconds": 5,
+   "attempts": [
+    {
+     "n": 1,
+     "magnific_id": "u5zj1vuQLD",
+     "credits": 140,
+     "result": "ok"
+    }
+   ],
+   "approved_file": "",
+   "credits_spent": 140
+  },
+  {
+   "id": "SHOT_10",
+   "scene": 10,
+   "duration": 5,
+   "status": "review",
+   "tier": "cheap",
+   "description": "Врач в маске оборачивается",
+   "keyframe": "assets/ograblenie/kadry-9x16/kadr-10.jpg",
+   "model": "kling-25",
+   "resolution": "720p",
+   "clip_seconds": 5,
+   "attempts": [
+    {
+     "n": 1,
+     "magnific_id": "vQRKqtia47",
+     "credits": 140,
+     "result": "ok"
+    }
+   ],
+   "approved_file": "",
+   "credits_spent": 140
+  },
+  {
+   "id": "SHOT_11",
+   "scene": 11,
+   "duration": 3,
+   "status": "review",
+   "tier": "main",
+   "description": "Бухгалтер задаёт вопрос",
+   "keyframe": "assets/ograblenie/kadry-9x16/kadr-11.jpg",
+   "model": "kling-25",
+   "resolution": "720p",
+   "clip_seconds": 5,
+   "attempts": [
+    {
+     "n": 1,
+     "magnific_id": "BhPufdVoQR",
+     "credits": 140,
+     "result": "ok"
+    },
+    {
+     "n": 2,
+     "step": "lipsync",
+     "model": "latentsync",
+     "magnific_id": "tC6qlwImZJ",
+     "credits": 25,
+     "result": "ok"
+    }
+   ],
+   "approved_file": "",
+   "credits_spent": 165
+  },
+  {
+   "id": "SHOT_12",
+   "scene": 12,
+   "duration": 9,
+   "status": "review",
+   "tier": "main",
+   "description": "Брокер отвечает про лицензию",
+   "keyframe": "assets/ograblenie/kadry-9x16/kadr-12.jpg",
+   "model": "kling-25",
+   "resolution": "720p",
+   "clip_seconds": 5,
+   "attempts": [
+    {
+     "n": 1,
+     "magnific_id": "TdgtoTQVNR",
+     "credits": 140,
+     "result": "ok"
+    },
+    {
+     "n": 2,
+     "step": "lipsync",
+     "model": "latentsync",
+     "magnific_id": "vQRKw4ea47",
+     "credits": 35,
+     "result": "ok"
+    }
+   ],
+   "approved_file": "",
+   "credits_spent": 175
+  },
+  {
+   "id": "SHOT_13",
+   "scene": 13,
+   "duration": 5,
+   "status": "review",
+   "tier": "cheap",
+   "description": "Ручка ставит галочки в списке",
+   "keyframe": "assets/ograblenie/kadry-9x16/kadr-13.jpg",
+   "model": "kling-25",
+   "resolution": "720p",
+   "clip_seconds": 5,
+   "attempts": [
+    {
+     "n": 1,
+     "magnific_id": "jUdPOspLD0",
+     "credits": 140,
+     "result": "ok"
+    }
+   ],
+   "approved_file": "",
+   "credits_spent": 140
+  },
+  {
+   "id": "SHOT_15",
+   "scene": 15,
+   "duration": 5,
+   "status": "review",
+   "tier": "main",
+   "description": "Хозяин открывает дверь команде",
+   "keyframe": "assets/ograblenie/kadry-9x16/kadr-15.jpg",
+   "model": "kling-25",
+   "resolution": "720p",
+   "clip_seconds": 5,
+   "attempts": [
+    {
+     "n": 1,
+     "magnific_id": "gO869w5SXO",
+     "credits": 140,
+     "result": "ok"
+    }
+   ],
+   "approved_file": "",
+   "credits_spent": 140
+  },
+  {
+   "id": "SHOT_16",
+   "scene": 16,
+   "duration": 5,
+   "status": "review",
+   "tier": "main",
+   "description": "Подписание акта на ресепшене",
+   "keyframe": "assets/ograblenie/kadry-9x16/kadr-16.jpg",
+   "model": "kling-25",
+   "resolution": "720p",
+   "clip_seconds": 5,
+   "attempts": [
+    {
+     "n": 1,
+     "magnific_id": "LwX4yURswO",
+     "credits": 140,
+     "result": "ok"
+    }
+   ],
+   "approved_file": "",
+   "credits_spent": 140
+  },
+  {
+   "id": "SHOT_17",
+   "scene": 17,
+   "duration": 4,
+   "status": "review",
+   "tier": "key",
+   "description": "Команда выходит из клиники",
+   "keyframe": "assets/ograblenie/kadry-9x16/kadr-17.jpg",
+   "model": "kling-25",
+   "resolution": "720p",
+   "clip_seconds": 5,
+   "attempts": [
+    {
+     "n": 1,
+     "magnific_id": "5jTUjpHKxe",
+     "credits": 140,
+     "result": "ok"
+    }
+   ],
+   "approved_file": "",
+   "credits_spent": 140
+  },
+  {
+   "id": "SHOT_18",
+   "scene": 18,
+   "duration": 5,
+   "status": "review",
+   "tier": "cheap",
+   "description": "Хозяин машет вслед с чашкой чая",
+   "keyframe": "assets/ograblenie/kadry-9x16/kadr-18.jpg",
+   "model": "kling-25",
+   "resolution": "720p",
+   "clip_seconds": 5,
+   "attempts": [
+    {
+     "n": 1,
+     "magnific_id": "8a9FuaNIrU",
+     "credits": 140,
+     "result": "ok"
+    }
+   ],
+   "approved_file": "",
+   "credits_spent": 140
+  }
+ ],
+ "sound": {
+  "music": "assets/ograblenie/zvuk/music.mp3 (Lyria 3 Pro, 112 ударов в минуту)",
+  "sfx": "assets/ograblenie/zvuk/"
+ }
+}
