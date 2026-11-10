@@ -179,7 +179,7 @@ white dentist coat, kind relaxed face
 ### Кадр 4 · 0:09–0:14
 **В кадре:** стол сверху, круг света от лампы, план помещения на три кабинета. Рука брокера расставляет на плане сахарные кубики.
 **Р:** «Объект — стоматология на три кресла. План был простой. Забрать всё».
-**Запрос:** `[STYLE] top-down shot of a table under a single lamp, architectural floor plan of a small clinic, a man's hand in a navy blazer sleeve placing sugar cubes on the plan, black notebook and paper coffee cup at the edge`
+**Запрос:** `[STYLE] top-down shot of a table under a single lamp, architectural floor plan of a small clinic, a man's hand in a graphite suit sleeve placing sugar cubes on the plan, black notebook and paper coffee cup at the edge`
 
 ### Кадр 5 · 0:14–0:18 · стоп-кадр
 **В кадре:** юрист снимает очки и смотрит в камеру. Кадр замирает.
@@ -368,7 +368,7 @@ calm face, worn work jacket, strong hands
 **В кадре:** крупно — рука брокера вписывает в договор строку от руки.
 **Титр на листе:** «Название „У Палыча“ сохраняется».
 **Р:** «Условие у Палыча было одно. Его вписали отдельной строкой».
-**Запрос:** `[STYLE] extreme close-up of a man's hand in a navy blazer sleeve writing a line with a pen on a printed contract, black notebook nearby, blurred text`
+**Запрос:** `[STYLE] extreme close-up of a man's hand in a graphite suit sleeve writing a line with a pen on a printed contract, black notebook nearby, blurred text`
 
 ### Кадр 16 · 1:02–1:06
 **В кадре:** концертный зал. Катя на сцене в чёрном платье со скрипкой.
