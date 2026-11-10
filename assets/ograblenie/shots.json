@@ -1,8 +1,9 @@
 {
  "series": "ograblenie",
- "rough_cut": "assets/ograblenie/video/chernovik.mp4",
- "rough_cut_seconds": 90,
+ "rough_cut": "assets/ograblenie/video/chernovik-2.mp4",
+ "rough_cut_seconds": 68.4,
  "montage_only": [
+  "00 титульная заставка",
   "03 перемотка",
   "08 титр-таймер",
   "14 титр",
@@ -13,7 +14,10 @@
   "video_generations": 18,
   "video_credits": 2520,
   "rejected": 0,
-  "audio_credits": 38
+  "lipsync_credits": 60,
+  "music_credits": 160,
+  "sfx_credits": 40,
+  "voice_credits": 38
  },
  "shots": [
   {
@@ -275,10 +279,18 @@
      "magnific_id": "BhPufdVoQR",
      "credits": 140,
      "result": "ok"
+    },
+    {
+     "n": 2,
+     "step": "lipsync",
+     "model": "latentsync",
+     "magnific_id": "tC6qlwImZJ",
+     "credits": 25,
+     "result": "ok"
     }
    ],
    "approved_file": "",
-   "credits_spent": 140
+   "credits_spent": 165
   },
   {
    "id": "SHOT_12",
@@ -297,10 +309,18 @@
      "magnific_id": "TdgtoTQVNR",
      "credits": 140,
      "result": "ok"
+    },
+    {
+     "n": 2,
+     "step": "lipsync",
+     "model": "latentsync",
+     "magnific_id": "vQRKw4ea47",
+     "credits": 35,
+     "result": "ok"
     }
    ],
    "approved_file": "",
-   "credits_spent": 140
+   "credits_spent": 175
   },
   {
    "id": "SHOT_13",
@@ -412,5 +432,9 @@
    "approved_file": "",
    "credits_spent": 140
   }
- ]
+ ],
+ "sound": {
+  "music": "assets/ograblenie/zvuk/music.mp3 (Lyria 3 Pro, 112 ударов в минуту)",
+  "sfx": "assets/ograblenie/zvuk/"
+ }
 }
