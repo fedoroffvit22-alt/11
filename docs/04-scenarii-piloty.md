@@ -183,7 +183,7 @@ white dentist coat, kind relaxed face
 
 ### Кадр 5 · 0:14–0:18 · стоп-кадр
 **В кадре:** юрист снимает очки и смотрит в камеру. Кадр замирает.
-**Титр:** «ЮРИСТ. Вскрывает договоры аренды. Любой сложности».
+**Титр:** «ЮРИСТ. Вскроет любой договор аренды».
 **Звук:** удар барабана.
 **Запрос:** `[STYLE] [LAWYER] at a table under a lamp, taking off her glasses, looking straight into camera, thick folder in front of her, dark background`
 
